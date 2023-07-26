@@ -1,4 +1,5 @@
 <script lang="ts">
+  import SectionSubTitle from "./+SectionSubTitle.svelte";
   import TileFull from "./+TileFull.svelte";
 
   export let title: string;
@@ -6,7 +7,7 @@
 </script>
 
 <TileFull {title}>
-  <div class="subtitle">{subtitle}</div>
+  <SectionSubTitle text={subtitle} />
   <slot />
 </TileFull>
 

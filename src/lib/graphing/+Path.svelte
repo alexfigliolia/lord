@@ -56,7 +56,7 @@
   path {
     outline: none;
     transform: scaleY(0);
-    transform-origin: 50% 100%;
+    transform-origin: 50% 92%;
     transition-duration: 1s;
     &.active {
       transform: scaleY(1);
