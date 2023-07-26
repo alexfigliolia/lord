@@ -157,6 +157,18 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.44.0.tgz#961a5903c74139390478bdc808bcde3fc45ab7af"
   integrity sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==
 
+"@figliolia/event-emitter@^1.0.8":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@figliolia/event-emitter/-/event-emitter-1.1.1.tgz#f0186db8279f7716dce6e11c122b0699fc96e72a"
+  integrity sha512-KgMp1tW6I5kQ3woO21AzjAZhEq+S+Ky9ltLmLenOwc2CzN5kceD341lmDu7xPhRzxea5eaSg715bbkE0snI5IQ==
+
+"@figliolia/task-queue@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@figliolia/task-queue/-/task-queue-1.0.0.tgz#53afe35f232a81512b139a0bec5a2649d04017f2"
+  integrity sha512-/uVrdjsTB5QrAeQQ0Q+V/XMr79+LY/riJnJqvgbphZoR6n3/3Qa/b7DrTcl+yRqxC6dbu3PRzeAhI9YV9QVuvg==
+  dependencies:
+    "@figliolia/event-emitter" "^1.0.8"
+
 "@fontsource/fira-mono@^4.5.10":
   version "4.5.10"
   resolved "https://registry.yarnpkg.com/@fontsource/fira-mono/-/fira-mono-4.5.10.tgz#443be4b2b4fc6e685b88431fcfdaf8d5f5639bbf"

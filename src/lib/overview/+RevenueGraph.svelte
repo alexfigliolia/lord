@@ -6,9 +6,16 @@
   import Path from "$lib/graphing/+Path.svelte";
   import { DateScaling } from "$lib/graphing/DateScaling";
   import { Graph } from "$lib/graphing/Graph";
-  import { area, curveCardinal, extent, max, range, scaleLinear, scaleTime } from "d3";
-
-  let SVG: SVGElement;
+  import { area, extent, max, scaleLinear, scaleTime } from "d3";
+  import {
+    flip,
+    dataPoint,
+    labelActive,
+    pointDate,
+    positionX,
+    positionY,
+    prevPoint,
+  } from "./Store";
 
   const dates = new Array(12).fill("").map((_, i) => {
     const date = new Date();
@@ -30,7 +37,7 @@
     height: 350,
   });
 
-  const xScale = scaleTime([maxX, minX], [graph.margin.left, graph.width - graph.margin.right]);
+  const xScale = scaleTime([minX, maxX], [graph.margin.left, graph.width - graph.margin.right]);
 
   const yScale = scaleLinear(
     [0, max(data, d => d.y) as number],
@@ -42,8 +49,41 @@
     .x(d => xScale(d.x))
     .y0(yScale(0))
     // @ts-ignore
-    .y1(d => yScale(d.y))
-    .curve(curveCardinal) as unknown as string;
+    .y1(d => yScale(d.y)) as unknown as string;
+
+  const mouseOver = (e: MouseEvent) => {
+    const target = e.target as null | HTMLElement;
+    if (target) {
+      const offsetX = e.offsetX - 50;
+      const { width } = target.getBoundingClientRect();
+      const unit = width / data.length;
+      let i = 0;
+      for (i; i < data.length - 1; i++) {
+        if (offsetX >= i * unit && offsetX < (i + 1) * unit) {
+          break;
+        }
+      }
+      labelActive.update(() => true);
+      positionX.update(() => e.clientX);
+      positionY.update(() => e.clientY);
+      dataPoint.update(() => data[i].y);
+      pointDate.update(() => data[i].x);
+      flip.update(() => (i > Math.ceil(data.length / 2) ? true : false));
+      prevPoint.update(() => {
+        if (i === 0) return 0;
+        return data[i - 1].y;
+      });
+    }
+  };
+
+  const mouseOut = (_: MouseEvent) => {
+    labelActive.update(() => false);
+    positionX.update(() => 0);
+    positionY.update(() => 0);
+    dataPoint.update(() => 0);
+    pointDate.update(() => 0);
+    prevPoint.update(() => 0);
+  };
 </script>
 
 <DisplayTile title="Revenue" subtitle="All Properties">
@@ -61,7 +101,6 @@
     <div class="tick x-left">{DateScaling.months[new Date(minX).getMonth()]}</div>
     <div class="tick x-right">{DateScaling.months[new Date(maxX).getMonth()]}</div>
     <svg
-      bind:this={SVG}
       width="100%"
       height="100%"
       viewBox={`0 0 ${graph.width} ${graph.height}`}
@@ -81,7 +120,14 @@
       />
       <Axis scale={xScale} direction="bottom" numTicks={0} translateY={graph.xAxisTranslation} />
       <Axis scale={yScale} direction="left" numTicks={0} translateX={graph.yAxisTranslation} />
-      <Path path={Area} {data} stroke="transparent" fill="url(#graphGrad)" />
+      <Path
+        path={Area}
+        {data}
+        stroke="transparent"
+        fill="url(#graphGrad)"
+        onMouseOut={mouseOut}
+        onMouseOver={mouseOver}
+      />
     </svg>
   </div>
 </DisplayTile>

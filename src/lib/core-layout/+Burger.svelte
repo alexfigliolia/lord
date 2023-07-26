@@ -47,7 +47,7 @@
       filter: drop-shadow(0px 1px 2px rgba(#000, 0.1));
       & > circle {
         fill: transparent;
-        stroke: url(#grad);
+        stroke: url("#grad");
         stroke-width: 20px;
         stroke-dasharray: 1256;
         stroke-dashoffset: 1256;

@@ -12,20 +12,22 @@
 </div>
 
 <style lang="scss">
+  @use "$lib/variables.scss";
   .tile {
+    margin-top: 10px;
     width: 100%;
     & > .title {
-      color: rgb(129, 129, 129);
-      font-size: 1.5em;
+      color: variables.$grey;
+      font-size: 1.25em;
       margin: 10px 0;
-      font-weight: 600;
+      font-weight: 400;
       text-shadow: 0px 1.5px 3px rgba(#000, 0.2);
     }
     & > .content {
       box-sizing: border-box;
       width: 100%;
       height: auto;
-      padding: 2%;
+      padding: 2vw;
       min-height: 100px;
       border-radius: 10px;
       background-color: #fff;

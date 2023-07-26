@@ -11,8 +11,10 @@
 </TileFull>
 
 <style lang="scss">
+  @use "$lib/variables.scss";
   .subtitle {
-    font-size: 1.35em;
-    color: rgb(137, 122, 147);
+    font-size: 1.25em;
+    color: variables.$darkgrey;
+    font-weight: 700;
   }
 </style>
