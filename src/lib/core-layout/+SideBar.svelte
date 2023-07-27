@@ -1,6 +1,10 @@
-<script>
+<script lang="ts">
   import Link from "./+Link.svelte";
   import Logo from "./+Logo.svelte";
+  import Account from "$lib/icons/+Account.svelte";
+  import Building from "$lib/icons/+Building.svelte";
+  import Chart from "$lib/icons/+Chart.svelte";
+  import Money from "$lib/icons/+Money.svelte";
 </script>
 
 <nav>
@@ -10,95 +14,35 @@
     </div>
     <button class="add">ADD +</button>
     <div class="links">
-      <Link label="Overview" href="/" color="#9b8cae">
-        <svg
-          width="24px"
-          height="24px"
-          stroke-width="1.5"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M20 20H4V4"
-            stroke="#9b8cae"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M4 16.5L12 9l3 3 4.5-4.5"
-            stroke="#9b8cae"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+      <Link label="Overview" href="/app" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
+        <Chart color={currentColor} />
       </Link>
-      <Link label="Properties" href="/properties" color="#9b8cae">
-        <svg
-          width="24px"
-          height="24px"
-          stroke-width="1.5"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          color="#9b8cae"
-          ><path
-            d="M10 9.01l.01-.011M14 9.01l.01-.011M10 13.01l.01-.011M14 13.01l.01-.011M10 17.01l.01-.011M14 17.01l.01-.011M6 20.4V5.6a.6.6 0 01.6-.6H12V3.6a.6.6 0 01.6-.6h4.8a.6.6 0 01.6.6v16.8a.6.6 0 01-.6.6H6.6a.6.6 0 01-.6-.6z"
-            stroke="#9b8cae"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+      <Link
+        label="Properties"
+        href="/app/properties"
+        color="#9b8cae"
+        activeColor="#9e91fc"
+        let:currentColor
+      >
+        <Building color={currentColor} />
       </Link>
-      <Link label="Banking" href="/banking" color="#9b8cae">
-        <svg
-          width="24px"
-          height="24px"
-          stroke-width="1.5"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          color="#9b8cae"
-        >
-          <path
-            d="M3 20.4V3.6a.6.6 0 01.6-.6h16.8a.6.6 0 01.6.6v16.8a.6.6 0 01-.6.6H3.6a.6.6 0 01-.6-.6z"
-            stroke="#9b8cae"
-            stroke-width="1.5"
-          /><path
-            d="M15 8.5c-.685-.685-1.891-1.161-3-1.191M9 15c.644.86 1.843 1.35 3 1.391m0-9.082c-1.32-.036-2.5.561-2.5 2.191 0 3 5.5 1.5 5.5 4.5 0 1.711-1.464 2.446-3 2.391m0-9.082V5.5m0 10.891V18.5"
-            stroke="#9b8cae"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+      <Link
+        label="Banking"
+        href="/app/banking"
+        color="#9b8cae"
+        activeColor="#9e91fc"
+        let:currentColor
+      >
+        <Money color={currentColor} />
       </Link>
-      <Link label="Account" href="/account" color="#9b8cae">
-        <svg
-          width="24px"
-          height="24px"
-          stroke-width="1.5"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          color="#9b8cae"
-          ><path
-            d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"
-            stroke="#9b8cae"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          /><path
-            d="M4.271 18.346S6.5 15.5 12 15.5s7.73 2.846 7.73 2.846M12 12a3 3 0 100-6 3 3 0 000 6z"
-            stroke="#9b8cae"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          /></svg
-        >
+      <Link
+        label="Account"
+        href="/app/account"
+        color="#9b8cae"
+        activeColor="#9e91fc"
+        let:currentColor
+      >
+        <Account color={currentColor} />
       </Link>
     </div>
   </div>

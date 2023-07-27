@@ -1,7 +1,15 @@
 <script lang="ts">
   import { menuOpen } from "$lib/core-layout/LayoutState";
+  import Building from "$lib/icons/+Building.svelte";
+  import Chart from "$lib/icons/+Chart.svelte";
+  import Money from "$lib/icons/+Money.svelte";
+  import Link from "./+Link.svelte";
   import Waves from "./+Waves.svelte";
   import Logout from "./+logout.svelte";
+
+  const onClick = () => {
+    menuOpen.update(() => false);
+  };
 </script>
 
 <nav class="mobile-menu" class:open={$menuOpen}>
@@ -9,10 +17,39 @@
     <Waves />
     <div class="links">
       <div class="l-group">
-        <div class="link"><a href="/">Overview</a></div>
-        <div class="link"><a href="/properties">Properties</a></div>
-        <div class="link"><a href="/banking">Banking</a></div>
-        <div class="link"><a href="/account">Account</a></div>
+        <Link label="Overview" href="/app" color="#fff" margin="30px 0" {onClick} let:currentColor>
+          <Chart color={currentColor} />
+        </Link>
+        <Link
+          label="Properties"
+          href="/app/properties"
+          color="#fff"
+          margin="30px 0"
+          {onClick}
+          let:currentColor
+        >
+          <Building color={currentColor} />
+        </Link>
+        <Link
+          label="Banking"
+          href="/app/banking"
+          color="#fff"
+          margin="30px 0"
+          {onClick}
+          let:currentColor
+        >
+          <Money color={currentColor} />
+        </Link>
+        <Link
+          label="Account"
+          href="/app/account"
+          color="#fff"
+          margin="30px 0"
+          {onClick}
+          let:currentColor
+        >
+          <Money color={currentColor} />
+        </Link>
         <Logout />
       </div>
     </div>
