@@ -10,12 +10,3 @@
   <SectionSubTitle text={subtitle} />
   <slot />
 </TileFull>
-
-<style lang="scss">
-  @use "$lib/variables.scss";
-  .subtitle {
-    font-size: 1.25em;
-    color: variables.$darkgrey;
-    font-weight: 700;
-  }
-</style>
