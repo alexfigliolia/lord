@@ -9,10 +9,10 @@
     <Waves />
     <div class="links">
       <div class="l-group">
-        <div class="link"><a>Overview</a></div>
-        <div class="link"><a>Properties</a></div>
-        <div class="link"><a>Banking</a></div>
-        <div class="link"><a>Account</a></div>
+        <div class="link"><a href="/">Overview</a></div>
+        <div class="link"><a href="/properties">Properties</a></div>
+        <div class="link"><a href="/banking">Banking</a></div>
+        <div class="link"><a href="/account">Account</a></div>
         <Logout />
       </div>
     </div>

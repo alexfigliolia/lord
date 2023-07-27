@@ -10,7 +10,7 @@
     </div>
     <button class="add">ADD +</button>
     <div class="links">
-      <Link label="Overview" href="#" color="#9b8cae">
+      <Link label="Overview" href="/" color="#9b8cae">
         <svg
           width="24px"
           height="24px"
@@ -35,7 +35,7 @@
           />
         </svg>
       </Link>
-      <Link label="Properties" href="#" color="#9b8cae">
+      <Link label="Properties" href="/properties" color="#9b8cae">
         <svg
           width="24px"
           height="24px"
@@ -53,7 +53,7 @@
           />
         </svg>
       </Link>
-      <Link label="Banking" href="#" color="#9b8cae">
+      <Link label="Banking" href="/banking" color="#9b8cae">
         <svg
           width="24px"
           height="24px"
@@ -76,7 +76,7 @@
           />
         </svg>
       </Link>
-      <Link label="Account" href="#" color="#9b8cae">
+      <Link label="Account" href="/account" color="#9b8cae">
         <svg
           width="24px"
           height="24px"

@@ -10,7 +10,7 @@
     width: 100%;
     height: auto;
     padding: 2vw;
-    min-height: 100px;
+    min-height: 40px;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0px 5px 15px rgba(#000, 0.2);

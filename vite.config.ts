@@ -11,4 +11,9 @@ export default defineConfig({
     minify: IS_PRODUCTION,
     cssMinify: IS_PRODUCTION ? "lightningcss" : false,
   },
+  server: {
+    proxy: {
+      "/graphql": "http://localhost:4000",
+    },
+  },
 });
