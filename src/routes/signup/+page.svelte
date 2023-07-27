@@ -1,14 +1,19 @@
 <script lang="ts">
   import Input from "$lib/components/+Input.svelte";
   import LogoLarge from "$lib/core-layout/+LogoLarge.svelte";
-  import { LoginController, error } from "$lib/authentication/LoginController";
+  import { error } from "$lib/authentication/LoginController";
   import { goto } from "$app/navigation";
+  import { SignUpController } from "./SignUpController";
 
   const onSubmit = async (e: Event) => {
     e.preventDefault();
-    if (LoginController.validateEmail() && LoginController.validatePassword()) {
+    if (
+      SignUpController.validateName() &&
+      SignUpController.validateEmail() &&
+      SignUpController.validatePassword()
+    ) {
       error.update(() => " ");
-      const response = await LoginController.submit();
+      const response = await SignUpController.submit();
       if (response?.errors?.length) {
         error.update(() => response.errors[0].message);
       } else {
@@ -22,24 +27,31 @@
   <div class="frame">
     <LogoLarge />
     <div class="form">
-      <h1>Login</h1>
-      <div class="new">Are you new here? <a href="/signup">Sign Up!</a></div>
+      <h1>Sign Up</h1>
+      <div class="new">Already a user? <a href="/login">Login In!</a></div>
       <form on:submit={onSubmit}>
+        <Input
+          type="text"
+          name="name"
+          placeholder="name"
+          valid={SignUpController.validName}
+          onChange={SignUpController.onChange.bind(SignUpController)}
+        />
         <Input
           type="text"
           name="email"
           placeholder="email"
-          valid={LoginController.validEmail}
-          onChange={LoginController.onChange.bind(LoginController)}
+          valid={SignUpController.validEmail}
+          onChange={SignUpController.onChange.bind(SignUpController)}
         />
         <Input
           name="password"
           type="password"
           placeholder="password"
-          valid={LoginController.validPassword}
-          onChange={LoginController.onChange.bind(LoginController)}
+          valid={SignUpController.validPassword}
+          onChange={SignUpController.onChange.bind(SignUpController)}
         />
-        <button on:click={onSubmit}>Login</button>
+        <button on:click={onSubmit}>Sign Up</button>
       </form>
       <div class="error">{$error}</div>
     </div>

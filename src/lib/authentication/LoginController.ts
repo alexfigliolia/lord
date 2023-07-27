@@ -38,21 +38,33 @@ export class LoginController {
     return this.password.length >= 5;
   }
 
+  public static onChange(e: any) {
+    if (e.target) {
+      const { name, value } = e.target;
+      if (name === "email") {
+        this.email = value;
+      } else if (name === "password") {
+        this.password = value;
+      }
+    }
+  }
+
   public static async submit() {
     const email = this.email.toLocaleLowerCase();
     const password = this.password;
     const request = new GraphQLRequest({
       query: `
-					query Login($email: String!, $password: String!) {
-						login(email: $email, password: $password) {
-							user {
-								id,
-								name,
-								email,
-							}
+				query Login($email: String!, $password: String!) {
+					login(email: $email, password: $password) {
+						user {
+							id
+							name
+							role
+							email
 						}
 					}
-				`,
+				}
+			`,
       variables: {
         email,
         password,

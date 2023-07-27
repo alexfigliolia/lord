@@ -91,24 +91,6 @@
           min-height: 50vh;
           @include variables.center;
           flex-direction: column;
-          & > .link {
-            margin: 25px 0;
-            position: relative;
-            &::after {
-              position: absolute;
-              top: 50%;
-              left: 0;
-              height: 2px;
-              width: 100%;
-              background-color: #fff;
-            }
-            & > a {
-              font-weight: 600;
-              font-size: 1.5em;
-              color: #fff;
-              cursor: pointer;
-            }
-          }
         }
       }
     }

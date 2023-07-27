@@ -36,7 +36,7 @@
     border-radius: 20px;
     position: relative;
     & > input {
-      background-color: rgba(variables.$core, 0.2);
+      background-color: variables.$core;
       border: none;
       height: 40px;
       border-radius: 20px;
@@ -46,15 +46,16 @@
       box-sizing: border-box;
       outline: none;
       transition-duration: 0.3s;
-      color: variables.$core;
+      color: #fff;
       font-weight: 700;
       &:focus {
-        box-shadow: 0px 5px 10px rgba(variables.$core, 0.5);
+        box-shadow: 0px 5px 10px rgba(variables.$core, 0.75);
       }
       &::placeholder {
         font-style: italic;
         text-transform: capitalize;
-        color: variables.$core;
+        color: #eeeeee;
+        font-weight: 400;
       }
     }
     & > .status {

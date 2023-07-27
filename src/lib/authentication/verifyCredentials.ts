@@ -13,14 +13,17 @@ export const verifyCredentials = ({
     }
     const request = new GraphQLRequest({
       query: `
-					query Verify {
-						verifyToken {
-							user {
-								id
-							}
-						}
-					}
-				`,
+        query Verify {
+          verifyToken {
+            user {
+              id
+              name
+              role
+              email
+            }
+          }
+        }
+      `,
     });
     const response = await request.send(fetch);
     const body = await response.json();
