@@ -64,8 +64,8 @@
         }
       }
       labelActive.update(() => true);
-      positionX.update(() => e.clientX);
-      positionY.update(() => e.clientY);
+      positionX.update(() => e.pageX);
+      positionY.update(() => e.pageY);
       dataPoint.update(() => data[i].y);
       pointDate.update(() => data[i].x);
       flip.update(() => (i > Math.ceil(data.length / 2) ? true : false));
