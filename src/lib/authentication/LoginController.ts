@@ -1,4 +1,5 @@
 import { GraphQLRequest } from "$lib/GraphQLRequest";
+import { publicUserFragment } from "$lib/graphql/user";
 import { writable } from "svelte/store";
 
 export const error = writable("");
@@ -56,12 +57,7 @@ export class LoginController {
       query: `
 				query Login($email: String!, $password: String!) {
 					login(email: $email, password: $password) {
-						user {
-							id
-							name
-							role
-							email
-						}
+						${publicUserFragment}
 					}
 				}
 			`,

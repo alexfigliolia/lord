@@ -1,5 +1,6 @@
 import { GraphQLRequest } from "$lib/GraphQLRequest";
 import { LoginController, error } from "$lib/authentication/LoginController";
+import { publicUserFragment } from "$lib/graphql/user";
 
 export class SignUpController extends LoginController {
   static nameRegex = /^[a-zA-Z]+ [a-zA-Z]+$/;
@@ -39,12 +40,7 @@ export class SignUpController extends LoginController {
       query: `
 				query Signup($name: String! $email: String!, $password: String!) {
 					signup(name: $name, email: $email, password: $password) {
-						user {
-							id
-							name
-							role
-							email
-						}
+						${publicUserFragment}
 					}
 				}
 			`,
