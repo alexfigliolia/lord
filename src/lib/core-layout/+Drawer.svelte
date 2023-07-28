@@ -5,7 +5,7 @@
   import Money from "$lib/icons/+Money.svelte";
   import Link from "./+Link.svelte";
   import Waves from "./+Waves.svelte";
-  import Logout from "./+logout.svelte";
+  import Logout from "./+Logout.svelte";
 
   const onClick = () => {
     menuOpen.update(() => false);
@@ -26,7 +26,8 @@
           color="#fff"
           margin="30px 0"
           {onClick}
-          let:currentColor>
+          let:currentColor
+        >
           <Building color={currentColor} />
         </Link>
         <Link
@@ -35,7 +36,8 @@
           color="#fff"
           margin="30px 0"
           {onClick}
-          let:currentColor>
+          let:currentColor
+        >
           <Money color={currentColor} />
         </Link>
         <Link
@@ -44,7 +46,8 @@
           color="#fff"
           margin="30px 0"
           {onClick}
-          let:currentColor>
+          let:currentColor
+        >
           <Money color={currentColor} />
         </Link>
         <Logout />

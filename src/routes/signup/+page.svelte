@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
-  import Input from "$lib/components/+Input.svelte";
+  import LoginInput from "$lib/components/+LoginInput.svelte";
   import { error } from "$lib/authentication/LoginController";
   import { goto } from "$app/navigation";
   import { SignUpController } from "./SignUpController";
@@ -72,21 +72,21 @@
       <h1>Sign Up</h1>
       <div class="new">Already a user? <a href="/login">Login In!</a></div>
       <form on:submit={preventDefault}>
-        <Input
+        <LoginInput
           type="text"
           name="name"
           placeholder="name"
           onChange={SignUp.onChange.bind(SignUp)}
           validator={SignUpValidators.validName.bind(SignUpValidators)}
         />
-        <Input
+        <LoginInput
           type="text"
           name="email"
           placeholder="email"
           onChange={SignUp.onChange.bind(SignUp)}
           validator={SignUpValidators.validEmail.bind(SignUpValidators)}
         />
-        <Input
+        <LoginInput
           name="password"
           type="password"
           placeholder="password"
@@ -101,7 +101,7 @@
       <h1>More about you</h1>
       <div class="new">Let's give a name to your business</div>
       <form on:submit={preventDefault}>
-        <Input
+        <LoginInput
           type="text"
           name="businessName"
           placeholder="business name"

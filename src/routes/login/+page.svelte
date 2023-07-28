@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Input from "$lib/components/+Input.svelte";
+  import LoginInput from "$lib/components/+LoginInput.svelte";
   import { LoginController, error } from "$lib/authentication/LoginController";
   import { goto } from "$app/navigation";
   import Onboarding from "$lib/templates/+Onboarding.svelte";
@@ -32,14 +32,14 @@
   <h1>Login</h1>
   <div class="new">Are you new here? <a href="/signup">Sign Up!</a></div>
   <form on:submit={onSubmit}>
-    <Input
+    <LoginInput
       type="text"
       name="email"
       placeholder="email"
       onChange={Login.onChange.bind(Login)}
       validator={LoginValidators.validEmail.bind(LoginValidators)}
     />
-    <Input
+    <LoginInput
       name="password"
       type="password"
       placeholder="password"

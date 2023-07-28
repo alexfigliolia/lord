@@ -1,13 +1,37 @@
-<button class="logout">Logout</button>
+<script lang="ts">
+  import { goto } from "$app/navigation";
+  import { GraphQLRequest } from "$lib/GraphQLRequest";
+  import { logoutQuery } from "$lib/graphql/authentication";
+
+  export let margin: string = "30px 0";
+  export let textColor: string = "#9e91fc";
+  export let backgroundColor: string = "#fff";
+
+  const logout = async () => {
+    const request = new GraphQLRequest({
+      query: logoutQuery,
+    });
+    const response = await request.send();
+    console.log(await response.json());
+    void goto("/login");
+    return;
+  };
+</script>
+
+<button
+  class="logout"
+  on:click={logout}
+  style={`background-color: ${backgroundColor}; color: ${textColor}; margin: ${margin}`}
+  >Logout</button
+>
 
 <style lang="scss">
   @use "$lib/variables";
   .logout {
-    margin: 30px 0;
     padding: 0;
     background-color: #fff;
     text-transform: uppercase;
-    width: 90%;
+    width: 100%;
     max-width: 300px;
     border: none;
     border-radius: 2.5px;
