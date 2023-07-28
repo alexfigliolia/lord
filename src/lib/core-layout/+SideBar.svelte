@@ -5,6 +5,12 @@
   import Building from "$lib/icons/+Building.svelte";
   import Chart from "$lib/icons/+Chart.svelte";
   import Money from "$lib/icons/+Money.svelte";
+  import Logout from "./+Logout.svelte";
+  import { visible } from "$lib/state/Add";
+
+  const openAdd = () => {
+    visible.set(true);
+  };
 </script>
 
 <nav>
@@ -12,7 +18,7 @@
     <div class="logo">
       <Logo />
     </div>
-    <button class="add">ADD +</button>
+    <button class="add" on:click={openAdd}>ADD +</button>
     <div class="links">
       <Link label="Overview" href="/app" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
         <Chart color={currentColor} />
@@ -22,7 +28,8 @@
         href="/app/properties"
         color="#9b8cae"
         activeColor="#9e91fc"
-        let:currentColor>
+        let:currentColor
+      >
         <Building color={currentColor} />
       </Link>
       <Link
@@ -30,7 +37,8 @@
         href="/app/banking"
         color="#9b8cae"
         activeColor="#9e91fc"
-        let:currentColor>
+        let:currentColor
+      >
         <Money color={currentColor} />
       </Link>
       <Link
@@ -38,9 +46,11 @@
         href="/app/account"
         color="#9b8cae"
         activeColor="#9e91fc"
-        let:currentColor>
+        let:currentColor
+      >
         <Account color={currentColor} />
       </Link>
+      <Logout backgroundColor="#9e91fc" textColor="#fff" margin="10px 0" />
     </div>
   </div>
 </nav>

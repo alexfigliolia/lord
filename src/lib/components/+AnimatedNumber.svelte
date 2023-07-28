@@ -92,7 +92,8 @@
   class:visible
   bind:this={reference}
   aria-label={value.toString()}
-  style={style + `font-size:${fontSize}; height: ${height}`}>
+  style={style + `font-size:${fontSize}; height: ${height}`}
+>
   {value}
   {#each $after as token}
     <div data-value={token.value} style={`transition: transform ${duration}s ease`}>

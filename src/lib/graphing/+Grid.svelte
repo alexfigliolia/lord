@@ -44,4 +44,5 @@
   class="grid"
   bind:this={reference}
   class:left={direction === "left"}
-  class:bottom={direction === "bottom"} />
+  class:bottom={direction === "bottom"}
+/>

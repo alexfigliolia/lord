@@ -16,6 +16,15 @@ export class CyclicStack<T> extends Stack<T> {
     return this[this.currentIndex];
   }
 
+  public previous() {
+    if (this.currentIndex === 0) {
+      this.currentIndex = this.length - 1;
+      return this[this.currentIndex];
+    }
+    this.currentIndex--;
+    return this[this.currentIndex];
+  }
+
   public get atMax() {
     return this.currentIndex === this.length - 1;
   }

@@ -92,7 +92,8 @@
       positive
       change="3.34%"
       title="Current Month"
-      value={`$${Number(data[3].y).toLocaleString()}`} />
+      value={`$${Number(data[3].y).toLocaleString()}`}
+    />
   </div>
   <div class="chart-container">
     <div class="tick y-top">{`$${Number(maxY).toLocaleString()}`}</div>
@@ -103,7 +104,8 @@
       width="100%"
       height="100%"
       viewBox={`0 0 ${graph.width} ${graph.height}`}
-      preserveAspectRatio="none">
+      preserveAspectRatio="none"
+    >
       <linearGradient id="graphGrad" x1="0" x2="0" y1="0" y2="1">
         <stop stop-color="#9284fc" offset="0" />
         <stop stop-color="rgb(145, 189, 252)" offset="1" />
@@ -114,7 +116,8 @@
         numTicks={5}
         color="lightgrey"
         size={graph.graphWidth}
-        translateX={graph.graphWidth + graph.margin.left} />
+        translateX={graph.graphWidth + graph.margin.left}
+      />
       <Axis scale={xScale} direction="bottom" numTicks={0} translateY={graph.xAxisTranslation} />
       <Axis scale={yScale} direction="left" numTicks={0} translateX={graph.yAxisTranslation} />
       <Path
@@ -123,7 +126,8 @@
         stroke="transparent"
         fill="url(#graphGrad)"
         onMouseOut={mouseOut}
-        onMouseOver={mouseOver} />
+        onMouseOver={mouseOver}
+      />
     </svg>
   </div>
 </DisplayTile>

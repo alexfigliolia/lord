@@ -8,7 +8,8 @@
     stroke={color}
     stroke-width="1.5"
     stroke-linecap="round"
-    stroke-linejoin="round" />
+    stroke-linejoin="round"
+  />
 </svg>
 
 <style lang="scss">

@@ -29,7 +29,8 @@
     class="status"
     class:success={!!$valid}
     class:error={$valid === false}
-    class:visible={$valid !== null}>
+    class:visible={$valid !== null}
+  >
     {#if $valid === true}
       <Check color="#fff" />
     {/if}

@@ -36,14 +36,16 @@
   class="label"
   bind:this={reference}
   class:visible={$labelActive}
-  style={`top: ${$positionY}px; left: ${$position}px`}>
+  style={`top: ${$positionY}px; left: ${$position}px`}
+>
   <NumericStatus
     delay={20}
     duration={0.5}
     title={$month}
     change={`${$percentageChange}%`}
     positive={$prevPoint < $dataPoint}
-    value={`$${$dataPoint.toLocaleString()}`} />
+    value={`$${$dataPoint.toLocaleString()}`}
+  />
 </div>
 
 <style lang="scss">

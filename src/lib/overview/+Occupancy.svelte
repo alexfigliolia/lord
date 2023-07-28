@@ -35,7 +35,8 @@
         fill="transparent"
         strokeWidth={60}
         startProgress={0}
-        containerStyle="position: absolute; top: 0; left: 0; z-index: 2; filter: drop-shadow(0px 7px 7px rgb(0,0,0, 0.15));">
+        containerStyle="position: absolute; top: 0; left: 0; z-index: 2; filter: drop-shadow(0px 7px 7px rgb(0,0,0, 0.15));"
+      >
         <defs>
           <linearGradient id="vGrad" x1="0" x2="1" y1="0" y2="0">
             <stop stop-color="#9284fc" offset="0" />
@@ -50,7 +51,8 @@
         active
         value="85%"
         fontSize="70px"
-        style="color: #9e91fc; font-weight: 300;" />
+        style="color: #9e91fc; font-weight: 300;"
+      />
     </div>
   </div>
 </DisplayTile>

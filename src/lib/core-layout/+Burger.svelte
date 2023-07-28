@@ -6,7 +6,8 @@
   id="burger"
   on:click={LayoutState.toggleMenu.bind(LayoutState)}
   class="burger"
-  class:open={$menuOpen}>
+  class:open={$menuOpen}
+>
   <svg class="circ" version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
     <circle cx="250" cy="250" r="200" />
     <defs>
