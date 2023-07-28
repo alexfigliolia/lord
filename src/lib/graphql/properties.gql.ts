@@ -1,4 +1,6 @@
-export const propertiesByOrg = `
+import { gql } from "graphql-request";
+
+export const propertiesByOrg = gql`
 	query PropertiesByOrg($orgID: !Number) {
 		property(organization_id: $orgID) {
 			id 

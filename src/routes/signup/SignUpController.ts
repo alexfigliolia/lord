@@ -1,6 +1,6 @@
 import { GraphQLRequest } from "$lib/GraphQLRequest";
 import { LoginController, error } from "$lib/authentication/LoginController";
-import { publicUserFragment } from "$lib/graphql/user";
+import { onboardQuery } from "$lib/graphql/authentication.gql";
 import { SignUpValidators } from "./SignUpValidators";
 
 export class SignUpController extends LoginController {
@@ -42,13 +42,7 @@ export class SignUpController extends LoginController {
     const password = this.password;
     const organization = this.businessName;
     const request = new GraphQLRequest({
-      query: `
-				query onBoard($name: String! $email: String!, $password: String!, $organization: String!) {
-					onboard(name: $name, email: $email, password: $password, organization: $organization) {
-						${publicUserFragment}
-					}
-				}
-			`,
+      query: onboardQuery,
       variables: {
         name,
         email,

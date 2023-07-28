@@ -10,8 +10,12 @@
   "svelteStrictMode": false,
   "svelteBracketNewLine": true,
   "svelteIndentScriptAndStyle": true,
-  "plugins": ["prettier-plugin-svelte"],
-  "pluginSearchDirs": ["."],
+  "plugins": [
+    "prettier-plugin-svelte"
+  ],
+  "pluginSearchDirs": [
+    "."
+  ],
   "overrides": [
     {
       "files": "*.svelte",

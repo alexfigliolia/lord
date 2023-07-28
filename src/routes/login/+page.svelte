@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import Onboarding from "$lib/templates/+Onboarding.svelte";
   import { LoginValidators } from "$lib/authentication/LoginValidators";
+  import FormActionButton from "$lib/components/+FormActionButton.svelte";
 
   const Login = new LoginController();
 
@@ -46,7 +47,7 @@
       onChange={Login.onChange.bind(Login)}
       validator={LoginValidators.validPassword.bind(LoginValidators)}
     />
-    <button on:click={onSubmit}>Login</button>
+    <FormActionButton {onSubmit} text="Login" />
   </form>
   <div class="error">{$error}</div>
 </Onboarding>
@@ -69,28 +70,6 @@
   }
   form {
     width: 100%;
-    & > button {
-      background-color: variables.$core;
-      border-radius: 25px;
-      outline: none;
-      border: none;
-      margin: 0;
-      padding: 0;
-      height: 50px;
-      width: 100%;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      color: #fff;
-      text-transform: uppercase;
-      font-weight: 700;
-      transition-duration: 0.3s;
-      box-shadow: 0px 5px 10px rgba(variables.$core, 0.95);
-      &:hover,
-      &:focus {
-        box-shadow: 0px 10px 20px rgba(variables.$core, 0.95);
-        transform: scale(1.025);
-      }
-    }
   }
   .error {
     height: 40px;

@@ -2,7 +2,7 @@ import type { RequestEvent } from "@sveltejs/kit";
 import type { IVerifyCredentials, User } from "./types";
 import { GraphQLRequest } from "$lib/GraphQLRequest";
 import { CurrentUser } from "$lib/state/User";
-import { publicUserFragment } from "$lib/graphql/user";
+import { verifyQuery } from "$lib/graphql/authentication.gql";
 
 export const verifyCredentials = ({
   onError = () => {},
@@ -14,13 +14,7 @@ export const verifyCredentials = ({
       return onError();
     }
     const request = new GraphQLRequest({
-      query: `
-        query Verify {
-          verifyToken {
-            ${publicUserFragment}
-          }
-        }
-      `,
+      query: verifyQuery,
     });
     const response = await request.send(params.fetch);
     const body = await response.json();

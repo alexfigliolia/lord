@@ -1,7 +1,7 @@
 import { GraphQLRequest } from "$lib/GraphQLRequest";
-import { publicUserFragment } from "$lib/graphql/user";
 import { writable } from "svelte/store";
 import { LoginValidators } from "./LoginValidators";
+import { loginQuery } from "$lib/graphql/authentication.gql";
 
 export const error = writable("");
 
@@ -40,13 +40,7 @@ export class LoginController {
     const email = this.email.toLocaleLowerCase();
     const password = this.password;
     const request = new GraphQLRequest({
-      query: `
-				query Login($email: String!, $password: String!) {
-					login(email: $email, password: $password) {
-						${publicUserFragment}
-					}
-				}
-			`,
+      query: loginQuery,
       variables: {
         email,
         password,
