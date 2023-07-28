@@ -6,7 +6,7 @@ import { publicUserFragment } from "$lib/graphql/user";
 
 export const verifyCredentials = ({
   onError = () => {},
-  onSuccess = (user: User, request: RequestEvent) => user,
+  onSuccess = (user: User) => user,
 }: IVerifyCredentials) => {
   return async (params: RequestEvent) => {
     const user = params.cookies.get("L_User");
@@ -28,6 +28,6 @@ export const verifyCredentials = ({
       return onError();
     }
     CurrentUser.set(body.data.verifyToken);
-    return onSuccess(body.data.verifyToken, params);
+    return onSuccess(body.data.verifyToken.user, params);
   };
 };

@@ -1,7 +1,5 @@
 <script lang="ts">
-  import Input from "$lib/components/+Input.svelte";
   import LogoLarge from "$lib/core-layout/+LogoLarge.svelte";
-  import { LoginController, error } from "$lib/authentication/LoginController";
 </script>
 
 <section id="login">
@@ -15,6 +13,16 @@
 
 <style lang="scss">
   @use "$lib/variables.scss";
+
+  @keyframes show {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
   #login {
     height: 100vh;
     width: 100%;
@@ -31,9 +39,12 @@
       @include variables.center;
       justify-content: flex-start;
       flex-direction: column;
+      opacity: 0;
+      animation: show 0.5s 0.25s forwards;
       & > .form {
         width: 90%;
         max-width: 450px;
+        position: relative;
       }
     }
   }

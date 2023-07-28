@@ -1,21 +1,31 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import Input from "$lib/components/+Input.svelte";
   import { LoginController, error } from "$lib/authentication/LoginController";
   import { goto } from "$app/navigation";
   import Onboarding from "$lib/templates/+Onboarding.svelte";
+  import { LoginValidators } from "$lib/authentication/LoginValidators";
+
+  const Login = new LoginController();
 
   const onSubmit = async (e: Event) => {
     e.preventDefault();
-    if (LoginController.validateEmail() && LoginController.validatePassword()) {
+    if (Login.validateEmail() && Login.validatePassword()) {
       error.update(() => " ");
-      const response = await LoginController.submit();
+      const response = await Login.submit();
       if (response?.errors?.length) {
         error.update(() => response.errors[0].message);
       } else {
-        goto("/app");
+        void goto("/app");
       }
     }
   };
+
+  onMount(() => {
+    return () => {
+      error.set("");
+    };
+  });
 </script>
 
 <Onboarding>
@@ -26,15 +36,15 @@
       type="text"
       name="email"
       placeholder="email"
-      valid={LoginController.validEmail}
-      onChange={LoginController.onChange.bind(LoginController)}
+      onChange={Login.onChange.bind(Login)}
+      validator={LoginValidators.validEmail.bind(LoginValidators)}
     />
     <Input
       name="password"
       type="password"
       placeholder="password"
-      valid={LoginController.validPassword}
-      onChange={LoginController.onChange.bind(LoginController)}
+      onChange={Login.onChange.bind(Login)}
+      validator={LoginValidators.validPassword.bind(LoginValidators)}
     />
     <button on:click={onSubmit}>Login</button>
   </form>

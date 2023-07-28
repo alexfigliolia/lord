@@ -1,45 +1,31 @@
 import { GraphQLRequest } from "$lib/GraphQLRequest";
 import { publicUserFragment } from "$lib/graphql/user";
 import { writable } from "svelte/store";
+import { LoginValidators } from "./LoginValidators";
 
 export const error = writable("");
 
 export class LoginController {
-  static email = "";
-  static password = "";
-  private static emailReg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  email = "";
+  password = "";
 
-  public static validateEmail() {
-    const valid = this.emailReg.test(this.email);
-    if (!valid) {
+  public validateEmail() {
+    if (!LoginValidators.validEmail(this.email)) {
       error.update(() => "A valid email is required");
+      return false;
     }
-    return valid;
+    return true;
   }
 
-  public static validatePassword() {
-    if (this.password.length < 5) {
+  public validatePassword() {
+    if (!LoginValidators.validPassword(this.password)) {
       error.update(() => "Passwords must be at least 5 characters");
       return false;
     }
     return true;
   }
 
-  public static get validEmail() {
-    if (!this.email.length) {
-      return null;
-    }
-    return this.emailReg.test(this.email);
-  }
-
-  public static get validPassword() {
-    if (!this.password.length) {
-      return null;
-    }
-    return this.password.length >= 5;
-  }
-
-  public static onChange(e: any) {
+  public onChange(e: any) {
     if (e.target) {
       const { name, value } = e.target;
       if (name === "email") {
@@ -50,7 +36,7 @@ export class LoginController {
     }
   }
 
-  public static async submit() {
+  public async submit() {
     const email = this.email.toLocaleLowerCase();
     const password = this.password;
     const request = new GraphQLRequest({

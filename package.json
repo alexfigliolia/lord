@@ -7,7 +7,7 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "tsc --noemit && eslint . --fix && prettier --plugin-search-dir . --check --write .",
+    "lint": "tsc --noemit && eslint . --fix",
     "format": "prettier --plugin-search-dir . --write .",
     "deploy": "yarn build && yarn gh-pages -d build -t true"
   },
