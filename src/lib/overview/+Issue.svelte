@@ -56,8 +56,8 @@
     <div class="assignment">
       <div class={`status ${Issues.statuses[status]}`}>{Issues.statusDisplay[status]}</div>
     </div>
-  </div></TileListItem
->
+  </div>
+</TileListItem>
 
 <style lang="scss">
   @use "$lib/variables";

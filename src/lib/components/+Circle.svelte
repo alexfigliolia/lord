@@ -30,8 +30,7 @@
   version="1.1"
   style={containerStyle}
   viewBox="0 0 500 500"
-  preserveAspectRatio="xMinYMin meet"
->
+  preserveAspectRatio="xMinYMin meet">
   <circle
     bind:this={Circle}
     cx="250"
@@ -42,8 +41,7 @@
     style={`${circleStyle} transition-duration: ${animate}s`}
     stroke-width={strokeWidth}
     stroke-dasharray={$totalLength}
-    stroke-dashoffset={$totalLength * (1 - progress)}
-  />
+    stroke-dashoffset={$totalLength * (1 - progress)} />
   <slot />
 </svg>
 

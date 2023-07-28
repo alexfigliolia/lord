@@ -8,15 +8,13 @@
     stroke={color}
     stroke-width="1.5"
     stroke-linecap="round"
-    stroke-linejoin="round"
-  />
+    stroke-linejoin="round" />
   <path
     d="M4 16.5L12 9l3 3 4.5-4.5"
     stroke={color}
     stroke-width="1.5"
     stroke-linecap="round"
-    stroke-linejoin="round"
-  />
+    stroke-linejoin="round" />
 </svg>
 
 <style lang="scss">

@@ -1,27 +1,39 @@
 <script lang="ts">
   import Check from "$lib/icons/+Check.svelte";
   import X from "$lib/icons/+X.svelte";
+  import { derived, writable } from "svelte/store";
 
   export let name: string;
   export let type: string;
   export let placeholder: string = "";
   export let autocomplete: string = name;
   export let onChange: (e: Event) => void;
-  export let valid: boolean | null = null;
+  export let validator: (value: string) => null | boolean;
+
+  const value = writable("");
+  const valid = derived(value, v => validator(v));
+
+  const internal = (e: Event) => {
+    if (e.target) {
+      // @ts-ignore
+      const nextValue = e.target.value;
+      value.set(nextValue);
+      onChange(e);
+    }
+  };
 </script>
 
 <div class="input">
-  <input {type} {name} {placeholder} {autocomplete} on:change={onChange} />
+  <input {type} {name} {placeholder} {autocomplete} on:change={internal} />
   <div
     class="status"
-    class:success={!!valid}
-    class:error={valid === false}
-    class:visible={valid !== null}
-  >
-    {#if valid === true}
+    class:success={!!$valid}
+    class:error={$valid === false}
+    class:visible={$valid !== null}>
+    {#if $valid === true}
       <Check color="#fff" />
     {/if}
-    {#if valid === false}
+    {#if $valid === false}
       <X color="#fff" />
     {/if}
   </div>

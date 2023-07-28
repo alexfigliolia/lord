@@ -56,7 +56,7 @@
           if (isNaN(int)) {
             continue;
           }
-          const children = !!value
+          const children = value
             ? new Array(parseInt(value) + 1)
                 // @ts-ignore
                 .join(0)
@@ -92,8 +92,7 @@
   class:visible
   bind:this={reference}
   aria-label={value.toString()}
-  style={style + `font-size:${fontSize}; height: ${height}`}
->
+  style={style + `font-size:${fontSize}; height: ${height}`}>
   {value}
   {#each $after as token}
     <div data-value={token.value} style={`transition: transform ${duration}s ease`}>

@@ -14,8 +14,7 @@
           id={input.name}
           name={input.name}
           value={input.name}
-          checked={value === input.name}
-        />
+          checked={value === input.name} />
         <div class="overlay" />
       </div>
       <label for={input.name}>{input.label}</label>

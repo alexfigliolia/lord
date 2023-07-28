@@ -22,8 +22,7 @@
         href="/app/properties"
         color="#9b8cae"
         activeColor="#9e91fc"
-        let:currentColor
-      >
+        let:currentColor>
         <Building color={currentColor} />
       </Link>
       <Link
@@ -31,8 +30,7 @@
         href="/app/banking"
         color="#9b8cae"
         activeColor="#9e91fc"
-        let:currentColor
-      >
+        let:currentColor>
         <Money color={currentColor} />
       </Link>
       <Link
@@ -40,8 +38,7 @@
         href="/app/account"
         color="#9b8cae"
         activeColor="#9e91fc"
-        let:currentColor
-      >
+        let:currentColor>
         <Account color={currentColor} />
       </Link>
     </div>

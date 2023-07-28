@@ -26,8 +26,7 @@
           color="#fff"
           margin="30px 0"
           {onClick}
-          let:currentColor
-        >
+          let:currentColor>
           <Building color={currentColor} />
         </Link>
         <Link
@@ -36,8 +35,7 @@
           color="#fff"
           margin="30px 0"
           {onClick}
-          let:currentColor
-        >
+          let:currentColor>
           <Money color={currentColor} />
         </Link>
         <Link
@@ -46,8 +44,7 @@
           color="#fff"
           margin="30px 0"
           {onClick}
-          let:currentColor
-        >
+          let:currentColor>
           <Money color={currentColor} />
         </Link>
         <Logout />
