@@ -90,18 +90,18 @@ export type QueryLoginArgs = {
 
 export type QueryOrganizationArgs = {
   follow_all?: InputMaybe<Scalars['Boolean']['input']>;
-  id?: InputMaybe<Scalars['Int']['input']>;
+  id: Scalars['Int']['input'];
 };
 
 
 export type QueryOrganizationsArgs = {
   follow_all?: InputMaybe<Scalars['Boolean']['input']>;
-  owner_id?: InputMaybe<Scalars['Int']['input']>;
+  owner_id: Scalars['Int']['input'];
 };
 
 
 export type QueryPropertiesArgs = {
-  organization_id?: InputMaybe<Scalars['Int']['input']>;
+  organization_id: Scalars['Int']['input'];
 };
 
 
@@ -151,11 +151,11 @@ export type Lease = {
 export type Organization = {
   __typename?: 'organization';
   id: Scalars['Int']['output'];
-  issues: Array<Maybe<Issue>>;
+  issues: Array<Issue>;
   name: Scalars['String']['output'];
   owner_id: Scalars['Int']['output'];
-  properties: Array<Maybe<Property>>;
-  users: Array<Maybe<User>>;
+  properties: Array<Property>;
+  users: Array<User>;
 };
 
 export type Property = {
@@ -165,11 +165,11 @@ export type Property = {
   city: Scalars['String']['output'];
   description: Scalars['String']['output'];
   id: Scalars['Int']['output'];
-  images?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  images: Array<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   organization_id: Scalars['Int']['output'];
   state: Scalars['String']['output'];
-  units: Array<Maybe<Unit>>;
+  units: Array<Unit>;
   zip_code: Scalars['String']['output'];
 };
 
@@ -177,9 +177,9 @@ export type Unit = {
   __typename?: 'unit';
   description: Scalars['String']['output'];
   id: Scalars['Int']['output'];
-  images: Array<Maybe<Scalars['String']['output']>>;
-  issues: Array<Maybe<Issue>>;
-  leases: Array<Maybe<Lease>>;
+  images: Array<Scalars['String']['output']>;
+  issues: Array<Issue>;
+  leases: Array<Lease>;
   name: Scalars['String']['output'];
   property_id: Scalars['Int']['output'];
 };
@@ -199,7 +199,7 @@ export type OrganizationsByOwnerQueryVariables = Exact<{
 }>;
 
 
-export type OrganizationsByOwnerQuery = { __typename?: 'Query', organizations?: Array<{ __typename?: 'organization', id: number, name: string, users: Array<{ __typename?: 'user', id: number, name: string, role: string, email: string } | null>, issues: Array<{ __typename?: 'issue', id: number, status: string, type: string, author: string, title: string, description: string, assigned_id?: number | null, created_at: string } | null>, properties: Array<{ __typename?: 'property', id: number, name: string, description: string, address_1: string, address_2: string, city: string, state: string, zip_code: string, images?: Array<string | null> | null } | null> } | null> | null };
+export type OrganizationsByOwnerQuery = { __typename?: 'Query', organizations?: Array<{ __typename?: 'organization', id: number, name: string, users: Array<{ __typename?: 'user', id: number, name: string, role: string, email: string }>, issues: Array<{ __typename?: 'issue', id: number, status: string, type: string, author: string, title: string, description: string, assigned_id?: number | null, created_at: string }>, properties: Array<{ __typename?: 'property', id: number, name: string, description: string, address_1: string, address_2: string, city: string, state: string, zip_code: string, images: Array<string> }> } | null> | null };
 
 
 export const OrganizationsByOwnerDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "OrganizationsByOwner" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "owner_id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "follow_all" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Boolean" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "organizations" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "owner_id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "owner_id" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "follow_all" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "follow_all" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }, { "kind": "Field", "name": { "kind": "Name", "value": "users" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }, { "kind": "Field", "name": { "kind": "Name", "value": "role" } }, { "kind": "Field", "name": { "kind": "Name", "value": "email" } }] } }, { "kind": "Field", "name": { "kind": "Name", "value": "issues" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "status" } }, { "kind": "Field", "name": { "kind": "Name", "value": "type" } }, { "kind": "Field", "name": { "kind": "Name", "value": "author" } }, { "kind": "Field", "name": { "kind": "Name", "value": "title" } }, { "kind": "Field", "name": { "kind": "Name", "value": "description" } }, { "kind": "Field", "name": { "kind": "Name", "value": "assigned_id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "created_at" } }] } }, { "kind": "Field", "name": { "kind": "Name", "value": "properties" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }, { "kind": "Field", "name": { "kind": "Name", "value": "description" } }, { "kind": "Field", "name": { "kind": "Name", "value": "address_1" } }, { "kind": "Field", "name": { "kind": "Name", "value": "address_2" } }, { "kind": "Field", "name": { "kind": "Name", "value": "city" } }, { "kind": "Field", "name": { "kind": "Name", "value": "state" } }, { "kind": "Field", "name": { "kind": "Name", "value": "zip_code" } }, { "kind": "Field", "name": { "kind": "Name", "value": "images" } }] } }] } }] } }] } as unknown as DocumentNode<OrganizationsByOwnerQuery, OrganizationsByOwnerQueryVariables>;

@@ -1,7 +1,15 @@
-<script>
+<script lang="ts">
   import Header from "$lib/core-layout/+Header.svelte";
   import Drawer from "$lib/core-layout/+Drawer.svelte";
   import SideBar from "$lib/core-layout/+SideBar.svelte";
+  import AddModal from "$lib/core-layout/+AddModal.svelte";
+  import { organizations } from "$lib/state/Organization";
+  import type { OrganizationsPayload } from "$lib/types/derived";
+  import Notifications from "$lib/core-layout/+Notifications.svelte";
+
+  export let data: OrganizationsPayload;
+
+  $: organizations.set(data.data.organizations);
 </script>
 
 <div id="coreApp">
@@ -12,6 +20,8 @@
     <slot />
   </div>
 </div>
+<AddModal />
+<Notifications />
 
 <style lang="scss">
   @use "$lib/variables.scss";
@@ -21,7 +31,7 @@
     width: 100%;
     & > .route {
       width: 95%;
-      padding-top: 10px;
+      padding-bottom: 50px;
       margin: variables.$headerHeightSmall auto auto;
       display: flex;
       @media #{variables.$mq-670} {
