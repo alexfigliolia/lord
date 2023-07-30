@@ -1,47 +1,79 @@
 <script lang="ts">
+  import { ModalStack } from "$lib/generics/ModalStack";
   import X from "$lib/icons/+X.svelte";
   import { NotificationState } from "$lib/state/Notifications";
   import type { CancelFN } from "@figliolia/task-queue";
+  import { onMount } from "svelte";
 
   export let ID: string;
   export let index: number;
 
   let hide = false;
+  let show = false;
 
   class UIController {
     static cancelFN: CancelFN;
+    static stackID: string | null = null;
     static stackPosition: number | null = null;
 
-    public static dequeue() {
+    public static onRender(nextIndex: number) {
+      if (this.stackID === null) {
+        this.stackID = ModalStack.push(hideNotification);
+      }
+      if (this.stackPosition !== nextIndex) {
+        if (nextIndex === 0) {
+          this.deferredPop();
+        } else if (this.stackPosition === 0) {
+          this.cancel();
+        }
+        this.stackPosition = nextIndex;
+      }
+    }
+
+    public static unmount() {
+      this.cancel();
+      this.removeSelf();
+    }
+
+    private static deferredPop() {
       this.cancelFN = NotificationState.lifecycle(ID, () => {
         hide = true;
+        this.removeSelf();
       });
     }
 
-    public static cancel() {
+    private static cancel() {
       if (this.cancelFN) {
         this.cancelFN();
+      }
+    }
+
+    private static removeSelf() {
+      if (this.stackID) {
+        ModalStack.delete(this.stackID);
       }
     }
   }
 
   export const hideNotification = () => {
-    UIController.cancel();
+    UIController.unmount();
     hide = true;
-    NotificationState.dequeue(ID);
+    NotificationState.pop(ID);
   };
 
-  $: {
-    if (UIController.stackPosition !== index) {
-      if (index === 0) {
-        UIController.dequeue();
-      }
-      UIController.stackPosition = index;
-    }
-  }
+  $: index, UIController.onRender(index);
+
+  onMount(() => {
+    setTimeout(() => {
+      show = true;
+    }, 0);
+    return () => {
+      UIController.unmount();
+    };
+  });
 </script>
 
-<div class="notification" class:hide>
+<div class="notification" class:hide class:show>
   <button class="closer" on:click={hideNotification}>
     <X color="#fff" />
   </button>
@@ -49,27 +81,41 @@
 </div>
 
 <style lang="scss">
-  @keyframes slide-in {
-    0% {
-      opacity: 0;
-      transform: translateX(40px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0px);
-    }
-  }
+  //   @keyframes slide-in {
+  //   0% {
+  //     opacity: 0;
+  //     transform: translateX(40px);
+  //     max-height: 0px;
+  //   }
+  //   60% {
+  //     max-height: 500px;
+  //   }
+  //   80% {
+  //     transform: translateX(0px);
+  //   }
+  //   100% {
+  //     opacity: 1;
+  //     max-height: 500px;
+  //   }
+  // }
   .notification {
     width: 100%;
-    opacity: 1;
     height: auto;
     box-shadow: 0px 2.5px 5px rgba(#000, 0.25);
-    margin-bottom: 10px;
     border-radius: 5px;
-    max-height: 500px;
     overflow: hidden;
-    animation: slide-in 0.3s;
     position: relative;
+    opacity: 0;
+    max-height: 0px;
+    margin-bottom: 0;
+    transform: translateX(40px);
+    &.show {
+      opacity: 1;
+      max-height: 500px;
+      margin-bottom: 10px;
+      transform: translateX(0px);
+      transition: max-height 0.6s 0s, margin-bottom 0.6s 0s, opacity 0.6s 0.1s, transform 0.6s 0.1s;
+    }
     &.hide {
       max-height: 0px;
       opacity: 0;

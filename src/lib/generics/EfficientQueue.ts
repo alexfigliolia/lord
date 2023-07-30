@@ -1,6 +1,6 @@
 import { AutoIncrementingID } from "@figliolia/event-emitter";
 
-export class Queue<T> extends Map<string, T> {
+export class EfficientQueue<T> extends Map<string, T> {
   private IDs = new AutoIncrementingID();
 
   public enqueue(item: T) {

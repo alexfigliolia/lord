@@ -1,7 +1,7 @@
 <script lang="ts">
   import Error from "$lib/components/notifications/+Error.svelte";
   import Success from "$lib/components/notifications/+Success.svelte";
-  import { NotificationState, notifications } from "$lib/state/Notifications";
+  import { NotificationState, renderStream } from "$lib/state/Notifications";
   import { onMount } from "svelte";
 
   onMount(() => {
@@ -12,7 +12,7 @@
 </script>
 
 <div class="notification-list">
-  {#each $notifications as [ID, notification], index (ID)}
+  {#each $renderStream as [ID, notification], index (ID)}
     {#if notification.type === "success"}
       <Success {ID} message={notification.message} {index} />
     {/if}

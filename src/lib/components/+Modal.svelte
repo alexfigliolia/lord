@@ -1,65 +1,50 @@
 <script lang="ts">
   import X from "$lib/icons/+X.svelte";
   import { onMount } from "svelte";
-  import { TaskQueue } from "@figliolia/task-queue";
-  import { FocusTrap } from "$lib/accessibility/FocusTrap";
+  import { browser } from "$app/environment";
+  import { ModalStack } from "$lib/generics/ModalStack";
 
   let height: number;
 
   export let onClose: () => void;
   export let visible: boolean = false;
 
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.which === 27 || e.key === "Escape") {
-      onClose();
-      UIController.onInvisible();
-    }
-  };
-
   class UIController {
-    static Queue = new TaskQueue();
-    static content: HTMLDivElement;
-    static closer: HTMLButtonElement;
-    static trap: null | FocusTrap = null;
+    static stackID: string | null = null;
 
     static onUnmount() {
-      this.Queue.clearPendingTasks();
-      window.removeEventListener("keydown", onKeyDown);
-      if (this.trap) {
-        this.onInvisible();
-      }
+      this.onInvisible();
     }
 
     static onVisible() {
-      if (!this.trap) {
-        this.Queue.deferTask(() => {
-          this.trap = new FocusTrap(this.content);
-          this.trap.initialize();
-        }, 600);
-        window.addEventListener("keydown", onKeyDown);
+      if (!this.stackID) {
+        this.stackID = ModalStack.push(onClose);
       }
     }
 
     static onInvisible() {
-      if (this.trap) {
-        this.trap.destroy();
-        this.trap = null;
-        window.removeEventListener("keydown", onKeyDown);
+      if (this.stackID) {
+        ModalStack.delete(this.stackID);
+        this.stackID = null;
       }
     }
   }
 
   onMount(() => {
     return () => {
-      UIController.onUnmount();
+      if (browser) {
+        UIController.onUnmount();
+      }
     };
   });
 
   $: {
-    if (visible) {
-      UIController.onVisible();
-    } else {
-      UIController.onInvisible();
+    if (browser) {
+      if (visible) {
+        UIController.onVisible();
+      } else {
+        UIController.onInvisible();
+      }
     }
   }
 </script>
@@ -67,8 +52,8 @@
 <svelte:window bind:innerHeight={height} />
 
 <div class="modal" class:visible style={`height: ${height}px; max-height: ${height}px`}>
-  <div bind:this={UIController.content} style={`max-height: ${height}px`}>
-    <button bind:this={UIController.closer} class="closer" on:click={onClose}>
+  <div style={`max-height: ${height}px`}>
+    <button class="closer" on:click={onClose}>
       <X color="url(#xgrad)">
         <defs>
           <linearGradient id="xgrad" x1="0" x2="1" y1="0" y2="0">
@@ -104,42 +89,35 @@
     transition: opacity 0.3s 0.25s, visibility 0s 0.5s;
     & > div {
       width: 100%;
-      max-width: 800px;
       height: 100vh;
       background-color: #fff;
       overflow-y: scroll;
       transform: scale(0.8);
+      max-width: 800px;
       opacity: 0;
       transition: transform 0.3s 0s, opacity 0.3s 0s;
       position: relative;
       @media #{variables.$mq-670} {
         height: 80vh;
+        width: 80%;
       }
       & > .closer {
-        top: 2.5%;
-        right: 2.5%;
-        width: 50px;
-        height: 50px;
+        top: 7.5px;
+        left: calc(100% - 57.5px);
+        width: 60px;
+        height: 60px;
         outline: none;
         border: none;
-        position: absolute;
+        position: sticky;
+        z-index: 10;
         margin: 0;
         padding: 0;
-        background: rgba(#000, 0.75);
-        border-radius: 50%;
-        box-shadow: 0px 2.5px 7.5px rgba(#000, 0.35);
+        background-color: transparent;
         @include variables.center;
-        transition: transform 0.3s 0s, opacity 0.3s 0s;
-        opacity: 0;
-        transform: scale(0);
-        &:hover,
-        &:focus {
-          opacity: 1;
-          transform: scale(1.1);
-        }
       }
       & > div {
         width: 100%;
+        margin-top: -57.5px;
       }
     }
   }
@@ -155,9 +133,11 @@
       transform: scale(1);
       transition: transform 0.3s 0.25s, opacity 0.3s 0.25s;
       & > .closer {
-        opacity: 1;
-        transform: scale(1);
-        transition: transform 0.3s 0.5s, opacity 0.3s 0.5s;
+        transition-duration: 0.3s;
+        &:hover,
+        &:focus {
+          transform: scale(1.1);
+        }
       }
     }
   }
