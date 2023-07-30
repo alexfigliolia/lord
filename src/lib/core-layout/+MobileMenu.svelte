@@ -50,7 +50,7 @@
         >
           <Money color={currentColor} />
         </Link>
-        <Logout />
+        <Logout {onClick} />
       </div>
     </div>
   </div>

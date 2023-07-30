@@ -6,8 +6,10 @@
   export let margin: string = "30px 0";
   export let textColor: string = "#9e91fc";
   export let backgroundColor: string = "#fff";
+  export let onClick: () => void = () => {};
 
   const logout = async () => {
+    onClick();
     const request = new GraphQLRequest({
       query: logoutQuery,
     });

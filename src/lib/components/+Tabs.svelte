@@ -35,6 +35,7 @@
       & > .slide {
         width: 33.33333%;
         height: 7px;
+        border-radius: 3.5px;
         background: linear-gradient(to right, variables.$core, variables.$core2);
         position: absolute;
         top: 100%;

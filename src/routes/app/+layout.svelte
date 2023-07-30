@@ -1,6 +1,6 @@
 <script lang="ts">
   import Header from "$lib/core-layout/+Header.svelte";
-  import Drawer from "$lib/core-layout/+Drawer.svelte";
+  import MobileMenu from "$lib/core-layout/+MobileMenu.svelte";
   import SideBar from "$lib/core-layout/+SideBar.svelte";
   import AddModal from "$lib/core-layout/+AddModal.svelte";
   import { organizations } from "$lib/state/Organization";
@@ -14,7 +14,7 @@
 
 <div id="coreApp">
   <Header />
-  <Drawer />
+  <MobileMenu />
   <div class="route">
     <SideBar />
     <slot />
