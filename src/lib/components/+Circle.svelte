@@ -1,8 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { TaskQueue } from "@figliolia/task-queue";
+  import { Factory } from "$lib/state/Factory";
   import { onMount } from "svelte";
-  import { writable } from "svelte/store";
 
   export let animate: number = 0;
   export let progress: number = 1;
@@ -13,9 +12,8 @@
   export let circleStyle: string = "";
   export let containerStyle: string = "";
 
-  const Queue = new TaskQueue();
   let Circle: SVGCircleElement;
-  const totalLength = writable(startProgress);
+  const totalLength = Factory.createWritable("Circle Animation", startProgress);
 
   onMount(() => {
     if (browser) {

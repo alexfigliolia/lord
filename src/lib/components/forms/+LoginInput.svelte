@@ -1,7 +1,7 @@
 <script lang="ts">
   import Check from "$lib/icons/+Check.svelte";
   import X from "$lib/icons/+X.svelte";
-  import { derived, writable } from "svelte/store";
+  import { Factory } from "$lib/state/Factory";
 
   export let name: string;
   export let type: string;
@@ -10,8 +10,8 @@
   export let onChange: (e: Event) => void;
   export let validator: (value: string) => null | boolean;
 
-  const value = writable("");
-  const valid = derived(value, v => validator(v));
+  const value = Factory.createWritable(`${name} =  Value`, "");
+  const valid = Factory.createDerived(`${name} =  Valid`, value, v => validator(v));
 
   const internal = (e: Event) => {
     if (e.target) {
@@ -48,7 +48,8 @@
     margin-bottom: 20px;
     border-radius: 20px;
     position: relative;
-    & > input {
+    & > input,
+    &:-webkit-autofill {
       background-color: variables.$core;
       border: none;
       height: 40px;
@@ -61,7 +62,8 @@
       transition-duration: 0.3s;
       color: #fff;
       font-weight: 700;
-      &:focus {
+      &:focus,
+      &:hover {
         box-shadow: 0px 5px 10px rgba(variables.$core, 0.75);
       }
       &::placeholder {

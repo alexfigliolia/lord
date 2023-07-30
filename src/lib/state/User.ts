@@ -1,4 +1,4 @@
 import type { User } from "$lib/authentication/types";
-import { writable } from "svelte/store";
+import { Factory } from "./Factory";
 
-export const CurrentUser = writable<User>();
+export const CurrentUser = Factory.createWritable<User>("Current User");

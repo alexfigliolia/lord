@@ -45,7 +45,7 @@
       error.set("");
     }
 
-    public static resetButtonState(duration = 2000) {
+    public static resetButtonState() {
       this.Queue.deferTask(() => {
         loading = false;
         complete = false;

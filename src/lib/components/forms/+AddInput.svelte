@@ -1,7 +1,7 @@
 <script lang="ts">
   import Check from "$lib/icons/+Check.svelte";
   import X from "$lib/icons/+X.svelte";
-  import { derived, writable } from "svelte/store";
+  import { Factory } from "$lib/state/Factory";
 
   export let name: string;
   export let value: string;
@@ -9,8 +9,8 @@
   export let autocomplete: string = name;
   export let validator: (value: string) => null | boolean;
 
-  const internalValue = writable(value);
-  const valid = derived(internalValue, v => validator(v));
+  const internalValue = Factory.createWritable(`${name} - Value`, value);
+  const valid = Factory.createDerived(`${name} - Is Valid`, internalValue, v => validator(v));
 
   $: value, internalValue.set(value);
 </script>

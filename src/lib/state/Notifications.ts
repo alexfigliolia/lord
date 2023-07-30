@@ -1,11 +1,17 @@
-import { derived, get, writable } from "svelte/store";
 import type { INotification } from "./types";
 import { TaskQueue } from "@figliolia/task-queue";
 import { EfficientStack } from "$lib/generics/EfficientStack";
+import { Factory } from "./Factory";
+import { get } from "svelte/store";
 
-export const notifications = writable<EfficientStack<INotification>>(new EfficientStack());
+export const notifications = Factory.createWritable<EfficientStack<INotification>>(
+  "Notification Stack",
+  new EfficientStack(),
+);
 
-export const renderStream = derived(notifications, v => v.reverse());
+export const renderStream = Factory.createDerived("Notification Render Stream", notifications, v =>
+  v.reverse(),
+);
 
 export class NotificationState {
   public static Queue = new TaskQueue();

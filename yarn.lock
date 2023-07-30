@@ -643,6 +643,13 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.44.0.tgz#961a5903c74139390478bdc808bcde3fc45ab7af"
   integrity sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==
 
+"@figliolia/enhanced-stores@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@figliolia/enhanced-stores/-/enhanced-stores-1.0.0.tgz#8f3628cc27bb4ffb60f4463b5f8a7754110f2107"
+  integrity sha512-HvA01QxxjyilTs3NmWPa8pvT9PxsfiJaU6JvdQsAyk6i3X0W0UkiBDS1qpdblPYC4TuUYveUS8w2AK7oIVhAtQ==
+  dependencies:
+    svelte "^4.1.1"
+
 "@figliolia/event-emitter@^1.0.8", "@figliolia/event-emitter@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@figliolia/event-emitter/-/event-emitter-1.1.1.tgz#f0186db8279f7716dce6e11c122b0699fc96e72a"
@@ -4972,7 +4979,7 @@ svelte-preprocess@^5.0.4:
     sorcery "^0.11.0"
     strip-indent "^3.0.0"
 
-svelte@^4.0.5:
+svelte@^4.0.5, svelte@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-4.1.1.tgz#468ed0377d3cae542b35df8a22a3ca188d93272a"
   integrity sha512-Enick5fPFISLoVy0MFK45cG+YlQt6upw8skEK9zzTpJnH1DqEv8xOZwizCGSo3Q6HZ7KrZTM0J18poF7aQg5zw==

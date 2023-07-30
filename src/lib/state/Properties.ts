@@ -1,4 +1,4 @@
-import { derived } from "svelte/store";
+import { Factory } from "./Factory";
 import { organization } from "./Organization";
 
-export const properties = derived(organization, v => v.properties);
+export const properties = Factory.createDerived("Properties", organization, v => v.properties);

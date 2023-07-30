@@ -1,6 +1,6 @@
-import { writable } from "svelte/store";
+import { Factory } from "$lib/state/Factory";
 
-export const menuOpen = writable(false);
+export const menuOpen = Factory.createWritable("Mobile Menu Open", false);
 
 export class LayoutState {
   static toggleMenu() {

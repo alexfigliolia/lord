@@ -1,11 +1,16 @@
 import type { Organization, Property } from "$lib/types/derived";
-import { derived, get, writable } from "svelte/store";
+import { get } from "svelte/store";
+import { Factory } from "./Factory";
 
-export const organizations = writable<Organization[]>([]);
+export const organizations = Factory.createWritable<Organization[]>("Organizations", []);
 
-export const organizationIndex = writable(0);
+export const organizationIndex = Factory.createWritable("Active Organization Index", 0);
 
-export const organization = derived([organizations, organizationIndex], ([orgs, i]) => orgs[i]);
+export const organization = Factory.createDerived(
+  "Active Organization",
+  [organizations, organizationIndex],
+  ([orgs, i]) => orgs[i],
+);
 
 export class OrganizationState {
   static appendProperty(property: Property) {
