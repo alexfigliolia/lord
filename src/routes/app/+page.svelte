@@ -31,13 +31,13 @@
     @include variables.center;
     align-items: flex-start;
     flex-direction: column;
-    @media #{variables.$mq-1070} {
+    @media #{variables.$mq-957} {
       flex-direction: row;
       gap: 2%;
     }
     & > .maxed {
       width: 100%;
-      @media #{variables.$mq-670} {
+      @media #{variables.$mq-957} {
         max-width: 400px;
       }
     }

@@ -34,6 +34,7 @@
     createdBy="Alex Figliolia"
   />
   <Issue
+    margin={0}
     type="complaint"
     title="broken toilet"
     description="My toilet won't flush"

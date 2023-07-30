@@ -54,7 +54,7 @@
   const mouseOver = (e: MouseEvent) => {
     const target = e.target as null | HTMLElement;
     if (target) {
-      const offsetX = e.offsetX - 50;
+      const { offsetX } = e;
       const { width } = target.getBoundingClientRect();
       const unit = width / data.length;
       let i = 0;

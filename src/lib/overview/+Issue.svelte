@@ -5,8 +5,9 @@
   import People from "$lib/icons/+People.svelte";
 
   export let title: string;
-  export let description: string;
   export let createdBy: string;
+  export let description: string;
+  export let margin: number = 20;
   export let type: keyof typeof Issues.types;
   export let status: keyof typeof Issues.statuses;
 
@@ -31,7 +32,7 @@
   }
 </script>
 
-<TileListItem margin={20}>
+<TileListItem {margin}>
   <div class="position">
     <div class="left">
       <div class="icon">

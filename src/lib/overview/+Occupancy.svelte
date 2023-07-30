@@ -63,10 +63,13 @@
     width: 100%;
     @include variables.center;
     position: relative;
+    padding: 20px;
+    box-sizing: border-box;
     & > .circles {
       position: relative;
       width: 100%;
-      // max-width: 400px;
+      box-sizing: border-box;
+      max-width: 400px;
     }
     & > .val {
       position: absolute;
