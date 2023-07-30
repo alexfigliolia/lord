@@ -1,101 +1,114 @@
 <script lang="ts">
-  import { TaskQueue } from "@figliolia/task-queue";
+  import { Factory } from "$lib/state/Factory";
+  import { TaskQueue, type CancelFN } from "@figliolia/task-queue";
   import { onMount } from "svelte";
-  import { writable } from "svelte/store";
 
-  export let duration: number = 1.5;
-  export let delay: number = 500;
   export let active: boolean;
+  export let style: string = "";
+  export let delay: number = 5000;
+  export let duration: number = 1.5;
   export let value: number | string;
   export let fontSize: string = "25px";
   export let height: string = fontSize;
-  export let style: string = "";
 
-  const Queue = new TaskQueue();
-  let reference: HTMLHeadElement;
+  const after = Factory.createWritable<
+    {
+      value: string;
+      children: (number | string)[];
+    }[]
+  >("Counting Animation", []);
 
-  let visible = false;
-  let finished = false;
-  const after = writable<{ value: string; children: (number | string)[] }[]>([]);
+  export const reset = () => {
+    after.set([]);
+  };
 
-  const execute = () => {
-    if (!finished) {
-      finished = true;
-      const ticks = [...reference.querySelectorAll("div[data-value]")];
-      for (const tick of ticks) {
-        const value = tick.getAttribute("data-value") || "";
+  class UIController {
+    static visible = false;
+    static Queue = new TaskQueue();
+    static reference: HTMLDivElement;
+    static cancelFN: CancelFN | undefined;
+
+    public static animate() {
+      this.setup();
+      this.execute();
+    }
+
+    private static setup() {
+      const regex = /(\D+)?(\d+)(\D+)?(\d+)?(\D+)?/;
+      let result = [...(regex.exec(value + "") || [])];
+      result.shift();
+      result = result.filter(res => res != null);
+      while (this.reference.firstChild) {
+        this.reference.removeChild(this.reference.firstChild);
+      }
+      for (let res of result) {
         // @ts-ignore
-        if (parseInt(value) == value) {
-          const dist = parseInt(value) + 1;
-          (tick as HTMLElement).style.transform = `translateY(-${dist * 100}%)`;
+        if (isNaN(res)) {
+          after.update(v => [...v, { value: res, children: [res] }]);
         } else {
-          (tick as HTMLElement).style.transform = `translateY(-${100}%)`;
-        }
-      }
-    }
-  };
-
-  const setup = () => {
-    finished = false;
-    const regex = /(\D+)?(\d+)(\D+)?(\d+)?(\D+)?/;
-    let result = [...(regex.exec(value + "") || [])];
-    result.shift();
-    result = result.filter(res => res != null);
-
-    while (reference.firstChild) {
-      reference.removeChild(reference.firstChild);
-    }
-    for (let res of result) {
-      // @ts-ignore
-      if (isNaN(res)) {
-        after.update(v => [...v, { value: res, children: [res] }]);
-      } else {
-        for (let i = 0; i < res.length; i++) {
-          const value = res[i];
-          const int = parseInt(value);
-          if (isNaN(int)) {
-            continue;
+          for (let i = 0; i < res.length; i++) {
+            const value = res[i];
+            const int = parseInt(value);
+            if (isNaN(int)) {
+              continue;
+            }
+            const children = value
+              ? new Array(parseInt(value) + 1)
+                  // @ts-ignore
+                  .join(0)
+                  // @ts-ignore
+                  .split(0)
+                  .map((_, i) => i)
+              : [];
+            after.update(v => [...v, { value, children }]);
           }
-          const children = value
-            ? new Array(parseInt(value) + 1)
-                // @ts-ignore
-                .join(0)
-                // @ts-ignore
-                .split(0)
-                .map((_, i) => i)
-            : [];
-          after.update(v => [...v, { value, children }]);
         }
       }
+      this.visible = true;
     }
-    visible = true;
-  };
+
+    private static execute() {
+      this.cancelFN = this.Queue.deferTask(() => {
+        const ticks = [...this.reference.querySelectorAll("div[data-value]")];
+        for (const tick of ticks) {
+          const value = tick.getAttribute("data-value") || "";
+          // @ts-ignore
+          if (parseInt(value) == value) {
+            const dist = parseInt(value) + 1;
+            (tick as HTMLElement).style.transform = `translateY(-${dist * 100}%)`;
+          } else {
+            (tick as HTMLElement).style.transform = `translateY(-${100}%)`;
+          }
+        }
+      }, delay);
+    }
+  }
 
   onMount(() => {
     return () => {
-      Queue.clearDeferredTasks();
+      UIController.Queue.clearDeferredTasks();
     };
   });
 
   let prev: any = null;
   $: {
-    if (active && reference && value !== prev) {
+    if (active && UIController.reference && value !== prev) {
+      UIController.cancelFN?.();
       prev = value;
-      setup();
-      Queue.deferTask(execute, delay);
+      UIController.animate();
     }
   }
 </script>
 
 <div
   class="counter"
-  class:visible
-  bind:this={reference}
+  bind:this={UIController.reference}
+  class:visible={UIController.visible}
   aria-label={value.toString()}
   style={style + `font-size:${fontSize}; height: ${height}`}
 >
   {value}
-  {#each $after as token}
+  {#each $after as token, index (index)}
     <div data-value={token.value} style={`transition: transform ${duration}s ease`}>
       <div />
       {#each token.children as child}

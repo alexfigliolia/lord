@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { derived } from "svelte/store";
   import { DateScaling } from "$lib/graphing/DateScaling";
   import NumericStatus from "$lib/components/+NumericStatus.svelte";
   import {
@@ -11,24 +10,41 @@
     prevPoint,
     labelActive,
   } from "./Store";
+  import { Factory } from "$lib/state/Factory";
 
   let reference: HTMLDivElement;
 
-  const month = derived(pointDate, v => DateScaling.months[new Date(v).getMonth()]);
-  const percentageChange = derived([dataPoint, prevPoint], v => {
-    const [cur, prev] = v;
-    const div = cur / prev;
-    if (div === 0) {
-      return Number(0).toFixed(2);
-    }
-    return Number(100 * Math.abs((cur - prev) / ((cur + prev) / 2))).toFixed(2);
-  });
-  const position = derived([flip, positionX], v => {
+  let reset: () => void;
+
+  const month = Factory.createDerived(
+    "Hovering Month",
+    pointDate,
+    v => DateScaling.months[new Date(v).getMonth()],
+  );
+  const percentageChange = Factory.createDerived(
+    "Hovering Percentage Change",
+    [dataPoint, prevPoint],
+    v => {
+      const [cur, prev] = v;
+      const div = cur / prev;
+      if (div === 0) {
+        return Number(0).toFixed(2);
+      }
+      return Number(100 * Math.abs((cur - prev) / ((cur + prev) / 2))).toFixed(2);
+    },
+  );
+  const position = Factory.createDerived("Hovering X Coordinate", [flip, positionX], v => {
     const [flip, positionX] = v;
     if (!flip || !reference) {
       return positionX;
     }
     return positionX - reference.getBoundingClientRect().width;
+  });
+
+  labelActive.subscribe(v => {
+    if (v === false) {
+      reset?.();
+    }
   });
 </script>
 
@@ -42,6 +58,7 @@
     delay={20}
     duration={0.5}
     title={$month}
+    bind:reset
     change={`${$percentageChange}%`}
     positive={$prevPoint < $dataPoint}
     value={`$${$dataPoint.toLocaleString()}`}

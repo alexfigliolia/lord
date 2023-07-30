@@ -8,6 +8,7 @@
   export let subtitle: string = "";
   export let delay: number = 500;
   export let duration: number = 1.5;
+  export let reset: () => void = () => {};
 </script>
 
 <div class="status">
@@ -18,6 +19,7 @@
       {value}
       {delay}
       {duration}
+      bind:reset
       height="1.5em"
       fontSize="2em"
       style={`     
