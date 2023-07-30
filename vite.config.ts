@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [sveltekit()],
   base: "/lord/",
   build: {
+    target: "es2015",
     sourcemap: IS_PRODUCTION,
     minify: IS_PRODUCTION,
     cssMinify: IS_PRODUCTION ? "lightningcss" : false,
