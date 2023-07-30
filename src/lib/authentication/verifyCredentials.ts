@@ -4,10 +4,10 @@ import { GraphQLRequest } from "$lib/GraphQLRequest";
 import { CurrentUser } from "$lib/state/User";
 import { verifyQuery } from "$lib/graphql/authentication.gql";
 
-export const verifyCredentials = ({
+export const verifyCredentials = <T = User>({
   onError = () => {},
-  onSuccess = (user: User) => user,
-}: IVerifyCredentials) => {
+  onSuccess = (user: User, _: RequestEvent<any>) => user as T,
+}: IVerifyCredentials<T>) => {
   return async (params: RequestEvent) => {
     const user = params.cookies.get("L_User");
     if (!user) {

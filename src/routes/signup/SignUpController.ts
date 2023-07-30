@@ -6,6 +6,10 @@ import { SignUpValidators } from "./SignUpValidators";
 export class SignUpController extends LoginController {
   username = "";
   businessName = "";
+  constructor() {
+    super();
+    this.onChange = this.onChange.bind(this);
+  }
 
   public validateName() {
     if (!SignUpValidators.validName(this.username)) {

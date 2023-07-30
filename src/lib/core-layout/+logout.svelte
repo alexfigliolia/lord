@@ -11,10 +11,8 @@
     const request = new GraphQLRequest({
       query: logoutQuery,
     });
-    const response = await request.send();
-    console.log(await response.json());
-    void goto("/login");
-    return;
+    await request.send();
+    return goto("/login");
   };
 </script>
 

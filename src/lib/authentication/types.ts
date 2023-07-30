@@ -1,8 +1,8 @@
 import type { RequestEvent } from "@sveltejs/kit";
 
-export interface IVerifyCredentials {
+export interface IVerifyCredentials<T> {
   onError?: () => void | Promise<void>;
-  onSuccess?: (user: User, request: RequestEvent) => User | Promise<User>;
+  onSuccess?: (user: User, request: RequestEvent) => T | Promise<T>;
 }
 
 export interface User {

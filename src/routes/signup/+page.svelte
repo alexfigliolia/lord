@@ -1,130 +1,140 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { browser } from "$app/environment";
-  import LoginInput from "$lib/components/+LoginInput.svelte";
+  import LoginInput from "$lib/components/forms/+LoginInput.svelte";
   import { error } from "$lib/authentication/LoginController";
   import { goto } from "$app/navigation";
   import { SignUpController } from "./SignUpController";
   import Onboarding from "$lib/templates/+Onboarding.svelte";
-  import PageSwitch, { type PageSwitch as PW } from "pageswitch";
   import { SignUpValidators } from "./SignUpValidators";
-  import FormActionButton from "$lib/components/+FormActionButton.svelte";
+  import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
+  import { TaskQueue } from "@figliolia/task-queue";
 
   const SignUp = new SignUpController();
 
-  class UIController {
-    static PW: PW;
+  let loading = false;
+  let complete = false;
+  let buttonError = false;
 
-    static initialize() {
-      this.PW = new PageSwitch("panels", {
-        duration: 600,
-        direction: 1,
-        start: 0,
-        loop: false,
-        ease: "ease",
-        transition: "fade",
-        mouse: false,
-        mousewheel: false,
-        arrowkey: false,
-      });
+  class UIController {
+    static Queue = new TaskQueue();
+    static nextPage: () => void;
+    static previousPage: () => void;
+
+    static next = (_: Event) => {
+      if (SignUp.validateName() && SignUp.validateEmail() && SignUp.validatePassword()) {
+        this.resetError();
+        this.nextPage();
+      }
+    };
+
+    static preventDefault = (e: Event) => {
+      e.preventDefault();
+    };
+
+    static onSubmit = async (e: Event) => {
+      loading = true;
+      e.preventDefault();
+      if (!SignUp.validateBusinessName()) {
+        buttonError = true;
+        this.resetButtonState();
+        return;
+      }
+      this.resetError();
+      const response = await SignUp.submit();
+      if (response?.errors?.length) {
+        buttonError = true;
+        error.update(() => response.errors[0].message);
+        this.previousPage();
+        this.resetButtonState();
+      } else {
+        complete = true;
+        this.Queue.deferTask(() => {
+          void goto("/app");
+        }, 1000);
+      }
+    };
+
+    public static resetButtonState() {
+      this.Queue.deferTask(() => {
+        loading = false;
+        complete = false;
+        buttonError = false;
+      }, 2000);
     }
 
-    static next(_: Event) {
-      if (SignUp.validateName() && SignUp.validateEmail() && SignUp.validatePassword()) {
-        error.update(() => " ");
-        this.PW.next();
-      }
+    public static resetError() {
+      error.set(" ");
     }
   }
 
-  const preventDefault = (e: Event) => {
-    e.preventDefault();
-  };
-
-  const onSubmit = async (e: Event) => {
-    e.preventDefault();
-    if (SignUp.validateBusinessName()) {
-      error.update(() => " ");
-      const response = await SignUp.submit();
-      if (response?.errors?.length) {
-        error.update(() => response.errors[0].message);
-      } else {
-        void goto("/app");
-      }
-    }
-  };
-
   onMount(() => {
-    if (browser) {
-      UIController.initialize();
-    }
     return () => {
-      if (UIController.PW) {
-        UIController.PW.destroy();
-      }
-      return error.set("");
+      UIController.resetError();
+      UIController.Queue.clearDeferredTasks();
     };
   });
 </script>
 
-<Onboarding>
-  <div id="panels">
-    <div class="panel">
-      <h1>Sign Up</h1>
-      <div class="new">Already a user? <a href="/login">Login In!</a></div>
-      <form on:submit={preventDefault}>
-        <LoginInput
-          type="text"
-          name="name"
-          placeholder="name"
-          onChange={SignUp.onChange.bind(SignUp)}
-          validator={SignUpValidators.validName.bind(SignUpValidators)}
-        />
-        <LoginInput
-          type="text"
-          name="email"
-          placeholder="email"
-          onChange={SignUp.onChange.bind(SignUp)}
-          validator={SignUpValidators.validEmail.bind(SignUpValidators)}
-        />
-        <LoginInput
-          name="password"
-          type="password"
-          placeholder="password"
-          onChange={SignUp.onChange.bind(SignUp)}
-          validator={SignUpValidators.validPassword.bind(SignUpValidators)}
-        />
-        <FormActionButton onSubmit={UIController.next.bind(UIController)} text="Next" />
-      </form>
-      <div class="error">{$error}</div>
-    </div>
-    <div class="panel">
-      <h1>More about you</h1>
-      <div class="new">Let's give a name to your business</div>
-      <form on:submit={preventDefault}>
-        <LoginInput
-          type="text"
-          name="businessName"
-          placeholder="business name"
-          validator={SignUpValidators.validBusinessName.bind(SignUpValidators)}
-          onChange={SignUp.onChange.bind(SignUp)}
-        />
-        <FormActionButton {onSubmit} text="Create" />
-      </form>
-      <div class="error">{$error}</div>
-    </div>
+<Onboarding
+  minHeight="435px"
+  bind:nextPage={UIController.nextPage}
+  bind:previousPage={UIController.previousPage}
+>
+  <div class="panel">
+    <h1>Sign Up</h1>
+    <div class="new">Already a user? <a href="/login">Login In!</a></div>
+    <form on:submit={UIController.preventDefault}>
+      <LoginInput
+        type="text"
+        name="name"
+        placeholder="name"
+        onChange={SignUp.onChange}
+        validator={SignUpValidators.validName}
+      />
+      <LoginInput
+        type="text"
+        name="email"
+        placeholder="email"
+        onChange={SignUp.onChange}
+        validator={SignUpValidators.validEmail}
+      />
+      <LoginInput
+        name="password"
+        type="password"
+        placeholder="password"
+        onChange={SignUp.onChange}
+        validator={SignUpValidators.validPassword}
+      />
+      <FormActionButton onSubmit={UIController.next} text="Next" />
+    </form>
+    <div class="error">{$error}</div>
+  </div>
+  <div class="panel">
+    <h1>More about you</h1>
+    <div class="new">Let's give a name to your business</div>
+    <form on:submit={UIController.onSubmit}>
+      <LoginInput
+        type="text"
+        name="businessName"
+        placeholder="business name"
+        validator={SignUpValidators.validBusinessName}
+        onChange={SignUp.onChange}
+      />
+      <FormActionButton
+        stateful
+        {loading}
+        {complete}
+        text="Create"
+        error={buttonError}
+        onSubmit={UIController.onSubmit}
+      />
+    </form>
+    <div class="error">{$error}</div>
   </div>
 </Onboarding>
 
 <style lang="scss">
   @use "$lib/variables.scss";
-
-  #panels {
-    width: 100%;
-    position: relative;
-    z-index: 1;
-    min-height: 55vh;
-  }
 
   h1 {
     font-size: 2.5em;
@@ -142,10 +152,13 @@
   }
   form {
     width: 100%;
+    display: flex;
+    flex-direction: column;
   }
   .error {
     height: 40px;
     width: 100%;
+    margin-top: 20px;
     @include variables.center;
     color: variables.$core;
     font-style: italic;

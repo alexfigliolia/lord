@@ -8,6 +8,11 @@ export const error = writable("");
 export class LoginController {
   email = "";
   password = "";
+  constructor() {
+    this.onChange = this.onChange.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
+  }
 
   public validateEmail() {
     if (!LoginValidators.validEmail(this.email)) {
