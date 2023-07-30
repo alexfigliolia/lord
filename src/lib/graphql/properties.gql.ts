@@ -37,6 +37,7 @@ export const createPropertyMutation = gql`
       state: $state
       zip_code: $zip_code
     ) {
+      id
       name
       organization_id
       description
@@ -45,6 +46,7 @@ export const createPropertyMutation = gql`
       city
       state
       zip_code
+      units
     }
   }
 `;

@@ -4,27 +4,19 @@
   import { derived, writable } from "svelte/store";
 
   export let name: string;
-  export let type: string;
+  export let value: string;
   export let placeholder: string = "";
   export let autocomplete: string = name;
-  export let onChange: (e: Event) => void;
   export let validator: (value: string) => null | boolean;
 
-  const value = writable("");
-  const valid = derived(value, v => validator(v));
+  const internalValue = writable(value);
+  const valid = derived(internalValue, v => validator(v));
 
-  const internal = (e: Event) => {
-    if (e.target) {
-      // @ts-ignore
-      const nextValue = e.target.value;
-      value.set(nextValue);
-      onChange(e);
-    }
-  };
+  $: value, internalValue.set(value);
 </script>
 
 <div class="input">
-  <input {type} {name} {placeholder} {autocomplete} on:change={internal} />
+  <input type="text" {name} {placeholder} {autocomplete} bind:value />
   <div
     class="status"
     class:error={$valid === false}
@@ -105,15 +97,5 @@
         box-shadow: 0px 2.5px 5px rgba(66, 195, 115, 0.5);
       }
     }
-  }
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Firefox */
-  input[type="number"] {
-    -moz-appearance: textfield;
   }
 </style>

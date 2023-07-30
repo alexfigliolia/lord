@@ -8,7 +8,7 @@
   export let loading: boolean = false;
   export let complete: boolean = false;
   export let stateful: boolean = false;
-  export let onSubmit: (e: Event) => void;
+  export let onSubmit: (e: Event) => void = () => {};
 </script>
 
 <button class="form-action" class:loading class:complete class:error on:click={onSubmit}>
@@ -36,6 +36,7 @@
     margin: 0;
     padding: 0;
     height: 50px;
+    user-select: none;
     width: 100%;
     margin: 20px auto;
     color: #fff;

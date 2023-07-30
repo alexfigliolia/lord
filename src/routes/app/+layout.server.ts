@@ -18,7 +18,6 @@ export const load = verifyCredentials<OrganizationsPayload>({
     });
     const results = await organization.send(request.fetch);
     const data = (await results.json()) as OrganizationsPayload;
-    console.log(JSON.stringify(data, null, 2));
     return data;
   },
 });

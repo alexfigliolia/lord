@@ -2,11 +2,9 @@
   import { GraphQLRequest } from "$lib/GraphQLRequest";
   import AddInput from "$lib/components/forms/+AddInput.svelte";
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
-  import Notification from "$lib/components/notifications/+Notification.svelte";
-  import Success from "$lib/components/notifications/+Success.svelte";
   import { createPropertyMutation } from "$lib/graphql/properties.gql";
   import { NotificationState } from "$lib/state/Notifications";
-  import { organization } from "$lib/state/Organization";
+  import { OrganizationState, organization } from "$lib/state/Organization";
   import { TaskQueue } from "@figliolia/task-queue";
 
   /* Loading States */
@@ -14,26 +12,17 @@
   let loading = false;
   let complete = false;
 
+  /* Inputs  */
+  let propertyName = "";
+  let propertyDescription = "";
+  let propertyAddress1 = "";
+  let propertyAddress2 = "";
+  let city = "";
+  let state = "";
+  let zipCode = "";
+
   class UIController {
     static Queue = new TaskQueue();
-
-    /* Inputs  */
-    static propertyName = "";
-    static propertyDescription = "";
-    static propertyAddress1 = "";
-    static propertyAddress2 = "";
-    static city = "";
-    static state = "";
-    static zipCode = "";
-
-    static onChange = (e: Event) => {
-      if (e.target) {
-        // @ts-ignore
-        const { name, value } = e.target;
-        // @ts-ignore
-        this[name] = value;
-      }
-    };
 
     static baseValidator = (value: string) => {
       if (!value.length) {
@@ -42,108 +31,110 @@
       return value.length > 2;
     };
 
-    static onSubmit = (e: Event) => {
-      // loading = true;
+    static onSubmit = async (e: Event) => {
       e.preventDefault();
-      // const request = new GraphQLRequest({
-      //   query: createPropertyMutation,
-      //   variables: {
-      //     name: this.propertyName,
-      //     description: this.propertyDescription,
-      //     address_1: this.propertyAddress1,
-      //     address_2: this.propertyAddress2,
-      //     city: this.city,
-      //     state: this.state,
-      //     zip_code: this.zipCode,
-      //     organization_id: $organization.id,
-      //   },
-      // });
-      // const response = await request.send();
-      // const result = await response.json();
-      // console.log(JSON.stringify(result, null, 2));
-      // if (result?.errors?.length) {
-      //   error = true;
-      // } else {
-      //   complete = true;
-      // }
-      // this.Queue.deferTask(() => {
-      //   error = false;
-      //   loading = false;
-      //   complete = false;
-      // }, 2000);
+      // TODO - validations
+      loading = true;
+      const request = new GraphQLRequest({
+        query: createPropertyMutation,
+        variables: {
+          name: propertyName,
+          description: propertyDescription,
+          address_1: propertyAddress1,
+          address_2: propertyAddress2,
+          city: city,
+          state: state,
+          zip_code: zipCode,
+          organization_id: $organization.id,
+        },
+      });
+      const response = await request.send();
+      const result = await response.json();
+      console.log(JSON.stringify(result, null, 2));
+      if (result?.errors?.length) {
+        error = true;
+      } else {
+        complete = true;
+        // @ts-ignore
+        e.target?.reset();
+        this.reset();
+        OrganizationState.appendProperty(result.data.createProperty);
+      }
+      this.Queue.deferTask(() => {
+        error = false;
+        loading = false;
+        complete = false;
+      }, 2000);
       NotificationState.push({
         type: "success",
         message: `Your property has been created! You can register units and leases on properties page`,
       });
     };
+
+    public static reset() {
+      propertyName = "";
+      propertyDescription = "";
+      propertyAddress1 = "";
+      propertyAddress2 = "";
+      city = "";
+      state = "";
+      zipCode = "";
+    }
   }
 </script>
 
 <h2>Add a Property</h2>
-<form>
+<form on:submit={UIController.onSubmit}>
   <AddInput
-    type="text"
     name="propertyName"
     placeholder="property name"
-    onChange={UIController.onChange}
+    bind:value={propertyName}
     validator={UIController.baseValidator}
   />
   <AddInput
-    type="text"
     name="propertyDescription"
     placeholder="Description (optional)"
-    onChange={UIController.onChange}
     validator={UIController.baseValidator}
+    bind:value={propertyDescription}
   />
   <h3>Address</h3>
   <AddInput
-    type="text"
     name="propertyAddress1"
     placeholder="address line 1"
-    onChange={UIController.onChange}
+    bind:value={propertyAddress1}
     validator={UIController.baseValidator}
   />
   <AddInput
-    type="text"
     name="propertyAddress2"
     placeholder="address line 2"
-    onChange={UIController.onChange}
+    bind:value={propertyAddress2}
     validator={UIController.baseValidator}
   />
   <AddInput
-    type="text"
     name="city"
     placeholder="city"
-    onChange={UIController.onChange}
+    bind:value={city}
     validator={UIController.baseValidator}
   />
   <AddInput
-    type="text"
     name="state"
     placeholder="state"
-    onChange={UIController.onChange}
+    bind:value={state}
     validator={UIController.baseValidator}
   />
   <AddInput
-    type="number"
     name="zipCode"
     placeholder="zip code"
-    onChange={UIController.onChange}
+    bind:value={zipCode}
     validator={UIController.baseValidator}
   />
   <div class="action">
-    <FormActionButton
-      stateful
-      {loading}
-      {complete}
-      {error}
-      onSubmit={UIController.onSubmit}
-      text="Create"
-    />
+    <FormActionButton stateful {error} {loading} {complete} text="Create" />
   </div>
 </form>
 
 <style lang="scss">
+  @use "$lib/variables";
   h2 {
     font-size: 1.75em;
     color: rgb(140, 140, 140);
@@ -152,7 +143,8 @@
   form {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
     h3 {
       font-size: 1.5em;
       color: rgb(140, 140, 140);
@@ -160,6 +152,9 @@
     }
   }
   .action {
+    width: 100%;
     margin-top: 20px;
+    align-self: center;
+    @include variables.center;
   }
 </style>
