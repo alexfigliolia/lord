@@ -60,13 +60,15 @@
   @use "$lib/variables.scss";
   .mobile-menu {
     position: fixed;
+    pointer-events: none;
+    visibility: hidden;
     top: variables.$headerHeightSmall;
     left: 0;
     height: calc(100% - variables.$headerHeightSmall);
     width: 100%;
-    z-index: 999;
+    z-index: 9998;
     transform: translateY(-120%);
-    transition-duration: 0.5s;
+    transition: visibility 0s 0.5s, transform 0.5s 0s;
     @media #{variables.$mq-670} {
       top: variables.$headerHeightLarge;
       height: calc(100% - variables.$headerHeightLarge);
@@ -95,7 +97,10 @@
       }
     }
     &.open {
+      pointer-events: auto;
+      visibility: visible;
       transform: translateY(0%);
+      transition: visibility 0s 0s, transform 0.5s 0s;
     }
   }
 </style>

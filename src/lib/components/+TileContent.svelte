@@ -1,4 +1,8 @@
-<div class="content">
+<script lang="ts">
+  export let margin: number = 0;
+</script>
+
+<div class="content" style="margin-top: {margin}px;">
   <div>
     <slot />
   </div>

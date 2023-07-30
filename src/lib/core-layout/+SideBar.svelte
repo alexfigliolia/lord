@@ -6,11 +6,13 @@
   import Chart from "$lib/icons/+Chart.svelte";
   import Money from "$lib/icons/+Money.svelte";
   import Logout from "./+Logout.svelte";
-  import { visible } from "$lib/state/Add";
+  import { addModalOpen } from "$lib/state/Add";
 
-  const openAdd = () => {
-    visible.set(true);
-  };
+  class UIController {
+    public static openAdd = () => {
+      addModalOpen.set(true);
+    };
+  }
 </script>
 
 <nav>
@@ -18,7 +20,7 @@
     <div class="logo">
       <Logo />
     </div>
-    <button class="add" on:click={openAdd}>ADD +</button>
+    <button class="add" on:click={UIController.openAdd}>ADD +</button>
     <div class="links">
       <Link label="Overview" href="/app" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
         <Chart color={currentColor} />

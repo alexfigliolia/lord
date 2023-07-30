@@ -1,11 +1,14 @@
 <script lang="ts">
-  export let legend: string;
   export let value: string;
+  export let legend: string;
+  export let onChange: (e: Event) => void;
   export let inputs: { name: string; label: string }[];
 </script>
 
 <fieldset class="radio-group">
-  <legend>{legend}</legend>
+  {#if !!legend}
+    <legend>{legend}</legend>
+  {/if}
   {#each inputs as input}
     <div class="container">
       <div class="radio" class:selected={value === input.name}>
@@ -15,6 +18,7 @@
           name={input.name}
           value={input.name}
           checked={value === input.name}
+          on:change={onChange}
         />
         <div class="overlay" />
       </div>
@@ -29,6 +33,7 @@
     width: 100%;
     border: none;
     outline: none;
+    padding: 0;
     & > legend {
       font-weight: 500;
       color: rgb(77, 77, 77);

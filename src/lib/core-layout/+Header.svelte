@@ -18,7 +18,7 @@
     left: 0;
     height: variables.$headerHeightSmall;
     width: 100%;
-    z-index: 1000;
+    z-index: 9999;
     background-color: #fff;
     box-shadow: 0px 2.5px 5px rgba(#000, 0.2);
     @media #{variables.$mq-670} {
