@@ -5,6 +5,7 @@
   import { createPropertyMutation } from "$lib/graphql/properties.gql";
   import { NotificationState } from "$lib/state/Notifications";
   import { OrganizationState, organization } from "$lib/state/Organization";
+  import type { Property, CreatePropertyPayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
 
   /* Loading States */
@@ -35,6 +36,22 @@
       e.preventDefault();
       // TODO - validations
       loading = true;
+      const result = await this.createProperty();
+      if (result?.errors?.length) {
+        error = true;
+      } else {
+        // @ts-ignore
+        e.target?.reset();
+        this.onSuccess(result.data.createProperty);
+      }
+      this.Queue.deferTask(() => {
+        error = false;
+        loading = false;
+        complete = false;
+      }, 2000);
+    };
+
+    private static async createProperty(): Promise<CreatePropertyPayload> {
       const request = new GraphQLRequest({
         query: createPropertyMutation,
         variables: {
@@ -49,27 +66,18 @@
         },
       });
       const response = await request.send();
-      const result = await response.json();
-      console.log(JSON.stringify(result, null, 2));
-      if (result?.errors?.length) {
-        error = true;
-      } else {
-        complete = true;
-        // @ts-ignore
-        e.target?.reset();
-        this.reset();
-        OrganizationState.appendProperty(result.data.createProperty);
-      }
-      this.Queue.deferTask(() => {
-        error = false;
-        loading = false;
-        complete = false;
-      }, 2000);
+      return response.json();
+    }
+
+    private static onSuccess(property: Property) {
+      complete = true;
+      this.reset();
+      OrganizationState.appendProperty(property);
       NotificationState.push({
         type: "success",
         message: `Your property has been created! You can register units and leases on properties page`,
       });
-    };
+    }
 
     public static reset() {
       propertyName = "";
