@@ -28,3 +28,8 @@ export interface CreateIssuePayload {
 }
 
 export type Unit = Omit<GQLUnit, "__typename">
+
+export interface AssignedUser {
+	id: number;
+	name: string
+}

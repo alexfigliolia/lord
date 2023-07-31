@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Issues from "$lib/overview/+Issues.svelte";
+  import Issues from "$lib/overview/Issues/+Issues.svelte";
   import RevenueGraph from "$lib/overview/+RevenueGraph.svelte";
   import Occupancy from "$lib/overview/+Occupancy.svelte";
   import Label from "$lib/overview/+Label.svelte";

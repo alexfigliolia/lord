@@ -6,12 +6,14 @@
 
 <div class="tile-list-item" style={`margin-bottom: ${margin}px`}>
   <TileContent>
-    <slot />
+    <slot name="content" />
   </TileContent>
+  <slot name="actions" />
 </div>
 
 <style lang="scss">
   .tile-list-item {
     width: 100%;
+    position: relative;
   }
 </style>

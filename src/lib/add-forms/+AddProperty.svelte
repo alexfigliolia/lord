@@ -4,7 +4,8 @@
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
   import { createPropertyMutation } from "$lib/graphql/properties.gql";
   import { NotificationState } from "$lib/state/Notifications";
-  import { OrganizationState, organization } from "$lib/state/Organization";
+  import { organization } from "$lib/state/Organization";
+  import { OrganizationState } from "$lib/state/OrgManager";
   import type { Property, CreatePropertyPayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
   import { Validators } from "./Validators";

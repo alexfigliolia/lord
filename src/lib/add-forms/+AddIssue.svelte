@@ -2,9 +2,9 @@
   import { GraphQLRequest } from "$lib/GraphQLRequest";
   import AddInput from "$lib/components/forms/+AddInput.svelte";
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
-  import { createPropertyMutation } from "$lib/graphql/properties.gql";
   import { NotificationState } from "$lib/state/Notifications";
-  import { OrganizationState, organization } from "$lib/state/Organization";
+  import { organization } from "$lib/state/Organization";
+  import { OrganizationState } from "$lib/state/OrgManager";
   import { properties } from "$lib/state/Properties";
   import { currentUser, users } from "$lib/state/User";
   import type { Issue, CreateIssuePayload } from "$lib/types/derived";

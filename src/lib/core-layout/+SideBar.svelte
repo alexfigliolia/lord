@@ -50,7 +50,7 @@
         activeColor="#9e91fc"
         let:currentColor
       >
-        <Account color={currentColor} />
+        <Account stroke={currentColor} />
       </Link>
       <Logout backgroundColor="#9e91fc" textColor="#fff" margin="10px 0" />
     </div>

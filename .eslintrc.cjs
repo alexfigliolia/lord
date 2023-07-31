@@ -7,7 +7,7 @@ module.exports = {
     "prettier",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
-  ignorePatterns: ["svelte.config.js", ".eslintrc.cjs", "__Stealth__"],
+  ignorePatterns: ["svelte.config.js", ".eslintrc.cjs", "__Stealth__", "node_modules", ".svelte-kit", "build"],
   parser: "@typescript-eslint/parser",
   plugins: ["simple-import-sort", "@typescript-eslint", "prettier"],
   parserOptions: {

@@ -45,6 +45,10 @@
     min-width: 90%;
     margin: auto;
     margin-bottom: 70px;
+    @media #{variables.$mq-1350} {
+      width: 80%;
+      min-width: 80%;
+    }
     h1 {
       font-size: 2.5em;
       text-shadow: 0px 1px 1px rgba(#000, 0.1);

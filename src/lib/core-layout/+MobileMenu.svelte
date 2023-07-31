@@ -6,6 +6,7 @@
   import Link from "./+Link.svelte";
   import Waves from "./+Waves.svelte";
   import Logout from "./+Logout.svelte";
+  import Account from "$lib/icons/+Account.svelte";
 
   const onClick = () => {
     menuOpen.update(() => false);
@@ -48,7 +49,7 @@
           {onClick}
           let:currentColor
         >
-          <Money color={currentColor} />
+          <Account stroke={currentColor} fill="transparent" />
         </Link>
         <Logout {onClick} />
       </div>

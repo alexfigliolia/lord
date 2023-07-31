@@ -9,6 +9,7 @@
 </div>
 
 <style lang="scss">
+  @use "$lib/variables.scss";
   .content {
     box-sizing: border-box;
     width: 100%;
@@ -18,6 +19,12 @@
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0px 5px 15px rgba(#000, 0.2);
+    @media #{variables.$mq-1200} {
+      padding: 1.5vw;
+    }
+    @media #{variables.$mq-1350} {
+      padding: 1.15vw;
+    }
     & > div {
       width: 100%;
       height: 100%;

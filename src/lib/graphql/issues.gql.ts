@@ -8,8 +8,13 @@ export const issueFragment = gql`
 		author
 		title
 		unit_id,
+    property_id
 		description
 		assigned_id
+    assigned {
+      id
+      name
+    }
 		created_at
 	}
 `;
@@ -48,6 +53,22 @@ export const createIssueMutation = gql`
       assigned {
         name
       }
+    }
+  }
+`;
+
+export const setIssueStatusMutation = gql`
+  mutation SetStatus($id: Int!, $status: IssueStatus!) {
+    setIssueStatus(id: $id, status: $status) {
+      id
+    }
+  }
+`;
+
+export const assignIssueMutation = gql`
+  mutation SetStatus($issue_id: Int!, $user_id: Int) {
+    setIssueAssignment(issue_id: $issue_id, user_id: $user_id) {
+      id
     }
   }
 `;

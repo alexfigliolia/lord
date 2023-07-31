@@ -67,12 +67,14 @@
         margin-left: 10px;
         box-shadow: 0px 2.5px 5px rgba(#000, 0.2);
         &.positive {
-          background-color: rgb(143, 227, 143);
-          color: rgb(20, 166, 69);
+          background: linear-gradient(to bottom, rgb(143, 227, 143), rgb(105, 225, 105));
+          color: rgb(2, 148, 51);
+          box-shadow: 0px 1.5px 4px rgb(105, 225, 105);
         }
         &.negative {
-          background-color: rgb(255, 172, 172);
-          color: rgb(224, 63, 63);
+          background: linear-gradient(to bottom, rgb(255, 172, 172), rgb(254, 127, 127));
+          color: rgb(177, 34, 34);
+          box-shadow: 0px 1.5px 4px rgb(254, 127, 127);
         }
       }
     }

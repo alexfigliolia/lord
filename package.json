@@ -7,7 +7,7 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "tsc --noemit && eslint . --fix",
+    "lint": "tsc --noemit && eslint --fix './**/*.{js,ts,svelte}' && npx svelte-check --threshold error",
     "format": "prettier --plugin-search-dir . --write .",
     "generate-types": "graphql-codegen --config graphql.config.yml"
   },
@@ -48,7 +48,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@figliolia/enhanced-stores": "^1.0.0",
+    "@figliolia/enhanced-stores": "^1.0.1",
     "@figliolia/event-emitter": "^1.1.1",
     "@figliolia/task-queue": "^1.0.0",
     "d3": "^7.8.5",

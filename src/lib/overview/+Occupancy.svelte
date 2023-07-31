@@ -65,6 +65,9 @@
     position: relative;
     padding: 20px;
     box-sizing: border-box;
+    @media #{variables.$mq-1350} {
+      padding: 0;
+    }
     & > .circles {
       position: relative;
       width: 100%;

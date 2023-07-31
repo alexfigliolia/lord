@@ -40,16 +40,14 @@
 <style lang="scss">
   @use "$lib/variables.scss";
   .navigable-list {
-    max-height: 400px;
+    max-height: 200px;
     width: 100%;
     min-height: 40px;
     background: #fff;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     & > div {
-      max-height: 400px;
       width: 100%;
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
-      min-height: 40px;
       & > button {
         outline: none;
         border: none;
