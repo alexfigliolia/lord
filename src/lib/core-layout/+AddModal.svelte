@@ -1,4 +1,5 @@
 <script lang="ts">
+  import AddIssue from "$lib/add-forms/+AddIssue.svelte";
   import AddProperty from "$lib/add-forms/+AddProperty.svelte";
   import Modal from "$lib/components/+Modal.svelte";
   import Tabs from "$lib/components/+Tabs.svelte";
@@ -21,11 +22,16 @@
     <Tabs
       activeIndex={$tab}
       onClick={UIController.onClickTab}
-      tabs={["Property", "Employee", "Resident"]}
+      tabs={["Property", "Employee", "Issue"]}
     >
       {#if $tab === 0}
         <div class="tab-content">
           <AddProperty />
+        </div>
+      {/if}
+      {#if $tab === 2}
+        <div class="tab-content">
+          <AddIssue />
         </div>
       {/if}
     </Tabs>

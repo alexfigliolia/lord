@@ -97,6 +97,7 @@
       opacity: 0;
       transition: transform 0.3s 0s, opacity 0.3s 0s;
       position: relative;
+      -webkit-overflow-scrolling: touch;
       @media #{variables.$mq-670} {
         height: 80vh;
         width: 80%;

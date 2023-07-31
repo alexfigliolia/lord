@@ -2,9 +2,10 @@ import { redirect } from "@sveltejs/kit";
 import { verifyCredentials } from "$lib/authentication/verifyCredentials";
 import { GraphQLRequest } from "$lib/GraphQLRequest";
 import { organizationsByOwner } from "$lib/graphql/organizations.gql";
-import type { OrganizationsPayload } from "$lib/types/derived";
+import type { Organization, OrganizationsPayload } from "$lib/types/derived";
+import type { User } from "$lib/authentication/types";
 
-export const load = verifyCredentials<OrganizationsPayload>({
+export const load = verifyCredentials<{ organizations: Organization[]; user: User }>({
   onError: () => {
     throw redirect(302, "/login");
   },
@@ -13,11 +14,10 @@ export const load = verifyCredentials<OrganizationsPayload>({
       query: organizationsByOwner,
       variables: {
         owner_id: user.id,
-        follow_all: true,
       },
     });
     const results = await organization.send(request.fetch);
     const data = (await results.json()) as OrganizationsPayload;
-    return data;
+    return { user, organizations: data?.data?.organizations || [] };
   },
 });

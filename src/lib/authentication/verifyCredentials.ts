@@ -1,7 +1,6 @@
 import type { RequestEvent } from "@sveltejs/kit";
 import type { IVerifyCredentials, User } from "./types";
 import { GraphQLRequest } from "$lib/GraphQLRequest";
-import { CurrentUser } from "$lib/state/User";
 import { verifyQuery } from "$lib/graphql/authentication.gql";
 
 export const verifyCredentials = <T = User>({
@@ -21,7 +20,6 @@ export const verifyCredentials = <T = User>({
     if (body.data.verifyToken === null || body?.errors?.length) {
       return onError();
     }
-    CurrentUser.set(body.data.verifyToken);
     return onSuccess(body.data.verifyToken.user, params);
   };
 };

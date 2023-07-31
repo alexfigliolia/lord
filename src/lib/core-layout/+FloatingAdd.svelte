@@ -30,6 +30,10 @@
     cursor: pointer;
     background: linear-gradient(to bottom, variables.$core, variables.$core2);
     color: #fff;
+    transition-duration: 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
     @media #{variables.$mq-670} {
       height: 90px;
       width: 90px;

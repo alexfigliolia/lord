@@ -1,22 +1,22 @@
 <script lang="ts">
-  import { Factory } from "$lib/state/Factory";
   import { TaskQueue, type CancelFN } from "@figliolia/task-queue";
   import { onMount } from "svelte";
+  import { writable } from "svelte/store";
 
   export let active: boolean;
   export let style: string = "";
-  export let delay: number = 5000;
+  export let delay: number = 500;
   export let duration: number = 1.5;
   export let value: number | string;
   export let fontSize: string = "25px";
   export let height: string = fontSize;
 
-  const after = Factory.createWritable<
+  const after = writable<
     {
       value: string;
       children: (number | string)[];
     }[]
-  >("Counting Animation", []);
+  >([]);
 
   export const reset = () => {
     after.set([]);

@@ -1,7 +1,7 @@
 <script lang="ts">
   import Check from "$lib/icons/+Check.svelte";
   import X from "$lib/icons/+X.svelte";
-  import { Factory } from "$lib/state/Factory";
+  import { derived, writable } from "svelte/store";
 
   export let name: string;
   export let type: string;
@@ -10,8 +10,8 @@
   export let onChange: (e: Event) => void;
   export let validator: (value: string) => null | boolean;
 
-  const value = Factory.createWritable(`${name} =  Value`, "");
-  const valid = Factory.createDerived(`${name} =  Valid`, value, v => validator(v));
+  const value = writable("");
+  const valid = derived(value, v => validator(v));
 
   const internal = (e: Event) => {
     if (e.target) {

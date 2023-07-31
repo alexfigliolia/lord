@@ -7,6 +7,7 @@
   import { OrganizationState, organization } from "$lib/state/Organization";
   import type { Property, CreatePropertyPayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
+  import { Validators } from "./Validators";
 
   /* Loading States */
   let error = false;
@@ -25,18 +26,15 @@
   class UIController {
     static Queue = new TaskQueue();
 
-    static baseValidator = (value: string) => {
-      if (!value.length) {
-        return null;
-      }
-      return value.length > 2;
-    };
-
     static onSubmit = async (e: Event) => {
       e.preventDefault();
-      // TODO - validations
       loading = true;
       const result = await this.createProperty();
+      this.Queue.deferTask(() => {
+        error = false;
+        loading = false;
+        complete = false;
+      }, 2000);
       if (result?.errors?.length) {
         error = true;
       } else {
@@ -44,11 +42,6 @@
         e.target?.reset();
         this.onSuccess(result.data.createProperty);
       }
-      this.Queue.deferTask(() => {
-        error = false;
-        loading = false;
-        complete = false;
-      }, 2000);
     };
 
     private static async createProperty(): Promise<CreatePropertyPayload> {
@@ -97,12 +90,11 @@
     name="propertyName"
     placeholder="property name"
     bind:value={propertyName}
-    validator={UIController.baseValidator}
+    validator={Validators.baseValidator}
   />
   <AddInput
     name="propertyDescription"
     placeholder="Description (optional)"
-    validator={UIController.baseValidator}
     bind:value={propertyDescription}
   />
   <h3>Address</h3>
@@ -110,31 +102,26 @@
     name="propertyAddress1"
     placeholder="address line 1"
     bind:value={propertyAddress1}
-    validator={UIController.baseValidator}
+    validator={Validators.validateAddress}
   />
   <AddInput
     name="propertyAddress2"
     placeholder="address line 2"
     bind:value={propertyAddress2}
-    validator={UIController.baseValidator}
+    validator={Validators.validateAddress}
   />
-  <AddInput
-    name="city"
-    placeholder="city"
-    bind:value={city}
-    validator={UIController.baseValidator}
-  />
+  <AddInput name="city" placeholder="city" bind:value={city} validator={Validators.baseValidator} />
   <AddInput
     name="state"
     placeholder="state"
     bind:value={state}
-    validator={UIController.baseValidator}
+    validator={Validators.validateState}
   />
   <AddInput
     name="zipCode"
     placeholder="zip code"
     bind:value={zipCode}
-    validator={UIController.baseValidator}
+    validator={Validators.validateZipCode}
   />
   <div class="action">
     <FormActionButton stateful {error} {loading} {complete} text="Create" />
@@ -154,6 +141,7 @@
     justify-content: center;
     align-items: center;
     h3 {
+      width: 100%;
       font-size: 1.5em;
       color: rgb(140, 140, 140);
       font-weight: 300;

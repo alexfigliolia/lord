@@ -1,9 +1,9 @@
 import { GraphQLRequest } from "$lib/GraphQLRequest";
 import { LoginValidators } from "./LoginValidators";
 import { loginQuery } from "$lib/graphql/authentication.gql";
-import { Factory } from "$lib/state/Factory";
+import { writable } from "svelte/store";
 
-export const error = Factory.createWritable("Login Error", "");
+export const error = writable("");
 
 export class LoginController {
   email = "";

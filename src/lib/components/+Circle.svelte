@@ -1,7 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { Factory } from "$lib/state/Factory";
   import { onMount } from "svelte";
+  import { writable } from "svelte/store";
 
   export let animate: number = 0;
   export let progress: number = 1;
@@ -13,7 +13,7 @@
   export let containerStyle: string = "";
 
   let Circle: SVGCircleElement;
-  const totalLength = Factory.createWritable("Circle Animation", startProgress);
+  const totalLength = writable(startProgress);
 
   onMount(() => {
     if (browser) {

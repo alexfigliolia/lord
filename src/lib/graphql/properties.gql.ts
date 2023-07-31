@@ -1,5 +1,19 @@
 import { gql } from "graphql-request";
 
+export const propertiesFragment = gql`
+  properties {
+    id
+    name
+    description
+    address_1
+    address_2
+    city
+    state
+    zip_code
+    images
+  }
+`;
+
 export const propertiesByOrg = gql`
 	query PropertiesByOrg($orgID: !Number) {
 		property(organization_id: $orgID) {
@@ -46,7 +60,6 @@ export const createPropertyMutation = gql`
       city
       state
       zip_code
-      units
     }
   }
 `;

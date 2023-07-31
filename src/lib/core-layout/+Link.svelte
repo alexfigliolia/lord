@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { Factory } from "$lib/state/Factory";
+  import { derived } from "svelte/store";
   export let href: string;
   export let color: string;
   export let label: string;
@@ -8,10 +8,8 @@
   export let activeColor: string = color;
   export let onClick: (e: Event) => void = () => {};
 
-  const active = Factory.createDerived("Link - Active State", page, v => v.route.id === href);
-  const currentColor = Factory.createDerived("Link - Current Color", active, v =>
-    v ? activeColor : color,
-  );
+  const active = derived(page, v => v.route.id === href);
+  const currentColor = derived(active, v => (v ? activeColor : color));
 </script>
 
 <div class="link" class:active={$active} style={`margin: ${margin}`}>

@@ -1,4 +1,4 @@
-import { Factory } from "./Factory";
+import { writable } from "svelte/store";
 
-export const tab = Factory.createWritable("Add Modal Tabs", 0);
-export const addModalOpen = Factory.createWritable("Add Modal Open", false);
+export const tab = writable(0);
+export const addModalOpen = writable(false);

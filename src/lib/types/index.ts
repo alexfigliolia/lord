@@ -15,10 +15,36 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export enum IssueStatus {
+  Complete = 'complete',
+  Inprogress = 'inprogress',
+  Open = 'open'
+}
+
+export enum IssueType {
+  Complaint = 'complaint',
+  Consultation = 'consultation',
+  Fix = 'fix'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createIssue: Issue;
   createProperty?: Maybe<Property>;
   onboard?: Maybe<Authentication>;
+};
+
+
+export type MutationCreateIssueArgs = {
+  assigned_id?: InputMaybe<Scalars['Int']['input']>;
+  author: Scalars['String']['input'];
+  description: Scalars['String']['input'];
+  organization_id: Scalars['Int']['input'];
+  property_id: Scalars['Int']['input'];
+  status?: InputMaybe<IssueStatus>;
+  title: Scalars['String']['input'];
+  type: IssueType;
+  unit_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -43,14 +69,18 @@ export type MutationOnboardArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  issue?: Maybe<Issue>;
-  issues?: Maybe<Array<Maybe<Issue>>>;
+  issue: Issue;
+  issueAttachment: IssueAttachment;
+  issueAttachments: Array<IssueAttachment>;
+  issues: Array<Issue>;
   lease?: Maybe<Lease>;
   leases?: Maybe<Array<Maybe<Lease>>>;
   login?: Maybe<Authentication>;
   logout?: Maybe<Scalars['Boolean']['output']>;
   organization?: Maybe<Organization>;
   organizations?: Maybe<Array<Maybe<Organization>>>;
+  payment?: Maybe<Payments>;
+  payments: Array<Payments>;
   properties?: Maybe<Array<Maybe<Property>>>;
   property?: Maybe<Property>;
   user?: Maybe<User>;
@@ -61,6 +91,16 @@ export type Query = {
 
 export type QueryIssueArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryIssueAttachmentArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryIssueAttachmentsArgs = {
+  issue_id: Scalars['Int']['input'];
 };
 
 
@@ -89,14 +129,22 @@ export type QueryLoginArgs = {
 
 
 export type QueryOrganizationArgs = {
-  follow_all?: InputMaybe<Scalars['Boolean']['input']>;
   id: Scalars['Int']['input'];
 };
 
 
 export type QueryOrganizationsArgs = {
-  follow_all?: InputMaybe<Scalars['Boolean']['input']>;
   owner_id: Scalars['Int']['input'];
+};
+
+
+export type QueryPaymentArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryPaymentsArgs = {
+  lease_id: Scalars['Int']['input'];
 };
 
 
@@ -126,16 +174,27 @@ export type Authentication = {
 
 export type Issue = {
   __typename?: 'issue';
+  assigned?: Maybe<User>;
   assigned_id?: Maybe<Scalars['Int']['output']>;
+  attachments: Array<IssueAttachment>;
   author: Scalars['String']['output'];
   created_at: Scalars['String']['output'];
   description: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   organization_id: Scalars['Int']['output'];
-  status: Scalars['String']['output'];
+  property_id: Scalars['Int']['output'];
+  status: IssueStatus;
   title: Scalars['String']['output'];
-  type: Scalars['String']['output'];
+  type: IssueType;
   unit_id?: Maybe<Scalars['Int']['output']>;
+};
+
+export type IssueAttachment = {
+  __typename?: 'issueAttachment';
+  created_at: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  image_link: Scalars['String']['output'];
+  issue_id: Scalars['Int']['output'];
 };
 
 export type Lease = {
@@ -144,8 +203,10 @@ export type Lease = {
   created_at: Scalars['String']['output'];
   end_date: Scalars['String']['output'];
   id: Scalars['Int']['output'];
+  payments: Array<Payments>;
   start_date: Scalars['String']['output'];
   unit_id: Scalars['Int']['output'];
+  users: Array<User>;
 };
 
 export type Organization = {
@@ -156,6 +217,14 @@ export type Organization = {
   owner_id: Scalars['Int']['output'];
   properties: Array<Property>;
   users: Array<User>;
+};
+
+export type Payments = {
+  __typename?: 'payments';
+  amount: Scalars['Float']['output'];
+  created_at: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  lease_id: Scalars['Int']['output'];
 };
 
 export type Property = {
@@ -195,11 +264,10 @@ export type User = {
 
 export type OrganizationsByOwnerQueryVariables = Exact<{
   owner_id: Scalars['Int']['input'];
-  follow_all?: InputMaybe<Scalars['Boolean']['input']>;
 }>;
 
 
-export type OrganizationsByOwnerQuery = { __typename?: 'Query', organizations?: Array<{ __typename?: 'organization', id: number, name: string, users: Array<{ __typename?: 'user', id: number, name: string, role: string, email: string }>, issues: Array<{ __typename?: 'issue', id: number, status: string, type: string, author: string, title: string, description: string, assigned_id?: number | null, created_at: string }>, properties: Array<{ __typename?: 'property', id: number, name: string, description: string, address_1: string, address_2: string, city: string, state: string, zip_code: string, images: Array<string> }> } | null> | null };
+export type OrganizationsByOwnerQuery = { __typename?: 'Query', organizations?: Array<{ __typename?: 'organization', id: number, name: string } | null> | null };
 
 
-export const OrganizationsByOwnerDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "OrganizationsByOwner" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "owner_id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "follow_all" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Boolean" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "organizations" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "owner_id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "owner_id" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "follow_all" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "follow_all" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }, { "kind": "Field", "name": { "kind": "Name", "value": "users" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }, { "kind": "Field", "name": { "kind": "Name", "value": "role" } }, { "kind": "Field", "name": { "kind": "Name", "value": "email" } }] } }, { "kind": "Field", "name": { "kind": "Name", "value": "issues" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "status" } }, { "kind": "Field", "name": { "kind": "Name", "value": "type" } }, { "kind": "Field", "name": { "kind": "Name", "value": "author" } }, { "kind": "Field", "name": { "kind": "Name", "value": "title" } }, { "kind": "Field", "name": { "kind": "Name", "value": "description" } }, { "kind": "Field", "name": { "kind": "Name", "value": "assigned_id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "created_at" } }] } }, { "kind": "Field", "name": { "kind": "Name", "value": "properties" }, "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }, { "kind": "Field", "name": { "kind": "Name", "value": "description" } }, { "kind": "Field", "name": { "kind": "Name", "value": "address_1" } }, { "kind": "Field", "name": { "kind": "Name", "value": "address_2" } }, { "kind": "Field", "name": { "kind": "Name", "value": "city" } }, { "kind": "Field", "name": { "kind": "Name", "value": "state" } }, { "kind": "Field", "name": { "kind": "Name", "value": "zip_code" } }, { "kind": "Field", "name": { "kind": "Name", "value": "images" } }] } }] } }] } }] } as unknown as DocumentNode<OrganizationsByOwnerQuery, OrganizationsByOwnerQueryVariables>;
+export const OrganizationsByOwnerDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "OrganizationsByOwner" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "owner_id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "organizations" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "owner_id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "owner_id" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }] } }] } }] } as unknown as DocumentNode<OrganizationsByOwnerQuery, OrganizationsByOwnerQueryVariables>;

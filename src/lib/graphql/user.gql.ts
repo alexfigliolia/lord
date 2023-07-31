@@ -8,3 +8,12 @@ export const publicUserFragment = gql`
 		email
 	}
 `;
+
+export const publicUsersFragment = gql`
+	users {
+		id
+		name
+		role
+		email
+	}
+`;

@@ -1,4 +1,4 @@
-import type { Organization, Property } from "$lib/types/derived";
+import type { Issue, Organization, Property } from "$lib/types/derived";
 import { get } from "svelte/store";
 import { Factory } from "./Factory";
 
@@ -17,6 +17,14 @@ export class OrganizationState {
     organizations.update(v => {
       const index = get(organizationIndex);
       v[index].properties.push(property);
+      return v;
+    });
+  }
+
+  static appendIssue(issue: Issue) {
+    organizations.update(v => {
+      const index = get(organizationIndex);
+      v[index].issues.push(issue);
       return v;
     });
   }
