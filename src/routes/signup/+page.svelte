@@ -2,12 +2,10 @@
   import { onMount } from "svelte";
   import LoginInput from "$lib/components/forms/+LoginInput.svelte";
   import { error } from "$lib/authentication/LoginController";
-  import { goto } from "$app/navigation";
-  import { SignUpController } from "./SignUpController";
-  import Onboarding from "$lib/templates/+Onboarding.svelte";
-  import { SignUpValidators } from "./SignUpValidators";
+  import { SignUpController } from "$lib/authentication/SignUpController";
+  import Onboarding from "$lib/views/onboarding/+Onboarding.svelte";
+  import { SignUpValidators } from "$lib/authentication/SignUpValidators";
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
-  import { TaskQueue } from "@figliolia/task-queue";
 
   const SignUp = new SignUpController();
 
@@ -16,7 +14,6 @@
   let buttonError = false;
 
   class UIController {
-    static Queue = new TaskQueue();
     static nextPage: () => void;
     static previousPage: () => void;
 
@@ -35,27 +32,28 @@
       loading = true;
       e.preventDefault();
       if (!SignUp.validateBusinessName()) {
-        buttonError = true;
-        this.resetButtonState();
-        return;
+        return this.buttonError();
       }
       this.resetError();
       const response = await SignUp.submit();
       if (response?.errors?.length) {
-        buttonError = true;
-        error.update(() => response.errors[0].message);
-        this.previousPage();
-        this.resetButtonState();
-      } else {
-        complete = true;
-        this.Queue.deferTask(() => {
-          void goto("/app");
-        }, 1000);
+        this.buttonError(response.errors[0].message);
+        return this.previousPage();
       }
+      complete = true;
+      SignUp.redirect();
     };
 
+    private static buttonError(message?: string) {
+      buttonError = true;
+      if (message) {
+        error.set(message);
+      }
+      this.resetButtonState();
+    }
+
     public static resetButtonState() {
-      this.Queue.deferTask(() => {
+      SignUp.Queue.deferTask(() => {
         loading = false;
         complete = false;
         buttonError = false;
@@ -70,7 +68,7 @@
   onMount(() => {
     return () => {
       UIController.resetError();
-      UIController.Queue.clearDeferredTasks();
+      SignUp.Queue.clearDeferredTasks();
     };
   });
 </script>

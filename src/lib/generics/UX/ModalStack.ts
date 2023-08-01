@@ -1,4 +1,4 @@
-import { EfficientStack } from "./EfficientStack";
+import { EfficientStack } from "../DataStructures/EfficientStack";
 
 export class ModalStack {
   public static stack = new EfficientStack<() => void>();

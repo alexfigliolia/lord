@@ -1,8 +1,7 @@
 <script lang="ts">
-  import Issues from "$lib/overview/Issues/+Issues.svelte";
-  import RevenueGraph from "$lib/overview/+RevenueGraph.svelte";
-  import Occupancy from "$lib/overview/+Occupancy.svelte";
-  import Label from "$lib/overview/+Label.svelte";
+  import Issues from "$lib/views/overview/Issues/+Issues.svelte";
+  import RevenueGraph from "$lib/views/overview/+RevenueGraph.svelte";
+  import Occupancy from "$lib/views/overview/+Occupancy.svelte";
   import FloatingAdd from "$lib/core-layout/+FloatingAdd.svelte";
 </script>
 
@@ -20,7 +19,6 @@
     </div>
   </div>
 </section>
-<Label />
 <FloatingAdd />
 
 <style lang="scss">

@@ -1,13 +1,16 @@
-import { GraphQLRequest } from "$lib/GraphQLRequest";
+import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
 import { LoginValidators } from "./LoginValidators";
 import { loginQuery } from "$lib/graphql/authentication.gql";
 import { writable } from "svelte/store";
+import { TaskQueue } from "@figliolia/task-queue";
+import { goto } from "$app/navigation";
 
 export const error = writable("");
 
 export class LoginController {
   email = "";
   password = "";
+  Queue = new TaskQueue();
   constructor() {
     this.onChange = this.onChange.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
@@ -53,5 +56,11 @@ export class LoginController {
     });
     const response = await request.send();
     return response.json();
+  }
+
+  public redirect() {
+    this.Queue.deferTask(() => {
+      void goto("/app");
+    }, 1000);
   }
 }

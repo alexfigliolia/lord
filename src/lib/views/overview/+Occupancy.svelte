@@ -1,10 +1,10 @@
 <script lang="ts">
   import { TaskQueue } from "@figliolia/task-queue";
-  import DisplayTile from "$lib/components/+DisplayTile.svelte";
+  import DisplayTile from "$lib/components/tiles/+DisplayTile.svelte";
   import { onMount } from "svelte";
-  import Circle from "$lib/components/+Circle.svelte";
+  import Circle from "$lib/components/data-viz/+Circle.svelte";
   import { browser } from "$app/environment";
-  import AnimatedNumber from "$lib/components/+AnimatedNumber.svelte";
+  import AnimatedNumber from "$lib/components/data-viz/+AnimatedNumber.svelte";
 
   const Queue = new TaskQueue();
   let speed = 0;

@@ -1,6 +1,6 @@
 import { redirect } from "@sveltejs/kit";
 import { verifyCredentials } from "$lib/authentication/verifyCredentials";
-import { GraphQLRequest } from "$lib/GraphQLRequest";
+import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
 import { organizationsByOwner } from "$lib/graphql/organizations.gql";
 import type { Organization, OrganizationsPayload } from "$lib/types/derived";
 import type { User } from "$lib/authentication/types";

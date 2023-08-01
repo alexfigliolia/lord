@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { GraphQLRequest } from "$lib/GraphQLRequest";
+  import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import DropDownList from "$lib/components/forms/+DropDownList.svelte";
   import type { ListItem } from "$lib/components/forms/types";
-  import { KeyboardAccessibility } from "$lib/generics/KeyboardAccessibility";
+  import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import { setIssueStatusMutation } from "$lib/graphql/issues.gql";
   import { OrganizationState } from "$lib/state/OrgManager";
   import { IssueStatus } from "$lib/types";

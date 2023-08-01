@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GraphQLRequest } from "$lib/GraphQLRequest";
+  import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import AddInput from "$lib/components/forms/+AddInput.svelte";
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
   import { createPropertyMutation } from "$lib/graphql/properties.gql";
@@ -57,7 +57,6 @@
       return (
         Validators.baseValidator(propertyName) &&
         Validators.validateAddress(propertyAddress1) &&
-        Validators.validateAddress(propertyAddress2) &&
         Validators.validateState(state.value as string) &&
         Validators.baseValidator(city) &&
         Validators.validateZipCode(zipCode)
@@ -73,7 +72,7 @@
           address_1: propertyAddress1,
           address_2: propertyAddress2,
           city: city,
-          state: state,
+          state: state.value,
           zip_code: zipCode,
           organization_id: $organization.id,
         },

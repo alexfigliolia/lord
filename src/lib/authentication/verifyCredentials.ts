@@ -1,6 +1,6 @@
 import type { RequestEvent } from "@sveltejs/kit";
 import type { IVerifyCredentials, User } from "./types";
-import { GraphQLRequest } from "$lib/GraphQLRequest";
+import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
 import { verifyQuery } from "$lib/graphql/authentication.gql";
 
 export const verifyCredentials = <T = User>({

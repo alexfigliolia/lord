@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { User } from "$lib/authentication/types";
   import DropDownList from "$lib/components/forms/+DropDownList.svelte";
-  import { KeyboardAccessibility } from "$lib/generics/KeyboardAccessibility";
+  import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import Account from "$lib/icons/+Account.svelte";
   import type { Maybe } from "$lib/types";
   import { users } from "$lib/state/User";
   import { onMount } from "svelte";
   import { derived } from "svelte/store";
-  import { GraphQLRequest } from "$lib/GraphQLRequest";
+  import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import type { ListItem } from "$lib/components/forms/types";
   import { assignIssueMutation } from "$lib/graphql/issues.gql";
   import { OrganizationState } from "$lib/state/OrgManager";

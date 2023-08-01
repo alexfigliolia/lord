@@ -1,9 +1,9 @@
 <script lang="ts">
-  import TileListItem from "$lib/components/+TileListItem.svelte";
+  import TileListItem from "$lib/components/tiles/+TileListItem.svelte";
   import Hammer from "$lib/icons/+Hammer.svelte";
   import ClipBoard from "$lib/icons/+ClipBoard.svelte";
   import People from "$lib/icons/+People.svelte";
-  import { Locale } from "$lib/generics/Locale";
+  import { Locale } from "$lib/generics/UX/Locale";
   import { IssueType } from "$lib/types";
   import type { Maybe, IssueStatus as Status, User } from "$lib/types";
   import IssueStatus from "./+IssueStatus.svelte";

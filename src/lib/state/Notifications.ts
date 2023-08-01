@@ -1,6 +1,6 @@
 import type { INotification } from "./types";
 import { TaskQueue } from "@figliolia/task-queue";
-import { EfficientStack } from "$lib/generics/EfficientStack";
+import { EfficientStack } from "$lib/generics/DataStructures/EfficientStack";
 import { Factory } from "./Factory";
 import { get } from "svelte/store";
 

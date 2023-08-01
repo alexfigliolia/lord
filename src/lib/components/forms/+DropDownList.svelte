@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ListItem } from "./types";
-  import type { KeyboardAccessibility } from "$lib/generics/KeyboardAccessibility";
+  import type { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
 
   export let value: ListItem;
   export let items: ListItem[];

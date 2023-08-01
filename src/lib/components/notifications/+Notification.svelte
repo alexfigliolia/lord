@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ModalStack } from "$lib/generics/ModalStack";
+  import { ModalStack } from "$lib/generics/UX/ModalStack";
   import X from "$lib/icons/+X.svelte";
   import { NotificationState } from "$lib/state/Notifications";
   import type { CancelFN } from "@figliolia/task-queue";

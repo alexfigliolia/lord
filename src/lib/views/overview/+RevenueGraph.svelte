@@ -1,6 +1,6 @@
 <script lang="ts">
-  import DisplayTile from "$lib/components/+DisplayTile.svelte";
-  import NumericStatus from "$lib/components/+NumericStatus.svelte";
+  import DisplayTile from "$lib/components/tiles/+DisplayTile.svelte";
+  import NumericStatus from "$lib/components/data-viz/+NumericStatus.svelte";
   import Axis from "$lib/graphing/+Axis.svelte";
   import Grid from "$lib/graphing/+Grid.svelte";
   import Path from "$lib/graphing/+Path.svelte";

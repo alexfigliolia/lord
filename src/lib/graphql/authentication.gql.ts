@@ -24,7 +24,7 @@ export const verifyQuery = gql`
 `;
 
 export const onboardQuery = gql`
-	mutation onBoard($name: String! $email: String!, $password: String!, $organization: String!) {
+	mutation onBoard($name: String!, $email: String!, $password: String!, $organization: String!) {
 		onboard(name: $name, email: $email, password: $password, organization: $organization) {
 			${publicUserFragment}
 		}

@@ -2,7 +2,7 @@
   import X from "$lib/icons/+X.svelte";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
-  import { ModalStack } from "$lib/generics/ModalStack";
+  import { ModalStack } from "$lib/generics/UX/ModalStack";
 
   let height: number;
 

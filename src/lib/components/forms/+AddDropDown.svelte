@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import DropDownList from "./+DropDownList.svelte";
   import type { ListItem } from "./types";
-  import { KeyboardAccessibility } from "$lib/generics/KeyboardAccessibility";
+  import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import { derived, writable } from "svelte/store";
 
   export let name: string;

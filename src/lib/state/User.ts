@@ -1,5 +1,5 @@
 import type { User } from "$lib/authentication/types";
-import { Hashing } from "$lib/generics/Hashing";
+import { Hashing } from "$lib/generics/DataStructures/Hashing";
 import { Factory } from "./Factory";
 import { organization } from "./Organization";
 

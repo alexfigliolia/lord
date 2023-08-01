@@ -51,6 +51,7 @@ export const createIssueMutation = gql`
       description
       created_at
       assigned {
+        id
         name
       }
     }

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import SectionTitle from "$lib/components/+SectionTitle.svelte";
-  import TileListItem from "$lib/components/+TileListItem.svelte";
+  import SectionTitle from "$lib/components/tiles/+SectionTitle.svelte";
+  import TileListItem from "$lib/components/tiles/+TileListItem.svelte";
   import Check from "$lib/icons/+Check.svelte";
   import Issue from "./+Issue.svelte";
   import { issues } from "$lib/state/Issues";
@@ -24,7 +24,7 @@
   {/each}
   {#if !$issues.length}
     <TileListItem margin={0}>
-      <div class="position">
+      <div class="position" slot="content">
         <div class="check">
           <Check color="#b5b5b5" />
         </div>

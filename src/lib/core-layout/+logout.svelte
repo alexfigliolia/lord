@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { GraphQLRequest } from "$lib/GraphQLRequest";
+  import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import { logoutQuery } from "$lib/graphql/authentication.gql";
 
   export let margin: string = "30px 0";

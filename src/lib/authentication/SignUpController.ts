@@ -1,4 +1,4 @@
-import { GraphQLRequest } from "$lib/GraphQLRequest";
+import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
 import { LoginController, error } from "$lib/authentication/LoginController";
 import { onboardQuery } from "$lib/graphql/authentication.gql";
 import { SignUpValidators } from "./SignUpValidators";

@@ -29,11 +29,32 @@ export enum IssueType {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptInvite: User;
+  createInvite?: Maybe<Invite>;
   createIssue: Issue;
   createProperty?: Maybe<Property>;
   onboard?: Maybe<Authentication>;
   setIssueAssignment: Issue;
   setIssueStatus: Issue;
+};
+
+
+export type MutationAcceptInviteArgs = {
+  email: Scalars['String']['input'];
+  invite_id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  organization_id: Scalars['Int']['input'];
+  password: Scalars['String']['input'];
+  role: UserRole;
+};
+
+
+export type MutationCreateInviteArgs = {
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  organization_id: Scalars['Int']['input'];
+  organization_name: Scalars['String']['input'];
+  role: UserRole;
 };
 
 
@@ -83,6 +104,7 @@ export type MutationSetIssueStatusArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  invites?: Maybe<Invite>;
   issue: Issue;
   issueAttachment: IssueAttachment;
   issueAttachments: Array<IssueAttachment>;
@@ -100,6 +122,11 @@ export type Query = {
   user?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
   verifyToken?: Maybe<Authentication>;
+};
+
+
+export type QueryInvitesArgs = {
+  email: Scalars['Int']['input'];
 };
 
 
@@ -190,6 +217,16 @@ export enum UserRole {
 export type Authentication = {
   __typename?: 'authentication';
   user: User;
+};
+
+export type Invite = {
+  __typename?: 'invite';
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  organization_id: Scalars['Int']['output'];
+  organization_name: Scalars['String']['output'];
+  role: UserRole;
 };
 
 export type Issue = {

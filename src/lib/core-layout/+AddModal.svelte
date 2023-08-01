@@ -1,6 +1,7 @@
 <script lang="ts">
   import AddIssue from "$lib/add-forms/+AddIssue.svelte";
   import AddProperty from "$lib/add-forms/+AddProperty.svelte";
+  import AddUser from "$lib/add-forms/+AddUser.svelte";
   import Modal from "$lib/components/+Modal.svelte";
   import Tabs from "$lib/components/+Tabs.svelte";
   import { addModalOpen, tab } from "$lib/state/Add";
@@ -19,14 +20,15 @@
 <Modal visible={$addModalOpen} onClose={UIController.onClose}>
   <div class="content">
     <h1>Add +</h1>
-    <Tabs
-      activeIndex={$tab}
-      onClick={UIController.onClickTab}
-      tabs={["Property", "Employee", "Issue"]}
-    >
+    <Tabs activeIndex={$tab} onClick={UIController.onClickTab} tabs={["Property", "User", "Issue"]}>
       {#if $tab === 0}
         <div class="tab-content">
           <AddProperty />
+        </div>
+      {/if}
+      {#if $tab === 1}
+        <div class="tab-content">
+          <AddUser />
         </div>
       {/if}
       {#if $tab === 2}

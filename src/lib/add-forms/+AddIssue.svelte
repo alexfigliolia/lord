@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GraphQLRequest } from "$lib/GraphQLRequest";
+  import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import AddInput from "$lib/components/forms/+AddInput.svelte";
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
   import { NotificationState } from "$lib/state/Notifications";
@@ -106,7 +106,7 @@
       OrganizationState.appendIssue(issue);
       NotificationState.push({
         type: "success",
-        message: `Your Issue has been created!`,
+        message: "Your Issue has been created!",
       });
     }
 

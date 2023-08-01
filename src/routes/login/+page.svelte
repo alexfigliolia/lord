@@ -2,11 +2,9 @@
   import { onMount } from "svelte";
   import LoginInput from "$lib/components/forms/+LoginInput.svelte";
   import { LoginController, error } from "$lib/authentication/LoginController";
-  import { goto } from "$app/navigation";
-  import Onboarding from "$lib/templates/+Onboarding.svelte";
+  import Onboarding from "$lib/views/onboarding/+Onboarding.svelte";
   import { LoginValidators } from "$lib/authentication/LoginValidators";
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
-  import { TaskQueue } from "@figliolia/task-queue";
 
   const Login = new LoginController();
   let loading = false;
@@ -14,39 +12,39 @@
   let buttonError = false;
 
   export class UIController {
-    static Queue = new TaskQueue();
     public static onSubmit = async (e: Event) => {
       loading = true;
       e.preventDefault();
       if (!Login.validateEmail() || !Login.validatePassword()) {
-        buttonError = true;
-        this.resetButtonState();
-        return;
+        return this.buttonError();
       }
-      error.update(() => " ");
+      this.resetError();
       const response = await Login.submit();
       if (response?.errors?.length) {
-        buttonError = true;
-        error.update(() => response.errors[0].message);
-        this.resetButtonState();
-      } else {
-        complete = true;
-        this.Queue.deferTask(() => {
-          void goto("/app");
-        }, 1000);
+        return this.buttonError(response.errors[0].message);
       }
+      complete = true;
+      void Login.redirect();
     };
 
     public static preventDefault = (e: Event) => {
       e.preventDefault();
     };
 
+    private static buttonError(message?: string) {
+      buttonError = true;
+      if (message) {
+        error.set(message);
+      }
+      this.resetButtonState();
+    }
+
     public static resetError() {
       error.set("");
     }
 
     public static resetButtonState() {
-      this.Queue.deferTask(() => {
+      Login.Queue.deferTask(() => {
         loading = false;
         complete = false;
         buttonError = false;
@@ -57,7 +55,7 @@
   onMount(() => {
     return () => {
       UIController.resetError();
-      UIController.Queue.clearDeferredTasks();
+      Login.Queue.clearDeferredTasks();
     };
   });
 </script>

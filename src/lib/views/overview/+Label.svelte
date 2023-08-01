@@ -1,6 +1,6 @@
 <script lang="ts">
   import { DateScaling } from "$lib/graphing/DateScaling";
-  import NumericStatus from "$lib/components/+NumericStatus.svelte";
+  import NumericStatus from "$lib/components/data-viz/+NumericStatus.svelte";
   import {
     flip,
     positionX,
