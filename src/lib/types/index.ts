@@ -32,6 +32,8 @@ export type Mutation = {
   createIssue: Issue;
   createProperty?: Maybe<Property>;
   onboard?: Maybe<Authentication>;
+  setIssueAssignment: Issue;
+  setIssueStatus: Issue;
 };
 
 
@@ -65,6 +67,18 @@ export type MutationOnboardArgs = {
   name: Scalars['String']['input'];
   organization: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type MutationSetIssueAssignmentArgs = {
+  issue_id: Scalars['Int']['input'];
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationSetIssueStatusArgs = {
+  id: Scalars['Int']['input'];
+  status: IssueStatus;
 };
 
 export type Query = {
@@ -167,6 +181,12 @@ export type QueryUsersArgs = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
+export enum UserRole {
+  Employee = 'employee',
+  Owner = 'owner',
+  Resident = 'resident'
+}
+
 export type Authentication = {
   __typename?: 'authentication';
   user: User;
@@ -259,7 +279,7 @@ export type User = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
-  role: Scalars['String']['output'];
+  role: UserRole;
 };
 
 export type OrganizationsByOwnerQueryVariables = Exact<{

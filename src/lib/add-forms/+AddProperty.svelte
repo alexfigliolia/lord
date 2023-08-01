@@ -9,6 +9,9 @@
   import type { Property, CreatePropertyPayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
   import { Validators } from "./Validators";
+  import type { ListItem } from "$lib/components/forms/types";
+  import { StaticLists } from "./StaticLists";
+  import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
 
   /* Loading States */
   let error = false;
@@ -21,7 +24,7 @@
   let propertyAddress1 = "";
   let propertyAddress2 = "";
   let city = "";
-  let state = "";
+  let state: ListItem = { label: "", value: "" };
   let zipCode = "";
 
   class UIController {
@@ -30,6 +33,11 @@
     static onSubmit = async (e: Event) => {
       e.preventDefault();
       loading = true;
+      if (!this.validateAll()) {
+        loading = false;
+        error = false;
+        return;
+      }
       const result = await this.createProperty();
       this.Queue.deferTask(() => {
         error = false;
@@ -44,6 +52,17 @@
         this.onSuccess(result.data.createProperty);
       }
     };
+
+    private static validateAll() {
+      return (
+        Validators.baseValidator(propertyName) &&
+        Validators.validateAddress(propertyAddress1) &&
+        Validators.validateAddress(propertyAddress2) &&
+        Validators.validateState(state.value as string) &&
+        Validators.baseValidator(city) &&
+        Validators.validateZipCode(zipCode)
+      );
+    }
 
     private static async createProperty(): Promise<CreatePropertyPayload> {
       const request = new GraphQLRequest({
@@ -79,7 +98,7 @@
       propertyAddress1 = "";
       propertyAddress2 = "";
       city = "";
-      state = "";
+      state = { label: "", value: "" };
       zipCode = "";
     }
   }
@@ -112,12 +131,7 @@
     validator={Validators.validateAddress}
   />
   <AddInput name="city" placeholder="city" bind:value={city} validator={Validators.baseValidator} />
-  <AddInput
-    name="state"
-    placeholder="state"
-    bind:value={state}
-    validator={Validators.validateState}
-  />
+  <AddDropDown name="state" placeholder="state" bind:value={state} items={StaticLists.states} />
   <AddInput
     name="zipCode"
     placeholder="zip code"

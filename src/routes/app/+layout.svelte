@@ -29,7 +29,6 @@
 <style lang="scss">
   @use "$lib/variables.scss";
   #coreApp {
-    background-color: variables.$coreBG;
     min-height: 100vh;
     width: 100%;
     & > .route {

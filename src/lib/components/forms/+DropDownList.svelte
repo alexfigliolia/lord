@@ -70,7 +70,7 @@
         }
         &.selected {
           color: #fff;
-          background-color: variables.$core;
+          background: linear-gradient(to right, variables.$core, variables.$core2);
         }
       }
       & > .none {

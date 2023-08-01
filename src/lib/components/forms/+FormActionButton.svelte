@@ -46,7 +46,7 @@
     box-shadow: 0px 5px 10px rgba(variables.$core, 0.95);
     position: relative;
     &:hover,
-    &:focus {
+    &:focus-visible {
       box-shadow: 0px 10px 20px rgba(variables.$core, 0.95);
       transform: scale(1.025);
     }

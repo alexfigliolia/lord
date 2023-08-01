@@ -20,7 +20,10 @@
   let open = false;
 
   class UIController {
-    static open = () => {
+    static toggle = () => {
+      if (open) {
+        return this.close();
+      }
       open = true;
       Accessibility.onVisible();
     };
@@ -62,7 +65,7 @@
 
 <div class="actions">
   <div class="assignment" bind:this={Accessibility.container}>
-    <button class="assignment" on:click={UIController.open}>
+    <button class="assignment" on:click={UIController.toggle}>
       <Account stroke="#fff" fill={assigned?.name ? "url(#acg)" : "#ddd"}>
         <defs>
           <linearGradient id="acg" x1="0" x2="1" y1="0" y2="1">
@@ -73,15 +76,18 @@
       </Account>
     </button>
     <div class="dropdown" class:open>
-      {#if !assigned}
-        <div class="unassigned">Unassigned</div>
-      {/if}
-      <DropDownList
-        items={$userList}
-        accessibility={Accessibility}
-        onSelect={UIController.onSelect}
-        value={UIController.currentValue(assigned)}
-      />
+      <div class="triangle" />
+      <div class="shadow">
+        {#if !assigned}
+          <div class="unassigned">Unassigned</div>
+        {/if}
+        <DropDownList
+          items={$userList}
+          accessibility={Accessibility}
+          onSelect={UIController.onSelect}
+          value={UIController.currentValue(assigned)}
+        />
+      </div>
     </div>
   </div>
 </div>
@@ -113,14 +119,11 @@
         text-wrap: wrap;
         max-width: 200px;
         position: absolute;
-        bottom: calc(100% + 10px);
+        bottom: calc(100% + 12.5px);
         right: 0px;
-        border-radius: 5px;
         z-index: 5;
         font-size: 0.9em;
         min-width: 130px;
-        overflow: hidden;
-        box-shadow: 0px 2.5px 7.5px rgba(#000, 0.3);
         visibility: hidden;
         opacity: 0;
         transform: translateY(-10px);
@@ -131,16 +134,42 @@
           transform: translateY(0px);
           transition: transform 0.25s, opacity 0.25s, visibility 0s 0s;
         }
-        & > .unassigned {
-          height: 40px;
+        & > .triangle {
+          position: absolute;
+          top: 100%;
+          right: 7.5px;
+          width: 20px;
+          height: 20px;
+          overflow: hidden;
+          transform: rotate(180deg);
+          &::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            transform: rotate(45deg);
+            top: 15px;
+            left: 2.5px;
+            box-shadow: -1px -1px 4px -1px rgba(#000, 0.25);
+          }
+        }
+        & > .shadow {
           width: 100%;
-          color: #d0d0d0;
-          font-style: italic;
-          background: #fff;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-bottom: 1px solid #ebebeb;
+          border-radius: 5px;
+          overflow: hidden;
+          box-shadow: 0px 2.5px 7.5px rgba(#000, 0.3);
+          & > .unassigned {
+            height: 40px;
+            width: 100%;
+            color: #d0d0d0;
+            font-style: italic;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #ebebeb;
+          }
         }
       }
     }

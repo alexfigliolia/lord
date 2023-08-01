@@ -24,6 +24,7 @@
 </script>
 
 <svg
+  class:animate
   class="circle"
   version="1.1"
   style={containerStyle}

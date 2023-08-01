@@ -83,12 +83,15 @@
     {UIController.statusDisplay[status]}
   </button>
   <div class="dropdown" class:open>
-    <DropDownList
-      value={UIController.currentValue(status)}
-      items={UIController.statusList}
-      accessibility={Accessibility}
-      onSelect={UIController.select}
-    />
+    <div class="triangle" />
+    <div class="shadow">
+      <DropDownList
+        accessibility={Accessibility}
+        onSelect={UIController.select}
+        items={UIController.statusList}
+        value={UIController.currentValue(status)}
+      />
+    </div>
   </div>
 </div>
 
@@ -137,16 +140,14 @@
       text-wrap: wrap;
       max-width: 200px;
       position: absolute;
-      top: calc(100% + 10px);
+      top: calc(100% + 15px);
       right: 0px;
       border-radius: 5px;
       z-index: 5;
       font-size: 0.75em;
       min-width: 130px;
-      overflow: hidden;
-      box-shadow: 0px 2.5px 7.5px rgba(#000, 0.3);
-      visibility: hidden;
       opacity: 0;
+      visibility: hidden;
       transform: translateY(10px);
       transition: transform 0.25s, opacity 0.25s, visibility 0s 0.25s;
       &.open {
@@ -154,6 +155,30 @@
         opacity: 1;
         transform: translateY(0px);
         transition: transform 0.25s, opacity 0.25s, visibility 0s 0s;
+      }
+      & > .triangle {
+        position: absolute;
+        bottom: 100%;
+        right: 20px;
+        width: 20px;
+        height: 20px;
+        overflow: hidden;
+        &::after {
+          content: "";
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          background: #fff;
+          transform: rotate(45deg);
+          top: 15px;
+          left: 2.5px;
+          box-shadow: -1px -1px 3px 0px rgba(#000, 0.1);
+        }
+      }
+      & > .shadow {
+        overflow: hidden;
+        box-shadow: 0px 2.5px 7.5px rgba(#000, 0.3);
+        width: 100%;
       }
     }
   }
