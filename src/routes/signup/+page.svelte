@@ -32,19 +32,19 @@
       loading = true;
       e.preventDefault();
       if (!SignUp.validateBusinessName()) {
-        return this.buttonError();
+        return this.onError();
       }
       this.resetError();
       const response = await SignUp.submit();
       if (response?.errors?.length) {
-        this.buttonError(response.errors[0].message);
+        this.onError(response.errors[0].message);
         return this.previousPage();
       }
       complete = true;
       SignUp.redirect();
     };
 
-    private static buttonError(message?: string) {
+    private static onError(message?: string) {
       buttonError = true;
       if (message) {
         error.set(message);

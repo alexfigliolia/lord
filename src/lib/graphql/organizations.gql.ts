@@ -3,9 +3,9 @@ import { publicUsersFragment } from "./user.gql";
 import { issueFragment } from "./issues.gql";
 import { propertiesFragment } from "./properties.gql";
 
-export const organizationsByOwner = gql`
-  query OrganizationsByOwner($owner_id: Int!) {
-    organizations(owner_id: $owner_id) {
+export const organizationsByAffiliation = gql`
+  query OrganizationsByAffiliation($user_id: Int!) {
+    organizationAffiliations(user_id: $user_id) {
       id
       name
       ${publicUsersFragment}

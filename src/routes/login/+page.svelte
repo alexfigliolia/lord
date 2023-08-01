@@ -16,12 +16,12 @@
       loading = true;
       e.preventDefault();
       if (!Login.validateEmail() || !Login.validatePassword()) {
-        return this.buttonError();
+        return this.onError();
       }
       this.resetError();
       const response = await Login.submit();
       if (response?.errors?.length) {
-        return this.buttonError(response.errors[0].message);
+        return this.onError(response.errors[0].message);
       }
       complete = true;
       void Login.redirect();
@@ -31,7 +31,7 @@
       e.preventDefault();
     };
 
-    private static buttonError(message?: string) {
+    private static onError(message?: string) {
       buttonError = true;
       if (message) {
         error.set(message);

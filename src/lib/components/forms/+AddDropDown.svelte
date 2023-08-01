@@ -77,6 +77,8 @@
       Accessibility.onInvisible();
     };
   });
+
+  $: listItems.set(items);
 </script>
 
 <div class="input" bind:this={Accessibility.container}>

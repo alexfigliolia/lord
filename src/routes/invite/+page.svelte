@@ -13,14 +13,14 @@
 
   const InviteFlow = new InviteController();
 
-  export const openInvites = writable<Invite[]>([]);
+  const openInvites = writable<Invite[]>([]);
 
   let loading = false;
   let complete = false;
   let buttonError = false;
 
   let invite: Invite | null = null;
-  let organization: ListItem = { label: "", value: -1 };
+  let organization: ListItem = { label: "", value: "" };
 
   class UIController {
     static nextPage: () => void;
@@ -33,30 +33,27 @@
     public static onSubmit = async (e: Event) => {
       loading = true;
       e.preventDefault();
-      if (
-        !InviteFlow.validateName() ||
-        !InviteFlow.validateEmail() ||
-        !InviteFlow.validatePassword()
-      ) {
-        return this.buttonError();
+      if (!InviteFlow.validateAll()) {
+        return this.onError();
       }
       error.set(" ");
       const response = await InviteFlow.findInvites();
       if (response?.errors?.length) {
-        return this.buttonError(response.errors[0].message);
+        return this.onError(response.errors[0].message);
       }
       const invites = response?.data?.invites || [];
       if (!invites.length) {
-        return this.buttonError(
+        return this.onError(
           "We could not locate any pending invitations sent to this email address",
         );
       }
-      complete = true;
       if (invites.length === 1) {
         await InviteFlow.acceptInvite(invites[0]);
+        complete = true;
         InviteFlow.redirect();
       } else {
         openInvites.set(invites);
+        loading = false;
         this.resetError();
         this.nextPage();
       }
@@ -66,21 +63,21 @@
       invite = $openInvites[index];
     };
 
-    public static async selectInvite(e: Event) {
+    public static selectInvite = async (e: Event) => {
       loading = true;
       e.preventDefault();
-      if (typeof organization.value !== "number" || organization.value === -1 || !invite) {
-        return this.buttonError("Selecting an organization is required");
+      if (typeof organization.value !== "number" || !invite) {
+        return this.onError("Selecting an organization is required");
       }
       const response = await InviteFlow.acceptInvite(invite);
       if (response?.errors?.length) {
-        return this.buttonError(response.errors[0].message);
+        return this.onError(response.errors[0].message);
       }
       complete = true;
       InviteFlow.redirect();
-    }
+    };
 
-    private static buttonError(message?: string) {
+    private static onError(message?: string) {
       buttonError = true;
       if (message) {
         error.set(message);
@@ -152,8 +149,8 @@
     <form on:submit={UIController.preventDefault}>
       <AddDropDown
         name="organization"
-        placeholder="organization"
         bind:value={organization}
+        placeholder="organization"
         onSelect={UIController.onSelect}
         items={$openInvites.map(v => ({ label: v.organization_name, value: v.organization_id }))}
       />
@@ -200,5 +197,8 @@
     @include variables.center;
     color: variables.$core;
     font-style: italic;
+    text-align: center;
+    color: #9e91fc;
+    line-height: 1.5;
   }
 </style>

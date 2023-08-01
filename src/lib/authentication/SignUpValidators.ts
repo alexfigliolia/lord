@@ -6,7 +6,7 @@ export class SignUpValidators extends LoginValidators {
     if (!value.length) {
       return null;
     }
-    return value.includes(" ") && this.nameRegex.test(value);
+    return !!value.match(this.nameRegex);
   };
 
   public static validBusinessName = (value: string) => {

@@ -75,6 +75,7 @@
           email,
           role: role.value,
           organization_id: $organization.id,
+          organization_name: $organization.name,
         },
       });
       const response = await request.send();
@@ -92,8 +93,18 @@
 <h2>Add a User</h2>
 <div class="new">Add owners, employees, or residents of your property</div>
 <form on:submit={UIController.onSubmit}>
-  <AddInput name="name" placeholder="Name" bind:value={name} validator={Validators.baseValidator} />
-  <AddInput name="email" placeholder="email" bind:value={email} />
+  <AddInput
+    name="name"
+    placeholder="Name"
+    bind:value={name}
+    validator={SignUpValidators.validName}
+  />
+  <AddInput
+    name="email"
+    placeholder="email"
+    bind:value={email}
+    validator={SignUpValidators.validEmail}
+  />
   <h3>Who are they?</h3>
   <AddDropDown name="role" placeholder="role" bind:value={role} items={UIController.roles} />
   <div class="action">

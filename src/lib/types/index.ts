@@ -104,7 +104,7 @@ export type MutationSetIssueStatusArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  invites?: Maybe<Invite>;
+  invites: Array<Invite>;
   issue: Issue;
   issueAttachment: IssueAttachment;
   issueAttachments: Array<IssueAttachment>;
@@ -114,6 +114,7 @@ export type Query = {
   login?: Maybe<Authentication>;
   logout?: Maybe<Scalars['Boolean']['output']>;
   organization?: Maybe<Organization>;
+  organizationAffiliations?: Maybe<Array<Maybe<Organization>>>;
   organizations?: Maybe<Array<Maybe<Organization>>>;
   payment?: Maybe<Payments>;
   payments: Array<Payments>;
@@ -126,7 +127,8 @@ export type Query = {
 
 
 export type QueryInvitesArgs = {
-  email: Scalars['Int']['input'];
+  email?: InputMaybe<Scalars['String']['input']>;
+  organization_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -171,6 +173,11 @@ export type QueryLoginArgs = {
 
 export type QueryOrganizationArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryOrganizationAffiliationsArgs = {
+  user_id: Scalars['Int']['input'];
 };
 
 
@@ -319,12 +326,45 @@ export type User = {
   role: UserRole;
 };
 
-export type OrganizationsByOwnerQueryVariables = Exact<{
-  owner_id: Scalars['Int']['input'];
+export type InviteUserMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  organization_id: Scalars['Int']['input'];
+  organization_name: Scalars['String']['input'];
+  role: UserRole;
 }>;
 
 
-export type OrganizationsByOwnerQuery = { __typename?: 'Query', organizations?: Array<{ __typename?: 'organization', id: number, name: string } | null> | null };
+export type InviteUserMutation = { __typename?: 'Mutation', createInvite?: { __typename?: 'invite', id: number } | null };
+
+export type FindInvitationsQueryVariables = Exact<{
+  email?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
-export const OrganizationsByOwnerDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "OrganizationsByOwner" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "owner_id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "organizations" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "owner_id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "owner_id" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }] } }] } }] } as unknown as DocumentNode<OrganizationsByOwnerQuery, OrganizationsByOwnerQueryVariables>;
+export type FindInvitationsQuery = { __typename?: 'Query', invites: Array<{ __typename?: 'invite', id: number, name: string, email: string, role: UserRole, organization_id: number, organization_name: string }> };
+
+export type AcceptInviteMutationVariables = Exact<{
+  invite_id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  organization_id: Scalars['Int']['input'];
+  role: UserRole;
+}>;
+
+
+export type AcceptInviteMutation = { __typename?: 'Mutation', acceptInvite: { __typename?: 'user', id: number, name: string, role: UserRole, email: string } };
+
+export type OrganizationsByAffiliationQueryVariables = Exact<{
+  user_id: Scalars['Int']['input'];
+}>;
+
+
+export type OrganizationsByAffiliationQuery = { __typename?: 'Query', organizationAffiliations?: Array<{ __typename?: 'organization', id: number, name: string } | null> | null };
+
+
+export const InviteUserDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "mutation", "name": { "kind": "Name", "value": "InviteUser" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "name" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "email" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "organization_id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "organization_name" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "role" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "UserRole" } } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "createInvite" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "name" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "name" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "role" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "role" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "email" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "email" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "organization_id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "organization_id" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "organization_name" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "organization_name" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }] } }] } }] } as unknown as DocumentNode<InviteUserMutation, InviteUserMutationVariables>;
+export const FindInvitationsDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "FindInvitations" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "email" } }, "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "invites" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "email" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "email" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }, { "kind": "Field", "name": { "kind": "Name", "value": "email" } }, { "kind": "Field", "name": { "kind": "Name", "value": "role" } }, { "kind": "Field", "name": { "kind": "Name", "value": "organization_id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "organization_name" } }] } }] } }] } as unknown as DocumentNode<FindInvitationsQuery, FindInvitationsQueryVariables>;
+export const AcceptInviteDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "mutation", "name": { "kind": "Name", "value": "AcceptInvite" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "invite_id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "name" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "email" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "password" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "String" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "organization_id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }, { "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "role" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "UserRole" } } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "acceptInvite" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "invite_id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "invite_id" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "name" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "name" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "email" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "email" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "password" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "password" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "organization_id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "organization_id" } } }, { "kind": "Argument", "name": { "kind": "Name", "value": "role" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "role" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }, { "kind": "Field", "name": { "kind": "Name", "value": "role" } }, { "kind": "Field", "name": { "kind": "Name", "value": "email" } }] } }] } }] } as unknown as DocumentNode<AcceptInviteMutation, AcceptInviteMutationVariables>;
+export const OrganizationsByAffiliationDocument = { "kind": "Document", "definitions": [{ "kind": "OperationDefinition", "operation": "query", "name": { "kind": "Name", "value": "OrganizationsByAffiliation" }, "variableDefinitions": [{ "kind": "VariableDefinition", "variable": { "kind": "Variable", "name": { "kind": "Name", "value": "user_id" } }, "type": { "kind": "NonNullType", "type": { "kind": "NamedType", "name": { "kind": "Name", "value": "Int" } } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "organizationAffiliations" }, "arguments": [{ "kind": "Argument", "name": { "kind": "Name", "value": "user_id" }, "value": { "kind": "Variable", "name": { "kind": "Name", "value": "user_id" } } }], "selectionSet": { "kind": "SelectionSet", "selections": [{ "kind": "Field", "name": { "kind": "Name", "value": "id" } }, { "kind": "Field", "name": { "kind": "Name", "value": "name" } }] } }] } }] } as unknown as DocumentNode<OrganizationsByAffiliationQuery, OrganizationsByAffiliationQueryVariables>;
