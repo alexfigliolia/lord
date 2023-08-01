@@ -117,13 +117,13 @@
       }
       & > .dropdown {
         text-wrap: wrap;
-        max-width: 200px;
+        max-width: 250px;
         position: absolute;
         bottom: calc(100% + 12.5px);
         right: 0px;
         z-index: 5;
         font-size: 0.9em;
-        min-width: 130px;
+        min-width: 200px;
         visibility: hidden;
         opacity: 0;
         transform: translateY(-10px);

@@ -66,7 +66,7 @@
         &:focus-visible,
         &:hover {
           color: variables.$coreDark;
-          background-color: rgba(variables.$core, 0.25);
+          background-color: rgba(variables.$core, 0.1);
         }
         &.selected {
           color: #fff;

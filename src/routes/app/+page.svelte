@@ -3,6 +3,7 @@
   import RevenueGraph from "$lib/views/overview/+RevenueGraph.svelte";
   import Occupancy from "$lib/views/overview/+Occupancy.svelte";
   import FloatingAdd from "$lib/core-layout/+FloatingAdd.svelte";
+  import Label from "$lib/views/overview/+Label.svelte";
 </script>
 
 <svelte:head>
@@ -20,6 +21,7 @@
   </div>
 </section>
 <FloatingAdd />
+<Label />
 
 <style lang="scss">
   @use "$lib/variables.scss";
