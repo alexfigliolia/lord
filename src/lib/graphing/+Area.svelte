@@ -2,11 +2,9 @@
   import { browser } from "$app/environment";
   import { select } from "d3";
   import { onMount } from "svelte";
-  import type { Coordinate } from "./types";
   import { TaskQueue } from "@figliolia/task-queue";
 
   export let path: string;
-  export let data: Coordinate[];
   export let fill: string = "#000";
   export let stroke: string = "#000";
   export let strokeWidth: number = 2;
@@ -20,7 +18,7 @@
 
   onMount(() => {
     if (browser) {
-      select(Path).datum(data).attr("d", path);
+      select(Path).attr("d", path);
     }
     Queue.deferTask(() => {
       active = true;
@@ -31,23 +29,23 @@
   });
   $: {
     if (Path) {
-      select(Path).datum(data).attr("d", path).transition();
+      select(Path).attr("d", path);
     }
   }
 </script>
 
 <path
-  bind:this={Path}
-  on:blur={() => {}}
-  on:focus={() => {}}
-  on:mouseover={onMouseOver}
-  on:mousemove={onMouseOver}
-  on:mouseout={onMouseOut}
   role="group"
   class="graph-path"
   class:active
   {fill}
   {stroke}
+  bind:this={Path}
+  on:blur={() => {}}
+  on:focus={() => {}}
+  on:mouseout={onMouseOut}
+  on:mouseover={onMouseOver}
+  on:mousemove={onMouseOver}
   stroke-width={strokeWidth}
   style="filter: drop-shadow(0px -2.5px 5px rgba(0, 0, 0, 0.1));"
 />
@@ -55,10 +53,12 @@
 <style lang="scss">
   path {
     outline: none;
+    opacity: 0;
     transform: scaleY(0);
-    transform-origin: 50% 92%;
-    transition-duration: 1s;
+    transform-origin: 50% 90%;
+    transition: stroke 1s, stroke-width 1s, fill 1s, stroke-dasharray 1s, transform 1s, opacity 1s;
     &.active {
+      opacity: 1;
       transform: scaleY(1);
     }
   }

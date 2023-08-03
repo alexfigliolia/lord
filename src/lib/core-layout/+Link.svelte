@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { derived } from "svelte/store";
+
   export let href: string;
   export let color: string;
   export let label: string;
@@ -51,6 +52,7 @@
       justify-content: flex-start;
       text-decoration: none;
       font-size: 1.1em;
+      transition-duration: 0.3s;
       & > .icon {
         height: 25px;
         width: 25px;

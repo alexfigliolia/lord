@@ -1,46 +1,43 @@
 <script lang="ts">
-  import { axisBottom, axisLeft, select, type AxisScale } from "d3";
+  import { select, type Axis } from "d3";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
 
+  export let scale: Axis<any>;
+  export let style: string = "";
+  export let tickSize: number = 5;
   export let numTicks: number = 0;
-  export let scale: AxisScale<any>;
   export let translateX: number = 0;
   export let translateY: number = 0;
-  export let direction: "left" | "bottom";
-  export let onAxisMount: (element: SVGGElement) => void = () => {};
+  export let lineColor: string = "lightgray";
+  export let tickColor: string = "transparent";
 
   let reference: SVGGElement;
-  const axisMethod = direction === "left" ? axisLeft : axisBottom;
 
   const update = () => {
     select(reference)
       .attr("transform", `translate(${translateX}, ${translateY})`)
-      .call(axisMethod(scale).ticks(numTicks).tickSizeOuter(0))
-      .call(g => g.selectAll(".domain").attr("stroke", "lightgray"))
-      .call(g => g.selectAll("line"))
-      .call(g =>
-        g.selectAll("text").attr("stroke", "lightgray").attr("style", "font-weight: 100;"),
-      );
+      .call(scale.ticks(numTicks).tickSize(tickSize).tickSizeOuter(0))
+      .call(g => g.selectAll(".tick line").attr("stroke", tickColor).attr("fill", tickColor))
+      .call(g => g.selectAll(".domain").attr("stroke", lineColor))
+      .call(g => {
+        const text = g
+          .selectAll("text")
+          .attr("stroke", lineColor)
+          .attr("style", `${style} font-weight: 100;`);
+        // @ts-ignore
+        const nodes = text._groups[0] || [];
+        select(nodes[nodes.length - 1]).style("text-anchor", "end");
+      });
   };
 
   onMount(() => {
     if (browser) {
       update();
-      onAxisMount(reference);
     }
   });
 
-  $: {
-    if (reference) {
-      update();
-    }
-  }
+  $: if (reference && !!scale) update();
 </script>
 
-<g
-  class="axis"
-  bind:this={reference}
-  class:left={direction === "left"}
-  class:bottom={direction === "bottom"}
-/>
+<g class="axis" bind:this={reference} />

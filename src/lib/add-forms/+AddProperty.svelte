@@ -87,7 +87,7 @@
       OrganizationState.appendProperty(property);
       NotificationState.push({
         type: "success",
-        message: `Your property has been created! You can register units and leases on properties page`,
+        message: `Your property has been created! You can register units and leases on property's page`,
       });
     }
 

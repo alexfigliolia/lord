@@ -1,9 +1,8 @@
 <script lang="ts">
   import Issues from "$lib/views/overview/Issues/+Issues.svelte";
-  import RevenueGraph from "$lib/views/overview/+RevenueGraph.svelte";
   import Occupancy from "$lib/views/overview/+Occupancy.svelte";
   import FloatingAdd from "$lib/core-layout/+FloatingAdd.svelte";
-  import Label from "$lib/views/overview/+Label.svelte";
+  import OverviewGraph from "$lib/views/overview/+OverviewGraph.svelte";
 </script>
 
 <svelte:head>
@@ -12,7 +11,7 @@
 </svelte:head>
 
 <section id="overview">
-  <RevenueGraph />
+  <OverviewGraph />
   <div class="split">
     <Issues />
     <div class="maxed">
@@ -21,7 +20,6 @@
   </div>
 </section>
 <FloatingAdd />
-<Label />
 
 <style lang="scss">
   @use "$lib/variables.scss";

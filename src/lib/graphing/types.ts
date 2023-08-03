@@ -5,8 +5,9 @@ export interface Margin {
   bottom: number;
 }
 
-export interface IGraph<T extends Record<string, any>[]> {
-  data: T;
+export interface IGraph<X extends any[], Y extends any[]> {
+  xData: X;
+  yData: Y;
   width: number;
   height: number;
   margin?: Margin;
