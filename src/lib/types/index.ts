@@ -15,6 +15,12 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export enum ExpenseCategory {
+  Hardware = 'hardware',
+  Labor = 'labor',
+  Management = 'management'
+}
+
 export enum IssueStatus {
   Complete = 'complete',
   Inprogress = 'inprogress',
@@ -30,6 +36,7 @@ export enum IssueType {
 export type Mutation = {
   __typename?: 'Mutation';
   acceptInvite: User;
+  createExpense: Array<Expense>;
   createInvite?: Maybe<Invite>;
   createIssue: Issue;
   createProperty?: Maybe<Property>;
@@ -46,6 +53,15 @@ export type MutationAcceptInviteArgs = {
   organization_id: Scalars['Int']['input'];
   password: Scalars['String']['input'];
   role: UserRole;
+};
+
+
+export type MutationCreateExpenseArgs = {
+  amount: Scalars['Float']['input'];
+  category: ExpenseCategory;
+  description: Scalars['String']['input'];
+  organization_id: Scalars['Int']['input'];
+  property_id: Scalars['Int']['input'];
 };
 
 
@@ -104,6 +120,7 @@ export type MutationSetIssueStatusArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  expenses: Array<Expense>;
   invites: Array<Invite>;
   issue: Issue;
   issueAttachment: IssueAttachment;
@@ -123,6 +140,14 @@ export type Query = {
   user?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
   verifyToken?: Maybe<Authentication>;
+};
+
+
+export type QueryExpensesArgs = {
+  category?: InputMaybe<ExpenseCategory>;
+  organization_id?: InputMaybe<Scalars['Int']['input']>;
+  property_id?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -226,6 +251,17 @@ export type Authentication = {
   user: User;
 };
 
+export type Expense = {
+  __typename?: 'expense';
+  amount: Scalars['Float']['output'];
+  category: ExpenseCategory;
+  created_at: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  organization_id: Scalars['Int']['output'];
+  property_id: Scalars['Int']['output'];
+};
+
 export type Invite = {
   __typename?: 'invite';
   email: Scalars['String']['output'];
@@ -299,6 +335,7 @@ export type Property = {
   description: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   images: Array<Scalars['String']['output']>;
+  issues: Array<Issue>;
   name: Scalars['String']['output'];
   organization_id: Scalars['Int']['output'];
   state: Scalars['String']['output'];

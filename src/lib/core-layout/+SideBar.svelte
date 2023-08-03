@@ -94,6 +94,7 @@
         border-radius: 10px;
         @include variables.center;
         font-weight: 700;
+        transform: skew(-5deg);
         background-color: variables.$core;
         box-shadow: 0px 2.5px 5px rgba(#000, 0.2);
       }

@@ -1,16 +1,15 @@
 <script lang="ts">
   import { DateScaling } from "$lib/graphing/DateScaling";
   import NumericStatus from "$lib/components/data-viz/+NumericStatus.svelte";
-  import {
-    flip,
-    positionX,
-    positionY,
-    dataPoint,
-    pointDate,
-    prevPoint,
-    labelActive,
-  } from "./Store";
-  import { derived } from "svelte/store";
+  import { derived, type Writable } from "svelte/store";
+
+  export let flip: Writable<boolean>;
+  export let dataPoint: Writable<number>;
+  export let pointDate: Writable<number>;
+  export let positionX: Writable<number>;
+  export let positionY: Writable<number>;
+  export let prevPoint: Writable<number>;
+  export let labelActive: Writable<boolean>;
 
   let reference: HTMLDivElement;
 

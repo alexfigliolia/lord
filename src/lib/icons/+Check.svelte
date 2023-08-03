@@ -24,5 +24,8 @@
   svg {
     height: 100%;
     width: 100%;
+    & > path {
+      transition-duration: 0.3s;
+    }
   }
 </style>

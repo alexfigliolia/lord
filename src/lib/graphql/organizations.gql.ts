@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 import { publicUsersFragment } from "./user.gql";
-import { issueFragment } from "./issues.gql";
+import { issuesFragment } from "./issues.gql";
 import { propertiesFragment } from "./properties.gql";
 
 export const organizationsByAffiliation = gql`
@@ -9,7 +9,7 @@ export const organizationsByAffiliation = gql`
       id
       name
       ${publicUsersFragment}
-      ${issueFragment}
+      ${issuesFragment}
       ${propertiesFragment}
     }
   }

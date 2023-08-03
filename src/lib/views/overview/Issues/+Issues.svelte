@@ -4,6 +4,23 @@
   import Check from "$lib/icons/+Check.svelte";
   import Issue from "./+Issue.svelte";
   import { issues } from "$lib/state/Issues";
+  import { addModalOpen, tab } from "$lib/state/Add";
+
+  let hovered: boolean = false;
+
+  class UIController {
+    public static onMouseEnter = () => {
+      hovered = true;
+    };
+    public static onMouseLeave = () => {
+      hovered = false;
+    };
+
+    public static openAdd = () => {
+      addModalOpen.set(true);
+      tab.set(2);
+    };
+  }
 </script>
 
 <div class="container">
@@ -24,12 +41,18 @@
   {/each}
   {#if !$issues.length}
     <TileListItem margin={0}>
-      <div class="position" slot="content">
+      <button
+        on:click={UIController.openAdd}
+        on:mouseenter={UIController.onMouseEnter}
+        on:mouseleave={UIController.onMouseLeave}
+        class="position"
+        slot="content"
+      >
         <div class="check">
-          <Check color="#b5b5b5" />
+          <Check color={hovered ? "#9e91fc" : "#b5b5b5"} />
         </div>
-        You're all caught up
-      </div>
+        Create your first issue
+      </button>
     </TileListItem>
   {/if}
 </div>
@@ -46,12 +69,24 @@
     padding: 5px 0;
     font-style: italic;
     color: #b5b5b5;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    transition-duration: 0.3s;
     & > .check {
       width: 30px;
       height: 30px;
       border-radius: 50%;
       border: 2px solid #b5b5b5;
       margin-right: 10px;
+      transition-duration: 0.3s;
+    }
+    &:hover {
+      color: variables.$core;
+      & > .check {
+        border: 2px solid variables.$core;
+      }
     }
   }
 </style>

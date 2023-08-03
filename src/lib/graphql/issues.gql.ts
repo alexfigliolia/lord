@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 
-export const issueFragment = gql`
+export const issuesFragment = gql`
 	issues {
 		id
 		status

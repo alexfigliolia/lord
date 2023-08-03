@@ -1,4 +1,5 @@
 import { gql } from "graphql-request";
+import { issuesFragment } from "./issues.gql";
 
 export const propertiesFragment = gql`
   properties {
@@ -11,6 +12,17 @@ export const propertiesFragment = gql`
     state
     zip_code
     images
+    ${issuesFragment}
+    units {
+      leases {
+        id   
+        unit_id   
+        start_date
+        end_date 
+        active   
+        created_at
+      }
+    }
   }
 `;
 
@@ -26,6 +38,7 @@ export const propertiesByOrg = gql`
 			state       
 			zip_code    
 			images
+      issues
 		}
 	}
 `;
@@ -60,6 +73,33 @@ export const createPropertyMutation = gql`
       city
       state
       zip_code
+    }
+  }
+`;
+
+export const queryPropertyByID = gql`
+  query PropertyByID($id: Int!) {
+    property(id: $id) {
+      id
+      name
+      description
+      address_1
+      address_2
+      city
+      state
+      zip_code
+      images
+      ${issuesFragment}
+      units {
+        leases {
+          id   
+          unit_id   
+          start_date
+          end_date 
+          active   
+          created_at
+        }
+      }
     }
   }
 `;
