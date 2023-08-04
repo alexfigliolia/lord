@@ -4,7 +4,7 @@
   import TileContent from "$lib/components/tiles/+TileContent.svelte";
   import ExpenseToIncome from "./+ExpenseToIncome.svelte";
   import LinearOccupancy from "./+LinearOccupancy.svelte";
-  import IssueCompletion from "./issue-completion/+IssueCompletion.svelte";
+  import IssueCompletion from "./+IssueCompletion.svelte";
 
   export let name: string;
 </script>

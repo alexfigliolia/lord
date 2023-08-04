@@ -2,7 +2,7 @@
   import { area } from "d3";
   import moment from "moment";
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
-  import type { GraphEvent } from "./types";
+  import type { GraphEvent } from "$lib/graphing/types";
   import Area from "$lib/components/data-viz/+Area.svelte";
   import Label from "../overview/+Label.svelte";
   import { writable } from "svelte/store";

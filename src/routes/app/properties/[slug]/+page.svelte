@@ -1,5 +1,5 @@
 <script lang="ts">
-  import PropertyOverview from "$lib/views/properties/+PropertyOverview.svelte";
+  import PropertyOverview from "$lib/views/property/+PropertyOverview.svelte";
   import type { Property } from "$lib/types/derived";
   import { activeProperty } from "$lib/state/Properties";
   import Issues from "$lib/views/overview/Issues/+Issues.svelte";

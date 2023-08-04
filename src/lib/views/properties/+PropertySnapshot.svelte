@@ -7,7 +7,7 @@
   import AnimatedNumber from "$lib/components/data-viz/+AnimatedNumber.svelte";
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
   import Line from "$lib/components/data-viz/+Line.svelte";
-  import type { GraphEvent } from "./types";
+  import type { GraphEvent } from "$lib/graphing/types";
 
   export let id: number;
 

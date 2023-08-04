@@ -1,4 +1,4 @@
-import type { PieData } from "../types";
+import type { PieData } from "$lib/graphing/types";
 
 export interface PathData extends PieData {
   path: string;

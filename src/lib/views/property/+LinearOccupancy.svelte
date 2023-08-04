@@ -2,12 +2,11 @@
   import { line } from "d3";
   import moment from "moment";
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
-  import type { GraphEvent } from "./types";
+  import type { GraphEvent } from "$lib/graphing/types";
   import Line from "$lib/components/data-viz/+Line.svelte";
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
 
   let pathData: string | undefined;
-  let expenseLine: string | undefined;
 
   const xData = new Array(12).fill("").map((_, i) => {
     const date = moment();
