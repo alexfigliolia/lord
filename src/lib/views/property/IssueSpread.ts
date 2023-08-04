@@ -1,6 +1,6 @@
 import type { PieGraph } from "$lib/graphing/PieGraph";
+import type { PieData } from "$lib/graphing/types";
 import type { IssueStatus } from "$lib/types";
-import type { PieData } from "../types";
 
 export class IssueSpread {
   public spread = {

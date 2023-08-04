@@ -1,6 +1,5 @@
 <script lang="ts">
   import PieChart from "$lib/components/data-viz/+PieChart.svelte";
-  import { activeProperty } from "$lib/state/Properties";
   import { derived } from "svelte/store";
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
   import { Issues } from "$lib/views/overview/Issues/Issues";
@@ -8,12 +7,13 @@
   import type { PieGraph } from "$lib/graphing/PieGraph";
   import { IssueSpread } from "./IssueSpread";
   import type { PathData } from "./types";
+  import { CurrentProperty } from "./Stores";
 
   let graph: PieGraph;
   let active = false;
   let paths: PathData[] = [];
 
-  const statuses = derived(activeProperty, v => {
+  const statuses = derived(CurrentProperty, v => {
     const spread = new IssueSpread();
     for (const issue of v.issues) {
       spread.increment(issue.status);

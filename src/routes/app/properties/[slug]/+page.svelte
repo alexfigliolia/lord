@@ -1,22 +1,22 @@
 <script lang="ts">
   import PropertyOverview from "$lib/views/property/+PropertyOverview.svelte";
   import type { Property } from "$lib/types/derived";
-  import { activeProperty } from "$lib/state/Properties";
   import Issues from "$lib/views/overview/Issues/+Issues.svelte";
+  import { CurrentProperty } from "$lib/views/property/Stores";
 
   export let data: { activeProperty: Property };
 
-  $: activeProperty.set(data.activeProperty);
+  $: CurrentProperty.set(data.activeProperty);
 </script>
 
 <svelte:head>
-  <title>{data.activeProperty.name}</title>
-  <meta name="description" content={`${data.activeProperty.name} Overview`} />
+  <title>{$CurrentProperty.name}</title>
+  <meta name="description" content={`${$CurrentProperty.name} Overview`} />
 </svelte:head>
 
 <div>
-  <PropertyOverview name={data.activeProperty.name} />
-  <Issues issues={$activeProperty.issues} />
+  <PropertyOverview name={$CurrentProperty.name} />
+  <Issues issues={$CurrentProperty.issues} />
 </div>
 
 <style lang="scss">

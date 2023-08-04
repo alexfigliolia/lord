@@ -1,4 +1,3 @@
-import type { PieData } from "$lib/views/properties/types";
 import {
   arc,
   pie,
@@ -9,7 +8,7 @@ import {
   type Pie,
   interpolateSpectral,
 } from "d3";
-import type { IPieGraph } from "./types";
+import type { IPieGraph, PieData } from "./types";
 
 export class PieGraph {
   radius: number;
