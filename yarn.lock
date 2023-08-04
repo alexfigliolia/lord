@@ -643,10 +643,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.44.0.tgz#961a5903c74139390478bdc808bcde3fc45ab7af"
   integrity sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==
 
-"@figliolia/enhanced-stores@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@figliolia/enhanced-stores/-/enhanced-stores-1.0.1.tgz#d789091801b8a694d1c25b7bcf10d9abcabd7301"
-  integrity sha512-y0v+CvRXAJ9VJVpI6llwUYNpj7mvL5+LuTCv3gYTCKUaD9MHGEZl6kKFT6XqezZraK3Tyd5r9M/Ml2Bm6oTLBg==
+"@figliolia/enhanced-stores@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@figliolia/enhanced-stores/-/enhanced-stores-1.0.2.tgz#7129fce0e77d946d1506d3e9723c7ec2039bf528"
+  integrity sha512-Nnter78ZHY9cQhzT7dWkk7OHSWLftXTq714oizdsNBokB2MjeG9Ng0hH5W3QAmdXLWaxP4nP8nygQGHqfEVYLg==
   dependencies:
     svelte "^4.1.1"
 

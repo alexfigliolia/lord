@@ -1,7 +1,7 @@
 <script lang="ts">
   import DisplayTile from "$lib/components/tiles/+DisplayTile.svelte";
   import PercentageFill from "$lib/components/data-viz/+PercentageFill.svelte";
-  import LinearGradient from "$lib/components/+LinearGradient.svelte";
+  import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
 </script>
 
 <DisplayTile title="Occupancy" subtitle="All Properties">

@@ -2,26 +2,29 @@
   import PieChart from "$lib/components/data-viz/+PieChart.svelte";
   import { activeProperty } from "$lib/state/Properties";
   import { derived } from "svelte/store";
-  import LinearGradient from "$lib/components/+LinearGradient.svelte";
+  import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
   import { Issues } from "$lib/views/overview/Issues/Issues";
   import PieSection from "$lib/components/data-viz/+PieSection.svelte";
   import type { PieGraph } from "$lib/graphing/PieGraph";
+  import { IssueSpread } from "./IssueSpread";
+  import type { PathData } from "./types";
 
   let graph: PieGraph;
-  let paths: string[] = [];
   let active = false;
+  let paths: PathData[] = [];
 
-  const data = derived(activeProperty, v => {
-    const hash: Record<string, number> = {};
+  const statuses = derived(activeProperty, v => {
+    const spread = new IssueSpread();
     for (const issue of v.issues) {
-      hash[issue.status] = (hash[issue.status] || 0) + 1;
+      spread.increment(issue.status);
     }
-    return Object.keys(hash).map(key => ({ label: key, value: hash[key] }));
+    return spread;
   });
 
-  $: if (graph && $data.length) {
-    // @ts-ignore
-    paths = graph.Pie($data).map(angle => graph.Arc(angle));
+  const data = derived(statuses, v => v.datum());
+
+  $: if ($statuses && graph && $data.length) {
+    paths = $statuses.paths(graph, $data);
     setTimeout(() => {
       active = true;
     }, 1);
@@ -29,28 +32,6 @@
 </script>
 
 <div class="chart">
-  <div class="pie">
-    <PieChart bind:graph data={$data} style="filter: drop-shadow(0px 2.5px 5px rgba(0,0,0,0.2));">
-      <svelte:fragment slot="svg">
-        <LinearGradient id="inProgressGrad" color1="#04c340" color2="rgb(2, 215, 115)" />
-        <LinearGradient id="openGrad" color1="#ff007b" color2="#fe0f33" />
-        <LinearGradient id="completeGrad" color1="#00d9ff" color2="#00a6ff" />
-      </svelte:fragment>
-      <svelte:fragment slot="sections">
-        {#if paths.length}
-          {#each $data as { value, label }, index}
-            <PieSection
-              {value}
-              path={paths[index]}
-              delay={index * 300}
-              title={Issues.getDisplay(label)}
-              fill={Issues.getGradient(label)}
-            />
-          {/each}
-        {/if}
-      </svelte:fragment>
-    </PieChart>
-  </div>
   <div class="key" class:active>
     {#each $data as { label, value }}
       <div>
@@ -62,6 +43,28 @@
       </div>
     {/each}
   </div>
+  <div class="pie">
+    <PieChart bind:graph data={$data} style="filter: drop-shadow(0px 2.5px 5px rgba(0,0,0,0.2));">
+      <svelte:fragment slot="svg">
+        <LinearGradient id="inProgressGrad" color1="#04c340" color2="rgb(2, 215, 115)" />
+        <LinearGradient id="openGrad" color1="#ff007b" color2="#fe0f33" />
+        <LinearGradient id="completeGrad" color1="#00d9ff" color2="#00a6ff" />
+      </svelte:fragment>
+      <svelte:fragment slot="sections">
+        {#if paths.length}
+          {#each paths as { value, label, path }, index}
+            <PieSection
+              {value}
+              {path}
+              delay={500 + index * 300}
+              title={Issues.getDisplay(label)}
+              fill={Issues.getGradient(label)}
+            />
+          {/each}
+        {/if}
+      </svelte:fragment>
+    </PieChart>
+  </div>
 </div>
 
 <style lang="scss">
@@ -69,13 +72,13 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     & .pie {
       max-width: 50%;
       height: 200px;
       padding-bottom: 10px;
       box-sizing: border-box;
-      margin-right: 40px;
+      margin-left: 40px;
       display: block;
     }
     & .key {
@@ -84,8 +87,7 @@
       justify-content: center;
       padding-bottom: 20px;
       opacity: 0;
-      transition-delay: 1.5s;
-      transition-duration: 0.5s;
+      transition-duration: 0.25s;
       &.active {
         opacity: 1;
       }

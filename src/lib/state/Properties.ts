@@ -3,7 +3,7 @@ import type { Property } from "$lib/types/derived";
 import { Factory } from "./Factory";
 import { organization } from "./Organization";
 
-export const propertiesHash = Factory.createDerived("Properties", organization, v => {
+export const propertiesHash = Factory.createDerived("Properties Hash", organization, v => {
   return Hashing.hashList(v?.properties ?? [], "id");
 });
 

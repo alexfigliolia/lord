@@ -4,7 +4,7 @@
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
   import type { GraphEvent } from "./types";
   import Line from "$lib/components/data-viz/+Line.svelte";
-  import LinearGradient from "$lib/components/+LinearGradient.svelte";
+  import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
 
   let pathData: string | undefined;
   let expenseLine: string | undefined;

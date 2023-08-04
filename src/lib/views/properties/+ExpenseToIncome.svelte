@@ -6,7 +6,7 @@
   import Area from "$lib/components/data-viz/+Area.svelte";
   import Label from "../overview/+Label.svelte";
   import { writable } from "svelte/store";
-  import LinearGradient from "$lib/components/+LinearGradient.svelte";
+  import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
 
   let incomeLine: string | undefined;
   let expenseLine: string | undefined;

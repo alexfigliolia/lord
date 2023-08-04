@@ -48,7 +48,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@figliolia/enhanced-stores": "^1.0.1",
+    "@figliolia/enhanced-stores": "^1.0.2",
     "@figliolia/event-emitter": "^1.1.1",
     "@figliolia/task-queue": "^1.0.0",
     "d3": "^7.8.5",

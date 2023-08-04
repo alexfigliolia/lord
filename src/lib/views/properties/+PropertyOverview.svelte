@@ -3,8 +3,8 @@
   import SectionTitle from "$lib/components/tiles/+SectionTitle.svelte";
   import TileContent from "$lib/components/tiles/+TileContent.svelte";
   import ExpenseToIncome from "./+ExpenseToIncome.svelte";
-  import IssueCompletion from "./+IssueCompletion.svelte";
   import LinearOccupancy from "./+LinearOccupancy.svelte";
+  import IssueCompletion from "./issue-completion/+IssueCompletion.svelte";
 
   export let name: string;
 </script>
@@ -21,7 +21,7 @@
   </div>
   <div class="graph">
     <TileContent>
-      <SectionSubTitle text="Occupancy" />
+      <SectionSubTitle text="Occupancy Percentage" />
       <div class="overview-sect">
         <LinearOccupancy />
       </div>

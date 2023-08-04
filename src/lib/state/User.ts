@@ -5,10 +5,10 @@ import { organization } from "./Organization";
 
 export const currentUser = Factory.createWritable<User>("Current User");
 
-export const usersHash = Factory.createDerived("organization users", organization, v => {
+export const usersHash = Factory.createDerived("Organization Users Hash", organization, v => {
   return Hashing.hashList(v?.users || [], "id");
 });
 
-export const users = Factory.createDerived("organization users", organization, v => {
+export const users = Factory.createDerived("Organization Users", organization, v => {
   return v?.users || [];
 });

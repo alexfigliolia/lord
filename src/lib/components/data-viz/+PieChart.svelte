@@ -8,8 +8,8 @@
   export let style: string = "";
 
   let SVG: SVGElement;
-  let width: number = 0;
-  let height: number = 0;
+  let width: number = 150;
+  let height: number = 150;
 
   export let graph = new PieGraph({
     data,
@@ -34,10 +34,10 @@
 <ResizeObserver on:resize={onResize} bind:height bind:width>
   <svg
     {style}
+    {height}
+    width={height}
     bind:this={SVG}
-    width={graph.dimensions}
-    height={graph.dimensions}
-    viewBox={`${-graph.radius} ${-graph.radius} ${graph.dimensions} ${graph.dimensions}`}
+    viewBox={`${-graph.radius} ${-graph.radius} ${height} ${height}`}
   >
     <g class="sections">
       <slot name="sections" />

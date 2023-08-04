@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import { ModalStack } from "$lib/generics/UX/ModalStack";
-  import LinearGradient from "./+LinearGradient.svelte";
+  import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
 
   let height: number;
 

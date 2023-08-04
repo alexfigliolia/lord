@@ -24,6 +24,6 @@
   path {
     outline: none;
     transform: scale(0);
-    animation: enter 1s forwards;
+    animation: enter 0.75s forwards;
   }
 </style>

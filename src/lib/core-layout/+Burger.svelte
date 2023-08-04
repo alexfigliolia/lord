@@ -1,5 +1,5 @@
 <script lang="ts">
-  import LinearGradient from "$lib/components/+LinearGradient.svelte";
+  import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
   import { LayoutState, menuOpen } from "$lib/core-layout/LayoutState";
 </script>
 

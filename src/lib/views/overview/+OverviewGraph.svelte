@@ -8,7 +8,7 @@
   import NumericStatus from "$lib/components/data-viz/+NumericStatus.svelte";
   import Area from "$lib/components/data-viz/+Area.svelte";
   import type { GraphEvent } from "$lib/views/properties/types";
-  import LinearGradient from "$lib/components/+LinearGradient.svelte";
+  import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
 
   const flip = writable(false);
   const dataPoint = writable(0);
