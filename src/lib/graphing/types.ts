@@ -26,5 +26,4 @@ export type ColorFunc = (dataPoint: PieArcDatum<PieData>) => string;
 export interface IPieGraph {
   data: PieData[];
   dimensions: number;
-  colorFN: ColorFunc;
 }

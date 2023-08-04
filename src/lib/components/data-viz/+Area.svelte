@@ -27,9 +27,6 @@
   };
 
   onMount(() => {
-    if (browser) {
-      select(Path).attr("d", path);
-    }
     Queue.deferTask(() => {
       active = true;
     }, 500);
@@ -37,17 +34,13 @@
       Queue.clearDeferredTasks();
     };
   });
-  $: {
-    if (Path) {
-      select(Path).attr("d", path);
-    }
-  }
 </script>
 
 <path
   {fill}
   {style}
   {stroke}
+  d={path}
   class:active
   role="group"
   bind:this={Path}

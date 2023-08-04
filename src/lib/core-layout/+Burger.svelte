@@ -1,4 +1,5 @@
 <script lang="ts">
+  import LinearGradient from "$lib/components/+LinearGradient.svelte";
   import { LayoutState, menuOpen } from "$lib/core-layout/LayoutState";
 </script>
 
@@ -10,12 +11,7 @@
 >
   <svg class="circ" version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
     <circle cx="250" cy="250" r="200" />
-    <defs>
-      <linearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
-        <stop stop-color="#9284fc" offset="0" />
-        <stop stop-color="rgb(145, 189, 252)" offset="1" />
-      </linearGradient>
-    </defs>
+    <LinearGradient id="bGrad" />
   </svg>
   <div>
     <div class="bar top" />
@@ -47,7 +43,7 @@
       filter: drop-shadow(0px 1px 2px rgba(#000, 0.1));
       & > circle {
         fill: transparent;
-        stroke: url("#grad");
+        stroke: url("#bGrad");
         stroke-width: 20px;
         stroke-dasharray: 1256;
         stroke-dashoffset: 1256;

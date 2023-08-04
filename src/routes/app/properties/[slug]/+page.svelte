@@ -2,6 +2,7 @@
   import PropertyOverview from "$lib/views/properties/+PropertyOverview.svelte";
   import type { Property } from "$lib/types/derived";
   import { activeProperty, properties } from "$lib/state/Properties";
+  import Issues from "$lib/views/overview/Issues/+Issues.svelte";
 
   export let data: { activeProperty: Property };
 
@@ -13,4 +14,14 @@
   <meta name="description" content={`${data.activeProperty.name} Overview`} />
 </svelte:head>
 
-<PropertyOverview name={data.activeProperty.name} />
+<div>
+  <PropertyOverview name={data.activeProperty.name} />
+  <Issues issues={$activeProperty.issues} />
+</div>
+
+<style lang="scss">
+  div {
+    width: 100%;
+    display: block;
+  }
+</style>

@@ -3,9 +3,10 @@
   import TileListItem from "$lib/components/tiles/+TileListItem.svelte";
   import Check from "$lib/icons/+Check.svelte";
   import Issue from "./+Issue.svelte";
-  import { issues } from "$lib/state/Issues";
+  import type { Issue as IIssue } from "$lib/types/derived";
   import { addModalOpen, tab } from "$lib/state/Add";
 
+  export let issues: IIssue[];
   let hovered: boolean = false;
 
   class UIController {
@@ -25,7 +26,7 @@
 
 <div class="container">
   <SectionTitle text="All Issues" />
-  {#each $issues as { id, type, title, description, status, assigned, created_at, author }, index}
+  {#each issues as { id, type, title, description, status, assigned, created_at, author }, index}
     <Issue
       {id}
       {type}
@@ -36,10 +37,10 @@
       date={created_at}
       createdBy={author}
       {assigned}
-      margin={index === $issues.length - 1 ? 0 : 20}
+      margin={index === issues.length - 1 ? 0 : 20}
     />
   {/each}
-  {#if !$issues.length}
+  {#if !issues.length}
     <TileListItem margin={0}>
       <button
         on:click={UIController.openAdd}

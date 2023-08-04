@@ -21,7 +21,6 @@
 
   onMount(() => {
     if (browser) {
-      select(Path).attr("d", path);
       totalLength = Path.getTotalLength();
       activeLength = totalLength;
     }
@@ -33,15 +32,14 @@
       Queue.clearDeferredTasks();
     };
   });
-
-  $: if (Path && path) select(Path).attr("d", path);
 </script>
 
 <path
   {fill}
   {stroke}
-  bind:this={Path}
+  d={path}
   role="group"
+  bind:this={Path}
   class="graph-path"
   class:active
   on:blur={() => {}}
@@ -58,7 +56,9 @@
 <style lang="scss">
   path {
     outline: none;
+    opacity: 0;
     &.active {
+      opacity: 1;
       transition: stroke-dashoffset 4s ease-out;
     }
   }

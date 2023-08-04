@@ -11,6 +11,7 @@
   import type { ListItem } from "$lib/components/forms/types";
   import { assignIssueMutation } from "$lib/graphql/issues.gql";
   import { OrganizationState } from "$lib/state/OrgManager";
+  import DownwardGradient from "$lib/components/gradients/+DownwardGradient.svelte";
 
   export let id: number;
   export let index: number;
@@ -67,12 +68,7 @@
   <div class="assignment" bind:this={Accessibility.container}>
     <button class="assignment" on:click={UIController.toggle}>
       <Account stroke="#fff" fill={assigned?.name ? "url(#acg)" : "#ddd"}>
-        <defs>
-          <linearGradient id="acg" x1="0" x2="1" y1="0" y2="1">
-            <stop stop-color="#9284fc" offset="0" />
-            <stop stop-color="rgb(145, 189, 252)" offset="1" />
-          </linearGradient>
-        </defs>
+        <DownwardGradient id="acg" />
       </Account>
     </button>
     <div class="dropdown" class:open>

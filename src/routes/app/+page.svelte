@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { issues } from "$lib/state/Issues";
   import Issues from "$lib/views/overview/Issues/+Issues.svelte";
   import Occupancy from "$lib/views/overview/+Occupancy.svelte";
   import FloatingAdd from "$lib/core-layout/+FloatingAdd.svelte";
@@ -13,7 +14,7 @@
 <section id="overview">
   <OverviewGraph />
   <div class="split">
-    <Issues />
+    <Issues issues={$issues} />
     <div class="maxed">
       <Occupancy />
     </div>

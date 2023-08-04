@@ -9,7 +9,7 @@ import {
   type Pie,
   interpolateSpectral,
 } from "d3";
-import type { ColorFunc, IPieGraph } from "./types";
+import type { IPieGraph } from "./types";
 
 export class PieGraph {
   radius: number;
@@ -17,29 +17,12 @@ export class PieGraph {
   dimensions: number;
   Arc: Arc<any, PieData>;
   Pie: Pie<any, PieData>;
-  colorFN: ColorFunc = () => "#000";
-  constructor({ data, colorFN, dimensions }: IPieGraph) {
+  constructor({ data, dimensions }: IPieGraph) {
     this.data = data;
-    this.colorFN = colorFN;
     this.dimensions = dimensions;
     this.radius = dimensions / 2;
     this.Arc = this.generateArc();
     this.Pie = this.generatePie();
-  }
-
-  public buildPie(node: SVGElement) {
-    select(node)
-      .append("g")
-      .attr("class", "sections")
-      .selectAll()
-      .data(this.Pie(this.data))
-      .join("path")
-      .attr("fill", d => this.colorFN(d))
-      // @ts-ignore
-      .attr("d", this.Arc)
-      .append("title")
-      .text(d => `${d.data.label}: ${d.data.value.toLocaleString()}`);
-    return this;
   }
 
   public buildLabels(node: SVGElement) {
@@ -74,13 +57,13 @@ export class PieGraph {
 
   private generateArc() {
     return arc<PieData>()
-      .innerRadius(this.radius * 0.75)
+      .innerRadius(this.radius * 0.6)
       .outerRadius(this.radius - 1);
   }
 
   private generatePie() {
     return pie<PieData>()
-      .padAngle(1 / this.radius)
+      .padAngle(3 / this.radius)
       .sort(null)
       .value(d => d.value);
   }

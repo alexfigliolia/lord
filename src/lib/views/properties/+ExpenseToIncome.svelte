@@ -6,6 +6,7 @@
   import Area from "$lib/components/data-viz/+Area.svelte";
   import Label from "../overview/+Label.svelte";
   import { writable } from "svelte/store";
+  import LinearGradient from "$lib/components/+LinearGradient.svelte";
 
   let incomeLine: string | undefined;
   let expenseLine: string | undefined;
@@ -76,11 +77,6 @@
       data={expenses.map(d => d[1])}
     />
   {/if}
-  <defs>
-    <linearGradient id="lineGrad" x1="0" x2="0" y1="0" y2="1">
-      <stop stop-color="rgb(145, 189, 252)" offset="0" />
-      <stop stop-color="#9284fc" offset="1" />
-    </linearGradient>
-  </defs>
+  <LinearGradient id="lineGrad" />
 </LineGraph>
 <Label {flip} {dataPoint} {pointDate} {prevPoint} {positionX} {positionY} {labelActive} />

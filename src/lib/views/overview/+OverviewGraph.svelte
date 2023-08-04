@@ -8,6 +8,7 @@
   import NumericStatus from "$lib/components/data-viz/+NumericStatus.svelte";
   import Area from "$lib/components/data-viz/+Area.svelte";
   import type { GraphEvent } from "$lib/views/properties/types";
+  import LinearGradient from "$lib/components/+LinearGradient.svelte";
 
   const flip = writable(false);
   const dataPoint = writable(0);
@@ -74,12 +75,7 @@
         {#if pathData}
           <Area path={pathData} data={yData} fill="url(#areaGrad)" {onMouseOut} {onMouseOver} />
         {/if}
-        <defs>
-          <linearGradient id="areaGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop stop-color="#9284fc" offset="0" />
-            <stop stop-color="rgb(145, 189, 252)" offset="1" />
-          </linearGradient>
-        </defs>
+        <LinearGradient id="areaGrad" />
       </LineGraph>
     </div>
     <div class="mom">

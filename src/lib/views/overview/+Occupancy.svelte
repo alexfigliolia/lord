@@ -1,6 +1,7 @@
 <script lang="ts">
   import DisplayTile from "$lib/components/tiles/+DisplayTile.svelte";
   import PercentageFill from "$lib/components/data-viz/+PercentageFill.svelte";
+  import LinearGradient from "$lib/components/+LinearGradient.svelte";
 </script>
 
 <DisplayTile title="Occupancy" subtitle="All Properties">
@@ -11,12 +12,7 @@
       stroke="url(#vGrad)"
       textStyle="color: #9e91fc; font-weight: 300;"
     >
-      <defs>
-        <linearGradient id="vGrad" x1="0" x2="1" y1="0" y2="0">
-          <stop stop-color="#9284fc" offset="0" />
-          <stop stop-color="rgb(145, 189, 252)" offset="1" />
-        </linearGradient>
-      </defs>
+      <LinearGradient id="vGrad" />
     </PercentageFill>
   </div>
 </DisplayTile>

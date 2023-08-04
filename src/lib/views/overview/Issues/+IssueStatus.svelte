@@ -5,8 +5,9 @@
   import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import { setIssueStatusMutation } from "$lib/graphql/issues.gql";
   import { OrganizationState } from "$lib/state/OrgManager";
-  import { IssueStatus } from "$lib/types";
+  import type { IssueStatus } from "$lib/types";
   import { onMount } from "svelte";
+  import { Issues } from "./Issues";
 
   export let id: number;
   export let index: number;
@@ -15,21 +16,9 @@
   let open = false;
 
   export class UIController {
-    public static statuses = {
-      [IssueStatus.Open]: "red",
-      [IssueStatus.Complete]: "grey",
-      [IssueStatus.Inprogress]: "green",
-    };
-
-    public static statusDisplay = {
-      [IssueStatus.Open]: "Open",
-      [IssueStatus.Inprogress]: "In Progress",
-      [IssueStatus.Complete]: "Complete",
-    };
-
-    public static statusList = Object.keys(this.statusDisplay).map(value => ({
+    public static statusList = Object.keys(Issues.statusDisplay).map(value => ({
       value,
-      label: this.statusDisplay[value as IssueStatus].toUpperCase(),
+      label: Issues.statusDisplay[value as IssueStatus].toUpperCase(),
     }));
 
     public static types = {
@@ -65,7 +54,7 @@
     };
 
     public static currentValue(status: IssueStatus) {
-      return { value: status, label: this.statusDisplay[status].toUpperCase() };
+      return { value: status, label: Issues.statusDisplay[status].toUpperCase() };
     }
   }
 
@@ -79,8 +68,8 @@
 </script>
 
 <div class="status-display" bind:this={Accessibility.container}>
-  <button class={`status ${UIController.statuses[status]}`} on:click={UIController.open}>
-    {UIController.statusDisplay[status]}
+  <button class={`status ${Issues.statuses[status]}`} on:click={UIController.open}>
+    {Issues.statusDisplay[status]}
   </button>
   <div class="dropdown" class:open>
     <div class="triangle" />
