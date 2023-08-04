@@ -1,4 +1,4 @@
-<button id="coreLogo">Lord</button>
+<a id="coreLogo" href="/">Lord</a>
 
 <style lang="scss">
   @use "$lib/variables.scss";

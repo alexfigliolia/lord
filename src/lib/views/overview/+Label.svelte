@@ -18,6 +18,9 @@
   const month = derived(pointDate, v => DateScaling.months[new Date(v).getMonth()]);
   const percentageChange = derived([dataPoint, prevPoint], v => {
     const [cur, prev] = v;
+    if (cur === prev) {
+      return Number(0).toFixed(2);
+    }
     const div = cur / prev;
     if (div === 0) {
       return Number(0).toFixed(2);
@@ -51,7 +54,7 @@
     title={$month}
     bind:reset
     change={`${$percentageChange}%`}
-    positive={$prevPoint < $dataPoint}
+    positive={$prevPoint <= $dataPoint}
     value={`$${$dataPoint.toLocaleString()}`}
   />
 </div>

@@ -59,7 +59,7 @@
   path {
     outline: none;
     &.active {
-      transition: stroke-dashoffset 3.5s ease-out;
+      transition: stroke-dashoffset 4s ease-out;
     }
   }
 </style>

@@ -12,17 +12,6 @@ export const propertiesFragment = gql`
     state
     zip_code
     images
-    ${issuesFragment}
-    units {
-      leases {
-        id   
-        unit_id   
-        start_date
-        end_date 
-        active   
-        created_at
-      }
-    }
   }
 `;
 

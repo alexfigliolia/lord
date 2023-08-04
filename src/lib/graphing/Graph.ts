@@ -22,15 +22,8 @@ export class Graph<X extends any[], Y extends any[]> {
       top: 10,
       left: 40,
       right: 0,
-      bottom: 30,
+      bottom: 20,
     };
-    this.graphWidth = this.width - this.margin.left - this.margin.right;
-    this.graphHeight = this.height - this.margin.top - this.margin.bottom;
-  }
-
-  public resize(height: number, width: number) {
-    this.width = width;
-    this.height = height;
     this.graphWidth = this.width - this.margin.left - this.margin.right;
     this.graphHeight = this.height - this.margin.top - this.margin.bottom;
   }
@@ -50,20 +43,6 @@ export class Graph<X extends any[], Y extends any[]> {
       [0, max(this.yData) as number],
       [this.height - this.margin.bottom, this.margin.top],
     ).nice();
-  }
-
-  public deriveFromMousePosition(e: MouseEvent) {
-    const target = e.target as HTMLElement;
-    const { offsetX } = e;
-    const { width } = target.getBoundingClientRect();
-    const unit = width / this.xData.length;
-    let i = 0;
-    for (i; i < this.xData.length - 1; i++) {
-      if (offsetX >= i * unit && offsetX < (i + 1) * unit) {
-        break;
-      }
-    }
-    return { x: this.xData[i], y: this.yData[i], index: i };
   }
 
   public get datum(): [number, number][] {

@@ -5,16 +5,26 @@
   import { TaskQueue } from "@figliolia/task-queue";
 
   export let path: string;
+  export let style: string = "";
+  export let data: number[] = [];
   export let fill: string = "#000";
-  export let stroke: string = "#000";
-  export let strokeWidth: number = 2;
-  export let onMouseOut: null | ((position: MouseEvent) => void) = null;
-  export let onMouseOver: null | ((position: MouseEvent) => void) = null;
+  export let strokeWidth: number = 0;
+  export let stroke: string = "transparent";
+  export let onMouseOut: null | ((position: MouseEvent, data: number[]) => void) = null;
+  export let onMouseOver: null | ((position: MouseEvent, data: number[]) => void) = null;
 
   let Path: SVGPathElement;
   let active = false;
 
   const Queue = new TaskQueue();
+
+  const mouseOver = (e: MouseEvent) => {
+    onMouseOver?.(e, data);
+  };
+
+  const mouseOut = (e: MouseEvent) => {
+    onMouseOut?.(e, data);
+  };
 
   onMount(() => {
     if (browser) {
@@ -35,19 +45,19 @@
 </script>
 
 <path
-  role="group"
-  class="graph-path"
-  class:active
   {fill}
+  {style}
   {stroke}
+  class:active
+  role="group"
   bind:this={Path}
+  class="graph-path"
   on:blur={() => {}}
   on:focus={() => {}}
-  on:mouseout={onMouseOut}
-  on:mouseover={onMouseOver}
-  on:mousemove={onMouseOver}
+  on:mouseout={mouseOut}
+  on:mouseover={mouseOver}
+  on:mousemove={mouseOver}
   stroke-width={strokeWidth}
-  style="filter: drop-shadow(0px -2.5px 5px rgba(0, 0, 0, 0.1));"
 />
 
 <style lang="scss">

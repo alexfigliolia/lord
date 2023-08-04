@@ -1,12 +1,17 @@
 <script lang="ts">
+  import { line } from "d3";
   import moment from "moment";
   import TileContent from "$lib/components/tiles/+TileContent.svelte";
   import { derived } from "svelte/store";
   import { propertiesHash } from "$lib/state/Properties";
   import AnimatedNumber from "$lib/components/data-viz/+AnimatedNumber.svelte";
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
+  import Line from "$lib/components/data-viz/+Line.svelte";
+  import type { GraphEvent } from "./types";
 
   export let id: number;
+
+  let pathData: string | undefined;
 
   const property = derived(propertiesHash, v => v[id]);
 
@@ -19,6 +24,12 @@
   const yData = new Array(12).fill(0).map(() => {
     return Math.floor(Math.random() * (20000 - 10000) + 10000);
   });
+
+  const onInit = ({ graph, xScale, yScale }: GraphEvent) => {
+    pathData = line()
+      .x(d => xScale(d[0]))
+      .y(d => yScale(d[1]))(graph.datum) as string;
+  };
 </script>
 
 <a class="property" href={`/app/properties/${$property.id}`}>
@@ -30,12 +41,26 @@
       </div>
       <div class="revenue">
         <div class="value">
-          <AnimatedNumber active value="$12,345" fontSize="25px" />
+          <AnimatedNumber
+            active
+            fontSize="25px"
+            value={`$${Number(yData.reduce((acc, next) => acc + next, 0)).toLocaleString()}`}
+          />
         </div>
         <div class="metric">Yearly</div>
       </div>
       <div class="content">
-        <LineGraph {xData} {yData} />
+        <LineGraph {xData} {yData} {onInit}>
+          {#if pathData}
+            <Line path={pathData} strokeWidth={4} stroke="url(#lineGrad)" />
+          {/if}
+          <defs>
+            <linearGradient id="lineGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop stop-color="rgb(145, 189, 252)" offset="0" />
+              <stop stop-color="#9284fc" offset="1" />
+            </linearGradient>
+          </defs>
+        </LineGraph>
       </div>
     </div>
   </TileContent>
@@ -97,7 +122,7 @@
     }
     & > .content {
       width: 100%;
-      padding-top: 40px;
+      padding-top: 60px;
     }
   }
 </style>

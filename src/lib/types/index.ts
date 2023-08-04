@@ -227,7 +227,7 @@ export type QueryPropertiesArgs = {
 
 
 export type QueryPropertyArgs = {
-  id?: InputMaybe<Scalars['Int']['input']>;
+  id: Scalars['Int']['input'];
 };
 
 
@@ -333,6 +333,7 @@ export type Property = {
   address_2: Scalars['String']['output'];
   city: Scalars['String']['output'];
   description: Scalars['String']['output'];
+  expenses: Array<Expense>;
   id: Scalars['Int']['output'];
   images: Array<Scalars['String']['output']>;
   issues: Array<Issue>;
