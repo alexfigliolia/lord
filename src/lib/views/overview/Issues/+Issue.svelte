@@ -5,20 +5,13 @@
   import People from "$lib/icons/+People.svelte";
   import { Locale } from "$lib/generics/UX/Locale";
   import { IssueType } from "$lib/types";
-  import type { Maybe, IssueStatus as Status, User } from "$lib/types";
+  import type { Issue } from "$lib/types/derived";
   import IssueStatus from "./+IssueStatus.svelte";
   import IssueAssignment from "./+IssueAssignment.svelte";
 
-  export let id: number;
-  export let date: string;
+  export let issue: Issue;
   export let index: number;
-  export let title: string;
-  export let createdBy: string;
-  export let description: string;
   export let margin: number = 20;
-  export let type: IssueType;
-  export let status: Status;
-  export let assigned: Maybe<User> | undefined;
 </script>
 
 <TileListItem {margin}>
@@ -26,33 +19,33 @@
     <div class="left">
       <div class="icon">
         <div>
-          {#if type === IssueType.Complaint}
+          {#if issue.type === IssueType.Complaint}
             <People color="#fff" />
           {/if}
-          {#if type === IssueType.Consultation}
+          {#if issue.type === IssueType.Consultation}
             <ClipBoard color="#fff" />
           {/if}
-          {#if type === IssueType.Fix}
+          {#if issue.type === IssueType.Fix}
             <Hammer color="#fff" />
           {/if}
         </div>
       </div>
       <div class="meta">
-        <h3>{title}</h3>
+        <h3>{issue}</h3>
         <p class="author">
-          {createdBy} on
-          {new Date(parseInt(date)).toLocaleDateString(Locale.get(), {
+          {issue.author} on
+          {new Date(parseInt(issue.created_at)).toLocaleDateString(Locale.get(), {
             day: "numeric",
             month: "long",
             year: "numeric",
           })}
         </p>
-        <p class="description">{description}</p>
+        <p class="description">{issue.description}</p>
       </div>
     </div>
-    <IssueStatus {id} {index} {status} />
+    <IssueStatus id={issue.id} {index} status={issue.status} />
   </div>
-  <IssueAssignment slot="actions" {id} {index} {assigned} />
+  <IssueAssignment slot="actions" id={issue.id} {index} assigned={issue.assigned} />
 </TileListItem>
 
 <style lang="scss">

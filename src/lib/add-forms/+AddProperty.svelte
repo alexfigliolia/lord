@@ -4,14 +4,13 @@
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
   import { createPropertyMutation } from "$lib/graphql/properties.gql";
   import { NotificationState } from "$lib/state/Notifications";
-  import { organization } from "$lib/state/Organization";
-  import { OrganizationState } from "$lib/state/OrgManager";
   import type { Property, CreatePropertyPayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
   import { Validators } from "./Validators";
   import type { ListItem } from "$lib/components/forms/types";
   import { StaticLists } from "./StaticLists";
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
+  import { overviewOrganization, overviewProperties } from "$lib/views/overview/Stores";
 
   /* Loading States */
   let error = false;
@@ -74,7 +73,7 @@
           city: city,
           state: state.value,
           zip_code: zipCode,
-          organization_id: $organization.id,
+          organization_id: $overviewOrganization.id,
         },
       });
       const response = await request.send();
@@ -84,7 +83,7 @@
     private static onSuccess(property: Property) {
       complete = true;
       this.reset();
-      OrganizationState.appendProperty(property);
+      overviewProperties.update(v => [...v, property]);
       NotificationState.push({
         type: "success",
         message: `Your property has been created! You can register units and leases on property's page`,

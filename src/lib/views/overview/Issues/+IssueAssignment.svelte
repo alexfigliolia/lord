@@ -1,23 +1,27 @@
 <script lang="ts">
-  import type { User } from "$lib/authentication/types";
+  import type { User } from "$lib/types/derived";
   import DropDownList from "$lib/components/forms/+DropDownList.svelte";
   import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import Account from "$lib/icons/+Account.svelte";
   import type { Maybe } from "$lib/types";
-  import { users } from "$lib/state/User";
-  import { onMount } from "svelte";
-  import { derived } from "svelte/store";
+  import { getContext, onMount } from "svelte";
+  import { derived, get, type Readable, type Writable } from "svelte/store";
   import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import type { ListItem } from "$lib/components/forms/types";
   import { assignIssueMutation } from "$lib/graphql/issues.gql";
-  import { OrganizationState } from "$lib/state/OrgManager";
   import DownwardGradient from "$lib/components/gradients/+DownwardGradient.svelte";
+  import type { Issue } from "$lib/types/derived";
 
   export let id: number;
   export let index: number;
   export let assigned: Maybe<User> | undefined;
 
-  const userList = derived(users, v => v.map(u => ({ value: u.id, label: u.name })));
+  const userHash = getContext<Readable<Record<string, User>>>("users");
+  const issues = getContext<Writable<Issue[]>>("issues");
+  const userList = derived(userHash, v => {
+    return Object.values(v).map(u => ({ value: u.id, label: u.name }));
+  });
+
   let open = false;
 
   class UIController {
@@ -47,8 +51,21 @@
         },
       });
       void request.send();
-      OrganizationState.updateIssueAssignment(nextID, index);
+      this.updateIssues(nextID);
     };
+
+    private static updateIssues(userID: null | number) {
+      issues.update(v => {
+        v[index].assigned_id = userID;
+        if (userID === null) {
+          v[index].assigned = undefined;
+        } else {
+          // @ts-ignore
+          v[index].assigned = get(userHash)[userID];
+        }
+        return v;
+      });
+    }
 
     public static currentValue(assigned: Maybe<User> | undefined) {
       return { value: assigned?.id || "", label: assigned?.name || "" };

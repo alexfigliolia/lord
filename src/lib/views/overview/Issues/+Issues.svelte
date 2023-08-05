@@ -3,10 +3,17 @@
   import TileListItem from "$lib/components/tiles/+TileListItem.svelte";
   import Check from "$lib/icons/+Check.svelte";
   import Issue from "./+Issue.svelte";
-  import type { Issue as IIssue } from "$lib/types/derived";
+  import type { Issue as IIssue, User } from "$lib/types/derived";
   import { addModalOpen, tab } from "$lib/state/Add";
+  import { setContext } from "svelte";
+  import type { Readable, Writable } from "svelte/store";
 
-  export let issues: IIssue[];
+  export let users: Readable<Record<number, User>>;
+  export let issues: Writable<IIssue[]>;
+
+  setContext("users", users);
+  setContext("issues", issues);
+
   let hovered: boolean = false;
 
   class UIController {
@@ -26,28 +33,17 @@
 
 <div class="container">
   <SectionTitle text="All Issues" />
-  {#each issues as { id, type, title, description, status, assigned, created_at, author }, index}
-    <Issue
-      {id}
-      {type}
-      {index}
-      {title}
-      {status}
-      {description}
-      date={created_at}
-      createdBy={author}
-      {assigned}
-      margin={index === issues.length - 1 ? 0 : 20}
-    />
+  {#each $issues as issue, index}
+    <Issue {issue} {index} margin={index === $issues.length - 1 ? 0 : 20} />
   {/each}
-  {#if !issues.length}
+  {#if !$issues.length}
     <TileListItem margin={0}>
       <button
+        slot="content"
+        class="position"
         on:click={UIController.openAdd}
         on:mouseenter={UIController.onMouseEnter}
         on:mouseleave={UIController.onMouseLeave}
-        class="position"
-        slot="content"
       >
         <div class="check">
           <Check color={hovered ? "#9e91fc" : "#b5b5b5"} />

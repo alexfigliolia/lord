@@ -16,20 +16,18 @@ export const propertiesFragment = gql`
 `;
 
 export const propertiesByOrg = gql`
-	query PropertiesByOrg($orgID: !Number) {
-		property(organization_id: $orgID) {
-			id 
-			name        
-			description 
-			address_1   
-			address_2   
-			city        
-			state       
-			zip_code    
-			images
-      issues
-		}
-	}
+  query PropertiesByOrg($id: Int!) {
+    properties(organization_id: $id) {
+      id
+      name
+      description
+      address_1
+      address_2
+      city
+      state
+      zip_code
+    }
+  }
 `;
 
 export const createPropertyMutation = gql`

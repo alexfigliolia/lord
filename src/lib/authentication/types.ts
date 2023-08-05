@@ -1,13 +1,7 @@
-import type { RequestEvent } from "@sveltejs/kit";
+import type { User } from "$lib/types/derived";
+import type { ServerLoadEvent } from "@sveltejs/kit";
 
 export interface IVerifyCredentials<T> {
   onError?: () => void | Promise<void>;
-  onSuccess?: (user: User, request: RequestEvent) => T | Promise<T>;
-}
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
+  onSuccess?: (user: User, request: ServerLoadEvent) => T | Promise<T>;
 }

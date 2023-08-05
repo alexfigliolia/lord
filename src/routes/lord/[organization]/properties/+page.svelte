@@ -2,8 +2,9 @@
   import TileContent from "$lib/components/tiles/+TileContent.svelte";
   import Building from "$lib/icons/+Building.svelte";
   import { addModalOpen, tab } from "$lib/state/Add";
-  import { properties } from "$lib/state/Properties";
+  import type { PropertyOverview } from "$lib/types/derived";
   import PropertySnapshot from "$lib/views/properties/+PropertySnapshot.svelte";
+  import { properties } from "$lib/views/properties/Stores";
 
   class UIController {
     public static openAdd = () => {
@@ -11,6 +12,10 @@
       tab.set(0);
     };
   }
+
+  export let data: { properties: PropertyOverview[] };
+
+  $: properties.set(data.properties);
 </script>
 
 <svelte:head>
@@ -20,7 +25,7 @@
 
 <section id="properties">
   {#each $properties as property}
-    <PropertySnapshot id={property.id} />
+    <PropertySnapshot {property} />
   {/each}
 
   {#if $properties.length === 0}

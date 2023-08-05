@@ -60,7 +60,7 @@ export class LoginController {
 
   public redirect() {
     this.Queue.deferTask(() => {
-      void goto("/app");
+      void goto("/lord");
     }, 1000);
   }
 }

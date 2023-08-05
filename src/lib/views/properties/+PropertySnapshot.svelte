@@ -2,18 +2,15 @@
   import { line } from "d3";
   import moment from "moment";
   import TileContent from "$lib/components/tiles/+TileContent.svelte";
-  import { derived } from "svelte/store";
-  import { propertiesHash } from "$lib/state/Properties";
   import AnimatedNumber from "$lib/components/data-viz/+AnimatedNumber.svelte";
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
   import Line from "$lib/components/data-viz/+Line.svelte";
   import type { GraphEvent } from "$lib/graphing/types";
+  import type { PropertyOverview } from "$lib/types/derived";
 
-  export let id: number;
+  export let property: PropertyOverview;
 
   let pathData: string | undefined;
-
-  const property = derived(propertiesHash, v => v[id]);
 
   const xData = new Array(12).fill("").map((_, i) => {
     const date = moment();
@@ -32,12 +29,12 @@
   };
 </script>
 
-<a class="property" href={`/app/properties/${$property.id}`}>
+<a class="property" href={`/properties/${property.id}`}>
   <TileContent>
     <div class="stats">
       <div class="title">
-        <div class="name">{$property.name}</div>
-        <div class="place">{$property.city}, {$property.state}</div>
+        <div class="name">{property.name}</div>
+        <div class="place">{property.city}, {property.state}</div>
       </div>
       <div class="revenue">
         <div class="value">

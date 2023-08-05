@@ -18,22 +18,12 @@
     <Waves />
     <div class="links">
       <div class="l-group">
-        <Link label="Overview" href="/app" color="#fff" margin="30px 0" {onClick} let:currentColor>
+        <Link label="Overview" href="/lord" color="#fff" margin="30px 0" {onClick} let:currentColor>
           <Chart color={currentColor} />
         </Link>
         <Link
-          label="Properties"
-          href="/app/properties"
-          color="#fff"
-          margin="30px 0"
-          {onClick}
-          let:currentColor
-        >
-          <Building color={currentColor} />
-        </Link>
-        <Link
           label="Banking"
-          href="/app/banking"
+          href="/lord/banking"
           color="#fff"
           margin="30px 0"
           {onClick}
@@ -43,7 +33,7 @@
         </Link>
         <Link
           label="Account"
-          href="/app/account"
+          href="/lord/account"
           color="#fff"
           margin="30px 0"
           {onClick}

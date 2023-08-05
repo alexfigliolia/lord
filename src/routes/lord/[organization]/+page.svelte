@@ -1,9 +1,25 @@
 <script lang="ts">
-  import { issues } from "$lib/state/Issues";
   import Issues from "$lib/views/overview/Issues/+Issues.svelte";
   import Occupancy from "$lib/views/overview/+Occupancy.svelte";
   import FloatingAdd from "$lib/core-layout/+FloatingAdd.svelte";
   import OverviewGraph from "$lib/views/overview/+OverviewGraph.svelte";
+  import {
+    overviewOrganization,
+    overviewIssues,
+    overviewProperties,
+    overviewUsers,
+    overviewUserHash,
+  } from "$lib/views/overview/Stores";
+  import type { OverviewData } from "$lib/views/overview/types";
+
+  export let data: OverviewData;
+
+  $: {
+    overviewUsers.set(data.users);
+    overviewIssues.set(data.issues);
+    overviewProperties.set(data.properties);
+    overviewOrganization.set(data.organization);
+  }
 </script>
 
 <svelte:head>
@@ -14,7 +30,7 @@
 <section id="overview">
   <OverviewGraph />
   <div class="split">
-    <Issues issues={$issues} />
+    <Issues issues={overviewIssues} users={overviewUserHash} />
     <div class="maxed">
       <Occupancy />
     </div>

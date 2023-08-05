@@ -1,12 +1,4 @@
-import type { Organization } from "$lib/types/derived";
+import type { PartialOrganization } from "$lib/types/derived";
 import { Factory } from "./Factory";
 
-export const organizations = Factory.createWritable<Organization[]>("Organizations", []);
-
-export const organizationIndex = Factory.createWritable("Active Organization Index", 0);
-
-export const organization = Factory.createDerived(
-  "Active Organization",
-  [organizations, organizationIndex],
-  ([orgs, i]) => orgs[i],
-);
+export const organizations = Factory.createWritable<PartialOrganization[]>("Organizations", []);

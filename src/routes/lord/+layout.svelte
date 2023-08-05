@@ -4,12 +4,11 @@
   import SideBar from "$lib/core-layout/+SideBar.svelte";
   import AddModal from "$lib/core-layout/+AddModal.svelte";
   import { organizations } from "$lib/state/Organization";
-  import type { Organization } from "$lib/types/derived";
   import Notifications from "$lib/core-layout/+Notifications.svelte";
   import { currentUser } from "$lib/state/User";
-  import type { User } from "$lib/authentication/types";
+  import type { CoreLayoutData } from "$lib/types/loaders";
 
-  export let data: { organizations: Organization[]; user: User };
+  export let data: CoreLayoutData;
 
   $: organizations.set(data.organizations);
   $: currentUser.set(data.user);

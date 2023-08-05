@@ -1,17 +1,20 @@
 <script lang="ts">
-  import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
-  import DropDownList from "$lib/components/forms/+DropDownList.svelte";
-  import type { ListItem } from "$lib/components/forms/types";
-  import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
-  import { setIssueStatusMutation } from "$lib/graphql/issues.gql";
-  import { OrganizationState } from "$lib/state/OrgManager";
+  import { getContext, onMount } from "svelte";
+  import type { Writable } from "svelte/store";
   import type { IssueStatus } from "$lib/types";
-  import { onMount } from "svelte";
+  import type { Issue } from "$lib/types/derived";
+  import type { ListItem } from "$lib/components/forms/types";
+  import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
+  import { setIssueStatusMutation } from "$lib/graphql/issues.gql";
+  import DropDownList from "$lib/components/forms/+DropDownList.svelte";
+  import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import { Issues } from "./Issues";
 
   export let id: number;
   export let index: number;
   export let status: IssueStatus;
+
+  const issues = getContext<Writable<Issue[]>>("issues");
 
   let open = false;
 
@@ -49,7 +52,10 @@
         },
       });
       void request.send();
-      OrganizationState.updateIssueStatus(value as IssueStatus, index);
+      issues.update(v => {
+        v[index].status = status;
+        return v;
+      });
       this.close();
     };
 

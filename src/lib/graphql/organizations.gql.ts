@@ -8,9 +8,29 @@ export const organizationsByAffiliation = gql`
     organizationAffiliations(user_id: $user_id) {
       id
       name
+    }
+  }
+`;
+
+export const organizationByID = gql`
+  query OrganizationByID($id: Int!) {
+    organization(id: $id) {
+      id
+      name
       ${publicUsersFragment}
       ${issuesFragment}
       ${propertiesFragment}
+    }
+  }
+`;
+
+export const queryUsersByOrgID = gql`
+  query OrganizationsUsers($id: Int!) {
+    organizationsUsers(id: $id) {
+      id
+      name
+      role
+      email
     }
   }
 `;

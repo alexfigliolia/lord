@@ -7,17 +7,17 @@
   import type { PieGraph } from "$lib/graphing/PieGraph";
   import { IssueSpread } from "./IssueSpread";
   import type { PathData } from "./types";
-  import { CurrentProperty } from "./Stores";
   import SubTile from "$lib/components/tiles/+SubTile.svelte";
   import MetricTitle from "$lib/components/data-viz/+MetricTitle.svelte";
+  import { issues } from "./Stores";
 
   let graph: PieGraph;
   let active = false;
   let paths: PathData[] = [];
 
-  const statuses = derived(CurrentProperty, v => {
+  const statuses = derived(issues, v => {
     const spread = new IssueSpread();
-    for (const issue of v.issues) {
+    for (const issue of v) {
       spread.increment(issue.status);
     }
     return spread;

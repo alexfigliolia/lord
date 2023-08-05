@@ -3,10 +3,7 @@
   import AddInput from "$lib/components/forms/+AddInput.svelte";
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
   import { NotificationState } from "$lib/state/Notifications";
-  import { organization } from "$lib/state/Organization";
-  import { OrganizationState } from "$lib/state/OrgManager";
-  import { properties } from "$lib/state/Properties";
-  import { currentUser, users } from "$lib/state/User";
+  import { currentUser } from "$lib/state/User";
   import type { Issue, CreateIssuePayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
   import { Validators } from "./Validators";
@@ -14,6 +11,13 @@
   import type { ListItem } from "$lib/components/forms/types";
   import { derived, writable } from "svelte/store";
   import { createIssueMutation } from "$lib/graphql/issues.gql";
+  import {
+    overviewUsers,
+    overviewIssues,
+    overviewProperties,
+    overviewOrganization,
+    overviewPropertiesHash,
+  } from "$lib/views/overview/Stores";
 
   /* Loading States */
   let error = false;
@@ -29,9 +33,10 @@
   let property: ListItem = { value: "", label: "" };
 
   const activeProperty = writable<number | null>(null);
-  const units = derived(activeProperty, v => {
-    if (typeof v === "number") {
-      return $properties[v].units;
+
+  const units = derived([activeProperty, overviewPropertiesHash], ([id, hash]) => {
+    if (typeof id === "number") {
+      return hash[id].units;
     }
     return [];
   });
@@ -72,9 +77,9 @@
           title,
           description,
           author: $currentUser.name,
-          organization_id: $organization.id,
           type: this.parseListItem(type),
           unit_id: this.parseNumericListItem(unit),
+          organization_id: $overviewOrganization.id,
           assigned_id: this.parseNumericListItem(assigned),
           property_id: this.parseNumericListItem(property),
         },
@@ -103,7 +108,7 @@
     private static onSuccess(issue: Issue) {
       complete = true;
       this.reset();
-      OrganizationState.appendIssue(issue);
+      overviewIssues.update(v => [...v, issue]);
       NotificationState.push({
         type: "success",
         message: "Your Issue has been created!",
@@ -141,7 +146,7 @@
     placeholder="Property"
     bind:value={property}
     onSelect={UIController.onSelectProperty}
-    items={$properties.map(v => ({ label: v.name, value: v.id }))}
+    items={$overviewProperties.map(v => ({ label: v.name, value: v.id }))}
   />
   <AddDropDown
     name="unit"
@@ -164,7 +169,7 @@
     name="assigned"
     placeholder="Assign to (Optional)"
     bind:value={assigned}
-    items={$users.map(u => ({ label: u.name, value: u.id }))}
+    items={$overviewUsers.map(u => ({ label: u.name, value: u.id }))}
   />
   <div class="action">
     <FormActionButton stateful {error} {loading} {complete} text="Create" />

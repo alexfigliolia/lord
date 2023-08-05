@@ -1,13 +1,14 @@
-import type { RequestEvent } from "@sveltejs/kit";
-import type { IVerifyCredentials, User } from "./types";
+import type { ServerLoadEvent } from "@sveltejs/kit";
+import type { IVerifyCredentials } from "./types";
 import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
 import { verifyQuery } from "$lib/graphql/authentication.gql";
+import type { User } from "$lib/types/derived";
 
 export const verifyCredentials = <T = User>({
   onError = () => {},
-  onSuccess = (user: User, _: RequestEvent<any>) => user as T,
+  onSuccess = (user: User, _: ServerLoadEvent<any>) => user as T,
 }: IVerifyCredentials<T>) => {
-  return async (params: RequestEvent) => {
+  return async (params: ServerLoadEvent) => {
     const user = params.cookies.get("L_User");
     if (!user) {
       return onError();

@@ -7,11 +7,11 @@
   import { Validators } from "./Validators";
   import type { ListItem } from "$lib/components/forms/types";
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
-  import { organization } from "$lib/state/Organization";
   import { SignUpValidators } from "$lib/authentication/SignUpValidators";
   import { inviteUser } from "$lib/graphql/invites.gql";
   import { UserRole } from "$lib/types";
   import { NotificationState } from "$lib/state/Notifications";
+  import { overviewOrganization } from "$lib/views/overview/Stores";
 
   /* Loading States */
   let error = false;
@@ -74,8 +74,8 @@
           name,
           email,
           role: role.value,
-          organization_id: $organization.id,
-          organization_name: $organization.name,
+          organization_id: $overviewOrganization.id,
+          organization_name: $overviewOrganization.name,
         },
       });
       const response = await request.send();
