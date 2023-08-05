@@ -11,7 +11,7 @@
   import { writable, type Writable } from "svelte/store";
   import Axis from "$lib/components/data-viz/+Axis.svelte";
   import Grid from "$lib/components/data-viz/+Grid.svelte";
-  import type { GraphEvent } from "$lib/views/properties/types";
+  import type { GraphEvent } from "$lib/graphing/types";
   import ResizeObserver from "$lib/components/observers/+ResizeObserver.svelte";
 
   export let xData: number[] = [];

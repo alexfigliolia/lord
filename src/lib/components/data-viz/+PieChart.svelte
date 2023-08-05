@@ -1,8 +1,7 @@
 <script lang="ts">
-  import type { PieArcDatum } from "d3";
   import { PieGraph } from "$lib/graphing/PieGraph";
-  import type { PieData } from "$lib/views/properties/types";
-  import ResizeObserver from "../observers/+ResizeObserver.svelte";
+  import type { PieData } from "$lib/graphing/types";
+  import ResizeObserver from "$lib/components/observers/+ResizeObserver.svelte";
 
   export let data: PieData[];
   export let style: string = "";

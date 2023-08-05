@@ -1,7 +1,5 @@
 <script lang="ts">
-  import SectionSubTitle from "$lib/components/tiles/+SectionSubTitle.svelte";
   import SectionTitle from "$lib/components/tiles/+SectionTitle.svelte";
-  import TileContent from "$lib/components/tiles/+TileContent.svelte";
   import ExpenseToIncome from "./+ExpenseToIncome.svelte";
   import LinearOccupancy from "./+LinearOccupancy.svelte";
   import IssueCompletion from "./+IssueCompletion.svelte";
@@ -12,28 +10,13 @@
 <SectionTitle text={name} />
 <div class="property-overview">
   <div class="graph">
-    <TileContent>
-      <SectionSubTitle text="Expense to Income" />
-      <div class="overview-sect">
-        <ExpenseToIncome />
-      </div>
-    </TileContent>
+    <ExpenseToIncome />
   </div>
   <div class="graph">
-    <TileContent>
-      <SectionSubTitle text="Occupancy Percentage" />
-      <div class="overview-sect">
-        <LinearOccupancy />
-      </div>
-    </TileContent>
+    <LinearOccupancy />
   </div>
   <div class="graph">
-    <TileContent>
-      <SectionSubTitle text="Issue Completion" />
-      <div class="overview-sect">
-        <IssueCompletion />
-      </div>
-    </TileContent>
+    <IssueCompletion />
   </div>
 </div>
 
@@ -54,10 +37,6 @@
       }
       @media #{variables.$mq-1350} {
         width: 32%;
-      }
-      & .overview-sect {
-        margin-top: 20px;
-        height: 200px;
       }
     }
   }

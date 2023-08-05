@@ -7,7 +7,7 @@
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
   import NumericStatus from "$lib/components/data-viz/+NumericStatus.svelte";
   import Area from "$lib/components/data-viz/+Area.svelte";
-  import type { GraphEvent } from "$lib/views/properties/types";
+  import type { GraphEvent } from "$lib/graphing/types";
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
 
   const flip = writable(false);

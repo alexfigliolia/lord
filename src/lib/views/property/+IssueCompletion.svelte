@@ -8,6 +8,8 @@
   import { IssueSpread } from "./IssueSpread";
   import type { PathData } from "./types";
   import { CurrentProperty } from "./Stores";
+  import SubTile from "$lib/components/tiles/+SubTile.svelte";
+  import MetricTitle from "$lib/components/data-viz/+MetricTitle.svelte";
 
   let graph: PieGraph;
   let active = false;
@@ -21,6 +23,13 @@
     return spread;
   });
 
+  const percentage = derived(statuses, v => {
+    if (v.isEmpty) {
+      return "100%";
+    }
+    return `${Math.round((v.spread.complete / v.total) * 100)}%`;
+  });
+
   const data = derived(statuses, v => v.datum());
 
   $: if ($statuses && graph && $data.length) {
@@ -31,41 +40,44 @@
   }
 </script>
 
-<div class="chart">
-  <div class="key" class:active>
-    {#each $data as { label, value }}
-      <div>
-        <div class="label">
-          <div class={`block ${label}`} />
-          <div class="label-text">{Issues.getDisplay(label)}</div>
+<SubTile title="Issue Completion">
+  <MetricTitle slot="title" label="Yearly Completion" value={$percentage} />
+  <div class="chart" slot="content">
+    <div class="key" class:active>
+      {#each $data as { label, value }}
+        <div>
+          <div class="label">
+            <div class={`block ${label}`} />
+            <div class="label-text">{Issues.getDisplay(label)}</div>
+          </div>
+          <div class="value">{value}</div>
         </div>
-        <div class="value">{value}</div>
-      </div>
-    {/each}
+      {/each}
+    </div>
+    <div class="pie">
+      <PieChart bind:graph data={$data} style="filter: drop-shadow(0px 2.5px 5px rgba(0,0,0,0.2));">
+        <svelte:fragment slot="svg">
+          <LinearGradient id="inProgressGrad" color1="#04c340" color2="rgb(2, 215, 115)" />
+          <LinearGradient id="openGrad" color1="#ff007b" color2="#fe0f33" />
+          <LinearGradient id="completeGrad" color1="#00d9ff" color2="#00a6ff" />
+        </svelte:fragment>
+        <svelte:fragment slot="sections">
+          {#if paths.length}
+            {#each paths as { value, label, path }, index}
+              <PieSection
+                {value}
+                {path}
+                delay={500 + index * 300}
+                title={Issues.getDisplay(label)}
+                fill={Issues.getGradient(label)}
+              />
+            {/each}
+          {/if}
+        </svelte:fragment>
+      </PieChart>
+    </div>
   </div>
-  <div class="pie">
-    <PieChart bind:graph data={$data} style="filter: drop-shadow(0px 2.5px 5px rgba(0,0,0,0.2));">
-      <svelte:fragment slot="svg">
-        <LinearGradient id="inProgressGrad" color1="#04c340" color2="rgb(2, 215, 115)" />
-        <LinearGradient id="openGrad" color1="#ff007b" color2="#fe0f33" />
-        <LinearGradient id="completeGrad" color1="#00d9ff" color2="#00a6ff" />
-      </svelte:fragment>
-      <svelte:fragment slot="sections">
-        {#if paths.length}
-          {#each paths as { value, label, path }, index}
-            <PieSection
-              {value}
-              {path}
-              delay={500 + index * 300}
-              title={Issues.getDisplay(label)}
-              fill={Issues.getGradient(label)}
-            />
-          {/each}
-        {/if}
-      </svelte:fragment>
-    </PieChart>
-  </div>
-</div>
+</SubTile>
 
 <style lang="scss">
   .chart {

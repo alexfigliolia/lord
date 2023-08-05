@@ -5,8 +5,11 @@
   import type { GraphEvent } from "$lib/graphing/types";
   import Line from "$lib/components/data-viz/+Line.svelte";
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
+  import SubTile from "$lib/components/tiles/+SubTile.svelte";
+  import MetricTitle from "$lib/components/data-viz/+MetricTitle.svelte";
 
   let pathData: string | undefined;
+  let percentage = "0%";
 
   const xData = new Array(12).fill("").map((_, i) => {
     const date = moment();
@@ -23,11 +26,22 @@
       .x(d => xScale(d[0]))
       .y(d => yScale(d[1]))(graph.datum) as string;
   };
+
+  $: {
+    if (!yData.length) {
+      percentage = "100%";
+    } else {
+      percentage = `${Math.round(yData.reduce((acc, next) => acc + next, 0) / yData.length)}%`;
+    }
+  }
 </script>
 
-<LineGraph {xData} {yData} {onInit}>
-  {#if pathData}
-    <Line path={pathData} stroke="url(#lineGrad)" strokeWidth={5} />
-  {/if}
-  <LinearGradient id="lineGrad" />
-</LineGraph>
+<SubTile title="Occupancy Percentage">
+  <MetricTitle slot="title" label="Yearly Occupancy" value={percentage} />
+  <LineGraph slot="content" {xData} {yData} {onInit}>
+    {#if pathData}
+      <Line path={pathData} stroke="url(#lineGrad)" strokeWidth={5} />
+    {/if}
+    <LinearGradient id="lineGrad" />
+  </LineGraph>
+</SubTile>

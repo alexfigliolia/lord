@@ -47,7 +47,7 @@
             value={`$${Number(yData.reduce((acc, next) => acc + next, 0)).toLocaleString()}`}
           />
         </div>
-        <div class="metric">Yearly</div>
+        <div class="metric">Yearly Revenue</div>
       </div>
       <div class="content">
         <LineGraph {xData} {yData} {onInit}>

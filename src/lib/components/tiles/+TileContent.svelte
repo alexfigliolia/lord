@@ -14,11 +14,14 @@
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    padding: 2vw;
+    padding: 4vw;
     min-height: 40px;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0px 5px 15px rgba(#000, 0.2);
+    @media #{variables.$mq-550} {
+      padding: 2vw;
+    }
     @media #{variables.$mq-1200} {
       padding: 1.5vw;
     }
