@@ -132,6 +132,7 @@ export type Query = {
   logout?: Maybe<Scalars['Boolean']['output']>;
   organization: Organization;
   organizationAffiliations: Array<Organization>;
+  organizationStats: OrganizationStats;
   organizations: Array<Organization>;
   organizationsUsers: Array<User>;
   payment?: Maybe<Payments>;
@@ -204,6 +205,11 @@ export type QueryOrganizationArgs = {
 
 export type QueryOrganizationAffiliationsArgs = {
   user_id: Scalars['Int']['input'];
+};
+
+
+export type QueryOrganizationStatsArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -315,6 +321,13 @@ export type Lease = {
   users: Array<User>;
 };
 
+export type OrgStats = {
+  __typename?: 'orgStats';
+  issues: Scalars['Int']['output'];
+  properties: Scalars['Int']['output'];
+  users: Scalars['Int']['output'];
+};
+
 export type Organization = {
   __typename?: 'organization';
   id: Scalars['Int']['output'];
@@ -323,6 +336,14 @@ export type Organization = {
   owner_id: Scalars['Int']['output'];
   properties: Array<Property>;
   users: Array<User>;
+};
+
+export type OrganizationStats = {
+  __typename?: 'organizationStats';
+  _count: OrgStats;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  owner_id: Scalars['Int']['output'];
 };
 
 export type Payments = {

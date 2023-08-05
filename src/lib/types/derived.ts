@@ -1,4 +1,4 @@
-import type { Organization as GQLOrg, Property as GQLProp, Issue as GQLIssue, Unit as GQLUnit, Invite as GQLInvite, User as GQLUser } from "./index";
+import type { Organization as GQLOrg, Property as GQLProp, Issue as GQLIssue, Unit as GQLUnit, Invite as GQLInvite, User as GQLUser, OrganizationStats as GQLOrgStats } from "./index";
 import type { Payload } from "./utilies";
 
 export type PartialOrganization = Pick<GQLOrg, "id" | "name">;
@@ -62,4 +62,10 @@ export type PropertyOverview = Omit<GQLProp, "images" | "issues" | "expenses" | 
 
 export type PropertiesPayload = Payload<{
 	properties: PropertyOverview[]
+}>
+
+export type OrganizationStats = Omit<GQLOrgStats, "__typename">
+
+export type OrgStatsPayload = Payload<{
+	organizationStats: OrganizationStats[];
 }>

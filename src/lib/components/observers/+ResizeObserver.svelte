@@ -6,8 +6,6 @@
   export let height: number = 0;
 
   class UIController {
-    static width = 0;
-    static height = 0;
     static observer?: ResizeObserver;
     static reference: HTMLDivElement;
     static dispatcher = createEventDispatcher();
@@ -20,14 +18,12 @@
           for (const dimension of dimensions) {
             let dispatch = false;
             const { blockSize, inlineSize } = dimension;
-            if (inlineSize !== this.width) {
-              this.width = inlineSize;
-              width = this.width;
+            if (inlineSize !== width) {
+              width = inlineSize;
               dispatch = true;
             }
-            if (blockSize !== this.height) {
-              this.height = blockSize;
-              height = this.height;
+            if (blockSize !== height) {
+              height = blockSize;
               dispatch = true;
             }
             this.dispatcher("resize", { height, width });
@@ -38,7 +34,9 @@
     }
 
     private static emitInitialDimensions() {
-      const { height, width } = this.reference.getBoundingClientRect();
+      const block = this.reference.getBoundingClientRect();
+      height = block.height;
+      width = block.width;
       this.dispatcher("resize", { height, width });
     }
 

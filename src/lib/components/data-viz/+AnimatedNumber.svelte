@@ -105,7 +105,7 @@
   bind:this={UIController.reference}
   class:visible={UIController.visible}
   aria-label={value.toString()}
-  style={style + `font-size:${fontSize}; height: ${height}`}
+  style={`font-size:${fontSize}; height: ${height}; ${style}`}
 >
   {value}
   {#each $after as token, index (index)}

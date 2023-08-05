@@ -5,9 +5,14 @@ import { propertiesFragment } from "./properties.gql";
 
 export const organizationsByAffiliation = gql`
   query OrganizationsByAffiliation($user_id: Int!) {
-    organizationAffiliations(user_id: $user_id) {
+    organizationStats(id: $user_id) {
       id
       name
+      _count {
+        issues
+        properties
+        users
+      }
     }
   }
 `;
