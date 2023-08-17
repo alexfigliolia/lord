@@ -7,7 +7,7 @@ module.exports = {
     "prettier",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
-  ignorePatterns: ["svelte.config.js", ".eslintrc.cjs", "__Stealth__", "node_modules", ".svelte-kit", "build"],
+  ignorePatterns: ["svelte.config.js", ".eslintrc.cjs", "__Stealth__", "node_modules", ".svelte-kit", "build", "src/lib/schema/**/*.ts"],
   parser: "@typescript-eslint/parser",
   plugins: ["simple-import-sort", "@typescript-eslint", "prettier"],
   parserOptions: {
@@ -58,7 +58,7 @@ module.exports = {
     "@typescript-eslint/no-shadow": 0,
     "@typescript-eslint/no-unnecessary-type-constraint": 0,
     "@typescript-eslint/no-unsafe-assignment": 0,
-    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/consistent-type-imports": ["error", { fixStyle: "separate-type-imports" }],
     "@typescript-eslint/no-unsafe-member-access": 0,
     "@typescript-eslint/no-floating-promises": ["error", { ignoreVoid: true, ignoreIIFE: true }],
   },

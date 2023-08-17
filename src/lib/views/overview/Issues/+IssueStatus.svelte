@@ -1,27 +1,28 @@
 <script lang="ts">
   import { getContext, onMount } from "svelte";
   import type { Writable } from "svelte/store";
-  import type { IssueStatus } from "$lib/types";
-  import type { Issue } from "$lib/types/derived";
   import type { ListItem } from "$lib/components/forms/types";
   import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import { setIssueStatusMutation } from "$lib/graphql/issues.gql";
   import DropDownList from "$lib/components/forms/+DropDownList.svelte";
   import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import { Issues } from "./Issues";
+  import type { IssueStatus } from "$lib/schema/globalTypes";
+  import type { IssueFragment } from "$lib/schema/IssueFragment";
+  import type { SetStatus, SetStatusVariables } from "$lib/schema/SetStatus";
 
   export let id: number;
   export let index: number;
   export let status: IssueStatus;
 
-  const issues = getContext<Writable<Issue[]>>("issues");
+  const issues = getContext<Writable<IssueFragment[]>>("issues");
 
   let open = false;
 
   export class UIController {
     public static statusList = Object.keys(Issues.statusDisplay).map(value => ({
       value,
-      label: Issues.statusDisplay[value as IssueStatus].toUpperCase(),
+      label: Issues.getDisplay(value).toUpperCase(),
     }));
 
     public static types = {
@@ -32,6 +33,7 @@
 
     public static close = () => {
       open = false;
+      // TODO - move into KeyboardAccessibility's internal logic
       Accessibility.onInvisible();
     };
 
@@ -44,16 +46,16 @@
       if (value === status) {
         return;
       }
-      const request = new GraphQLRequest({
+      const request = new GraphQLRequest<SetStatus, SetStatusVariables>({
         query: setIssueStatusMutation,
         variables: {
           id,
-          status: value,
+          status: value as IssueStatus,
         },
       });
       void request.send();
       issues.update(v => {
-        v[index].status = status;
+        v[index].status = value as IssueStatus;
         return v;
       });
       this.close();

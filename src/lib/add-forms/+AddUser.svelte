@@ -2,16 +2,16 @@
   import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import AddInput from "$lib/components/forms/+AddInput.svelte";
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
-  import type { CreateInvitePayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
   import { Validators } from "./Validators";
   import type { ListItem } from "$lib/components/forms/types";
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
   import { SignUpValidators } from "$lib/authentication/SignUpValidators";
   import { inviteUser } from "$lib/graphql/invites.gql";
-  import { UserRole } from "$lib/types";
   import { NotificationState } from "$lib/state/Notifications";
   import { overviewOrganization } from "$lib/views/overview/Stores";
+  import { UserRole } from "$lib/schema/globalTypes";
+  import type { InviteUser, InviteUserVariables } from "$lib/schema/InviteUser";
 
   /* Loading States */
   let error = false;
@@ -45,6 +45,7 @@
         loading = false;
         complete = false;
       }, 2000);
+      // @ts-ignore
       if (result?.errors?.length) {
         error = true;
       } else {
@@ -67,19 +68,18 @@
       );
     }
 
-    private static async createInvitation(): Promise<CreateInvitePayload> {
-      const request = new GraphQLRequest({
+    private static createInvitation() {
+      const request = new GraphQLRequest<InviteUser, InviteUserVariables>({
         query: inviteUser,
         variables: {
           name,
           email,
-          role: role.value,
+          role: role.value as UserRole,
           organization_id: $overviewOrganization.id,
           organization_name: $overviewOrganization.name,
         },
       });
-      const response = await request.send();
-      return response.json();
+      return request.send();
     }
 
     public static reset() {

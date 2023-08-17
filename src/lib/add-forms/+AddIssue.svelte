@@ -4,7 +4,6 @@
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
   import { NotificationState } from "$lib/state/Notifications";
   import { currentUser } from "$lib/state/User";
-  import type { Issue, CreateIssuePayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
   import { Validators } from "./Validators";
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
@@ -18,6 +17,12 @@
     overviewOrganization,
     overviewPropertiesHash,
   } from "$lib/views/overview/Stores";
+  import type {
+    CreateIssue,
+    CreateIssueVariables,
+    CreateIssue_createIssue,
+  } from "$lib/schema/CreateIssue";
+  import type { IssueType } from "$lib/schema/globalTypes";
 
   /* Loading States */
   let error = false;
@@ -55,37 +60,36 @@
     static onSubmit = async (e: Event) => {
       e.preventDefault();
       loading = true;
-      const result = await this.createIssue();
-      this.Queue.deferTask(() => {
-        error = false;
-        loading = false;
-        complete = false;
-      }, 2000);
-      if (result?.errors?.length) {
-        error = true;
-      } else {
+      try {
+        const result = await this.createIssue();
+        this.Queue.deferTask(() => {
+          error = false;
+          loading = false;
+          complete = false;
+        }, 2000);
         // @ts-ignore
         e.target?.reset();
-        this.onSuccess(result.data.createIssue);
+        this.onSuccess(result?.data?.createIssue);
+      } catch (requestError) {
+        error = true;
       }
     };
 
-    private static async createIssue(): Promise<CreateIssuePayload> {
-      const request = new GraphQLRequest({
+    private static createIssue() {
+      const request = new GraphQLRequest<CreateIssue, CreateIssueVariables>({
         query: createIssueMutation,
         variables: {
           title,
           description,
           author: $currentUser.name,
-          type: this.parseListItem(type),
+          type: this.parseListItem(type) as IssueType,
           unit_id: this.parseNumericListItem(unit),
           organization_id: $overviewOrganization.id,
           assigned_id: this.parseNumericListItem(assigned),
-          property_id: this.parseNumericListItem(property),
+          property_id: this.parseNumericListItem(property) as number,
         },
       });
-      const response = await request.send();
-      return response.json();
+      return request.send();
     }
 
     private static parseNumericListItem({ value }: ListItem) {
@@ -105,10 +109,10 @@
       return undefined;
     }
 
-    private static onSuccess(issue: Issue) {
+    private static onSuccess(issue: CreateIssue_createIssue) {
       complete = true;
       this.reset();
-      overviewIssues.update(v => [...v, issue]);
+      overviewIssues.update(v => [issue, ...v]);
       NotificationState.push({
         type: "success",
         message: "Your Issue has been created!",

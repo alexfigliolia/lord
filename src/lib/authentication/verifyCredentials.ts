@@ -1,26 +1,30 @@
+import type { GraphQLClientResponse } from "graphql-request/build/esm/types";
 import type { ServerLoadEvent } from "@sveltejs/kit";
 import type { IVerifyCredentials } from "./types";
 import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
 import { verifyQuery } from "$lib/graphql/authentication.gql";
-import type { User } from "$lib/types/derived";
+import type { UserFragment } from "$lib/schema/UserFragment";
+import type { Verify } from "$lib/schema/Verify";
 
-export const verifyCredentials = <T = User>({
+export const verifyCredentials = <T = UserFragment>({
   onError = () => {},
-  onSuccess = (user: User, _: ServerLoadEvent<any>) => user as T,
+  onSuccess = (user: UserFragment, _: ServerLoadEvent<any>) => user as T,
 }: IVerifyCredentials<T>) => {
   return async (params: ServerLoadEvent) => {
     const user = params.cookies.get("L_User");
     if (!user) {
       return onError();
     }
-    const request = new GraphQLRequest({
+    const request = new GraphQLRequest<Verify>({
       query: verifyQuery,
+      variables: {},
     });
-    const response = await request.send(params.fetch);
-    const body = await response.json();
-    if (body.data.verifyToken === null || body?.errors?.length) {
+    let result: GraphQLClientResponse<Verify>;
+    try {
+      result = await request.send(params.fetch);
+    } catch (error: any) {
       return onError();
     }
-    return onSuccess(body.data.verifyToken.user, params);
+    return onSuccess(result.data.verifyToken.user, params);
   };
 };

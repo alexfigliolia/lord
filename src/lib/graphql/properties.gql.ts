@@ -1,8 +1,8 @@
 import { gql } from "graphql-request";
-import { issuesFragment } from "./issues.gql";
+import { IssueFragment } from "./issues.gql";
 
-export const propertiesFragment = gql`
-  properties {
+export const PropertyFragment = gql`
+  fragment PropertyFragment on property {
     id
     name
     description
@@ -31,6 +31,7 @@ export const propertiesByOrg = gql`
 `;
 
 export const createPropertyMutation = gql`
+  ${IssueFragment}
   mutation CreateProperty(
     $name: String!
     $organization_id: Int!
@@ -60,11 +61,28 @@ export const createPropertyMutation = gql`
       city
       state
       zip_code
+      images
+      issues {
+        ...IssueFragment
+      }
+      units {
+        id
+        name
+        leases {
+          id
+          unit_id
+          start_date
+          end_date
+          active
+          created_at
+        }
+      }
     }
   }
 `;
 
 export const queryPropertyByID = gql`
+  ${IssueFragment}
   query PropertyByID($id: Int!) {
     property(id: $id) {
       id
@@ -76,14 +94,18 @@ export const queryPropertyByID = gql`
       state
       zip_code
       images
-      ${issuesFragment}
+      issues {
+        ...IssueFragment
+      }
       units {
+        id
+        name
         leases {
-          id   
-          unit_id   
+          id
+          unit_id
           start_date
-          end_date 
-          active   
+          end_date
+          active
           created_at
         }
       }

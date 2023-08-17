@@ -1,22 +1,44 @@
 import { gql } from "graphql-request";
 
-export const issuesFragment = gql`
-	issues {
-		id
-		status
-		type
-		author
-		title
-		unit_id,
+export const IssueFragment = gql`
+  fragment IssueFragment on issue {
+    id
+    status
+    type
+    author
+    title
+    unit_id
     property_id
-		description
-		assigned_id
+    description
     assigned {
       id
       name
     }
-		created_at
-	}
+    created_at
+  }
+`;
+
+export const IssuesWithPropertyFragment = gql`
+  fragment IssuesWithPropertyFragment on issue {
+    id
+    status
+    type
+    author
+    title
+    unit_id
+    property_id
+    description
+    assigned_id
+    assigned {
+      id
+      name
+    }
+    property {
+      id
+      name
+    }
+    created_at
+  }
 `;
 
 export const createIssueMutation = gql`
@@ -47,6 +69,7 @@ export const createIssueMutation = gql`
       type
       author
       title
+      unit_id
       property_id
       description
       created_at
@@ -67,7 +90,7 @@ export const setIssueStatusMutation = gql`
 `;
 
 export const assignIssueMutation = gql`
-  mutation SetStatus($issue_id: Int!, $user_id: Int) {
+  mutation AssignIssue($issue_id: Int!, $user_id: Int) {
     setIssueAssignment(issue_id: $issue_id, user_id: $user_id) {
       id
     }

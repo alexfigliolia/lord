@@ -1,8 +1,11 @@
-import type { OrganizationStats } from "$lib/types/derived";
 import { derived } from "svelte/store";
 import { Factory } from "./Factory";
+import type { OrganizationsByAffiliation_organizationStats } from "$lib/schema/OrganizationsByAffiliation";
 
-export const organizations = Factory.createWritable<OrganizationStats[]>("Organizations", []);
+export const organizations = Factory.createWritable<OrganizationsByAffiliation_organizationStats[]>(
+  "Organizations",
+  [],
+);
 
 export const totalUsers = derived(organizations, v => {
   return v.reduce((acc, next) => acc + next._count.users, 0);

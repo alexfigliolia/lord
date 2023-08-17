@@ -58,7 +58,7 @@ $mq-h-1400: "(min-height: 1400px)";
 }
 
 @mixin gradient {
-  background: linear-gradient(to bottom, #8150f5 0%, #7423f5 50%);
+  background: linear-gradient(to bottom, #8150f5, #7423f5);
 }
 
 @mixin threedee($color) {

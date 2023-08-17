@@ -1,12 +1,11 @@
 <script lang="ts">
   import { menuOpen } from "$lib/core-layout/LayoutState";
-  import Building from "$lib/icons/+Building.svelte";
-  import Chart from "$lib/icons/+Chart.svelte";
   import Money from "$lib/icons/+Money.svelte";
   import Link from "./+Link.svelte";
   import Waves from "./+Waves.svelte";
   import Logout from "./+Logout.svelte";
   import Account from "$lib/icons/+Account.svelte";
+  import People from "$lib/icons/+People.svelte";
 
   const onClick = () => {
     menuOpen.update(() => false);
@@ -18,12 +17,12 @@
     <Waves />
     <div class="links">
       <div class="l-group">
-        <Link label="Overview" href="/lord" color="#fff" margin="30px 0" {onClick} let:currentColor>
-          <Chart color={currentColor} />
+        <Link label="Teams" href="/teams" color="#fff" margin="30px 0" {onClick} let:currentColor>
+          <People color={currentColor} />
         </Link>
         <Link
           label="Banking"
-          href="/lord/banking"
+          href="/teams/banking"
           color="#fff"
           margin="30px 0"
           {onClick}
@@ -33,7 +32,7 @@
         </Link>
         <Link
           label="Account"
-          href="/lord/account"
+          href="/teams/account"
           color="#fff"
           margin="30px 0"
           {onClick}

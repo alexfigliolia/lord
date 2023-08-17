@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
-import { publicUsersFragment } from "./user.gql";
-import { issuesFragment } from "./issues.gql";
-import { propertiesFragment } from "./properties.gql";
+import { UserFragment } from "./user.gql";
+import { PropertyFragment } from "./properties.gql";
+import { IssueFragment } from "./issues.gql";
 
 export const organizationsByAffiliation = gql`
   query OrganizationsByAffiliation($user_id: Int!) {
@@ -18,13 +18,22 @@ export const organizationsByAffiliation = gql`
 `;
 
 export const organizationByID = gql`
+  ${UserFragment}
+  ${IssueFragment}
+  ${PropertyFragment}
   query OrganizationByID($id: Int!) {
     organization(id: $id) {
       id
       name
-      ${publicUsersFragment}
-      ${issuesFragment}
-      ${propertiesFragment}
+      users {
+        ...UserFragment
+      }
+      issues {
+        ...IssueFragment
+      }
+      properties {
+        ...PropertyFragment
+      }
     }
   }
 `;
@@ -36,6 +45,20 @@ export const queryUsersByOrgID = gql`
       name
       role
       email
+    }
+  }
+`;
+
+export const createOrganization = gql`
+  mutation CreateOrganization($name: String!, $owner_id: Int!) {
+    createOrganization(name: $name, owner_id: $owner_id) {
+      id
+      name
+      _count {
+        issues
+        properties
+        users
+      }
     }
   }
 `;

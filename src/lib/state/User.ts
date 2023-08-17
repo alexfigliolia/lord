@@ -1,4 +1,4 @@
-import type { User } from "$lib/types/derived";
+import type { UserFragment } from "$lib/schema/UserFragment";
 import { Factory } from "./Factory";
 
-export const currentUser = Factory.createWritable<User>("Current User");
+export const currentUser = Factory.createWritable<UserFragment>("Current User");

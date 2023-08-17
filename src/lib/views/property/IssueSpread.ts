@@ -1,6 +1,6 @@
-import type { PieGraph } from "$lib/graphing/PieGraph";
 import type { PieData } from "$lib/graphing/types";
-import { IssueStatus } from "$lib/types";
+import type { PieGraph } from "$lib/graphing/PieGraph";
+import { IssueStatus } from "$lib/schema/globalTypes";
 
 export class IssueSpread {
   public total = 0;
@@ -10,7 +10,7 @@ export class IssueSpread {
     inprogress: 0,
   };
 
-  static categories = [IssueStatus.Complete, IssueStatus.Inprogress, IssueStatus.Open];
+  static categories = [IssueStatus.complete, IssueStatus.inprogress, IssueStatus.open];
 
   public increment(key: IssueStatus) {
     this.spread[key]++;
@@ -26,14 +26,9 @@ export class IssueSpread {
 
   public paths(graph: PieGraph, data: PieData[]) {
     let slices = data;
-    if (this.isEmpty) {
-      slices = [{ label: "complete", value: 1 }];
-    }
-    if (this.total === 1) {
-      const status = this.find(1);
-      if (status) {
-        slices = [{ label: status, value: 1 }];
-      }
+    const activeStatuses = this.activeStatuses();
+    if (activeStatuses.size !== 3) {
+      slices = data.filter(d => activeStatuses.has(d.label as IssueStatus));
     }
     return graph.Pie(slices).map(angle => {
       return {
@@ -48,12 +43,13 @@ export class IssueSpread {
     return this.total === 0;
   }
 
-  public find(total: number) {
+  private activeStatuses() {
+    const statuses = new Set<IssueStatus>();
     for (const status of IssueSpread.categories) {
-      if (total === this.spread[status]) {
-        return status;
+      if (this.spread[status] !== 0) {
+        statuses.add(status);
       }
     }
-    return null;
+    return statuses;
   }
 }

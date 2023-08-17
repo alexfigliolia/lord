@@ -2,6 +2,7 @@
   import { goto } from "$app/navigation";
   import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import { logoutQuery } from "$lib/graphql/authentication.gql";
+  import type { Logout } from "$lib/schema/Logout";
 
   export let margin: string = "30px 0";
   export let textColor: string = "#9e91fc";
@@ -10,8 +11,9 @@
 
   const logout = async () => {
     onClick();
-    const request = new GraphQLRequest({
+    const request = new GraphQLRequest<Logout>({
       query: logoutQuery,
+      variables: {},
     });
     await request.send();
     return goto("/login");
@@ -22,8 +24,9 @@
   class="logout"
   on:click={logout}
   style={`background-color: ${backgroundColor}; color: ${textColor}; margin: ${margin}`}
-  >Logout</button
 >
+  Logout
+</button>
 
 <style lang="scss">
   @use "$lib/variables";

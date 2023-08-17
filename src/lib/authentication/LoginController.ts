@@ -4,10 +4,11 @@ import { loginQuery } from "$lib/graphql/authentication.gql";
 import { writable } from "svelte/store";
 import { TaskQueue } from "@figliolia/task-queue";
 import { goto } from "$app/navigation";
+import type { Login, LoginVariables } from "$lib/schema/Login";
 
 export const error = writable("");
 
-export class LoginController {
+export class LoginController<T extends Record<string, any> = Login> {
   email = "";
   password = "";
   Queue = new TaskQueue();
@@ -44,23 +45,29 @@ export class LoginController {
     }
   }
 
-  public async submit() {
+  public submit() {
     const email = this.email.toLocaleLowerCase();
     const password = this.password;
-    const request = new GraphQLRequest({
+    const request = new GraphQLRequest<Login, LoginVariables>({
       query: loginQuery,
       variables: {
         email,
         password,
       },
     });
-    const response = await request.send();
-    return response.json();
+    try {
+      return request.send() as unknown as Promise<T>;
+    } catch (error: any) {
+      if (error.response?.errors?.length) {
+        throw new Error(error.response.errors[0].message);
+      }
+      throw error;
+    }
   }
 
   public redirect() {
     this.Queue.deferTask(() => {
-      void goto("/lord");
+      void goto("/teams");
     }, 1000);
   }
 }

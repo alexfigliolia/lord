@@ -3,11 +3,17 @@
   import ExpenseToIncome from "./+ExpenseToIncome.svelte";
   import LinearOccupancy from "./+LinearOccupancy.svelte";
   import IssueCompletion from "./+IssueCompletion.svelte";
+  import type { Readable } from "svelte/store";
+  import type { IssueFragment } from "$lib/schema/IssueFragment";
 
   export let name: string;
+  export let issues: Readable<IssueFragment[]>;
 </script>
 
-<SectionTitle text={name} />
+<SectionTitle>
+  <div class="name">{name}</div>
+  <slot />
+</SectionTitle>
 <div class="property-overview">
   <div class="graph">
     <ExpenseToIncome />
@@ -16,12 +22,23 @@
     <LinearOccupancy />
   </div>
   <div class="graph">
-    <IssueCompletion />
+    <IssueCompletion {issues} />
   </div>
 </div>
 
 <style lang="scss">
   @use "$lib/variables.scss";
+  .name {
+    text-wrap: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    max-width: 60%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
   .property-overview {
     width: 100%;
     display: flex;

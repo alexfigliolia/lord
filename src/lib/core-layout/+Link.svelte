@@ -9,7 +9,7 @@
   export let activeColor: string = color;
   export let onClick: (e: Event) => void = () => {};
 
-  const active = derived(page, v => v.route.id === href);
+  const active = derived(page, v => (v.route.id || "/").includes(href));
   const currentColor = derived(active, v => (v ? activeColor : color));
 </script>
 

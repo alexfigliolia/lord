@@ -1,6 +1,6 @@
 <script lang="ts">
   import PieChart from "$lib/components/data-viz/+PieChart.svelte";
-  import { derived } from "svelte/store";
+  import { derived, type Readable } from "svelte/store";
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
   import { Issues } from "$lib/views/overview/Issues/Issues";
   import PieSection from "$lib/components/data-viz/+PieSection.svelte";
@@ -9,7 +9,9 @@
   import type { PathData } from "./types";
   import SubTile from "$lib/components/tiles/+SubTile.svelte";
   import MetricTitle from "$lib/components/data-viz/+MetricTitle.svelte";
-  import { issues } from "./Stores";
+  import type { IssueFragment } from "$lib/schema/IssueFragment";
+
+  export let issues: Readable<IssueFragment[]>;
 
   let graph: PieGraph;
   let active = false;
@@ -65,9 +67,9 @@
           {#if paths.length}
             {#each paths as { value, label, path }, index}
               <PieSection
-                {value}
                 {path}
-                delay={500 + index * 300}
+                {value}
+                delay={500 + index * 100}
                 title={Issues.getDisplay(label)}
                 fill={Issues.getGradient(label)}
               />

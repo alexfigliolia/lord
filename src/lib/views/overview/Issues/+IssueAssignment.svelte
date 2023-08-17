@@ -1,23 +1,24 @@
 <script lang="ts">
-  import type { User } from "$lib/types/derived";
   import DropDownList from "$lib/components/forms/+DropDownList.svelte";
   import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import Account from "$lib/icons/+Account.svelte";
-  import type { Maybe } from "$lib/types";
   import { getContext, onMount } from "svelte";
   import { derived, get, type Readable, type Writable } from "svelte/store";
   import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
   import type { ListItem } from "$lib/components/forms/types";
   import { assignIssueMutation } from "$lib/graphql/issues.gql";
   import DownwardGradient from "$lib/components/gradients/+DownwardGradient.svelte";
-  import type { Issue } from "$lib/types/derived";
+  import type { UserFragment } from "$lib/schema/UserFragment";
+  import type { IssueFragment, IssueFragment_assigned } from "$lib/schema/IssueFragment";
+  import type { AssignIssue, AssignIssueVariables } from "$lib/schema/AssignIssue";
+  import type { IssuesWithPropertyFragment_assigned } from "$lib/schema/IssuesWithPropertyFragment";
 
   export let id: number;
   export let index: number;
-  export let assigned: Maybe<User> | undefined;
+  export let assigned: IssueFragment_assigned | IssuesWithPropertyFragment_assigned | null;
 
-  const userHash = getContext<Readable<Record<string, User>>>("users");
-  const issues = getContext<Writable<Issue[]>>("issues");
+  const userHash = getContext<Readable<Record<string, UserFragment>>>("users");
+  const issues = getContext<Writable<IssueFragment[]>>("issues");
   const userList = derived(userHash, v => {
     return Object.values(v).map(u => ({ value: u.id, label: u.name }));
   });
@@ -43,7 +44,7 @@
       if (nextID === assigned?.id) {
         nextID = null;
       }
-      const request = new GraphQLRequest({
+      const request = new GraphQLRequest<AssignIssue, AssignIssueVariables>({
         query: assignIssueMutation,
         variables: {
           issue_id: id,
@@ -56,18 +57,18 @@
 
     private static updateIssues(userID: null | number) {
       issues.update(v => {
-        v[index].assigned_id = userID;
         if (userID === null) {
-          v[index].assigned = undefined;
+          v[index].assigned = null;
         } else {
-          // @ts-ignore
           v[index].assigned = get(userHash)[userID];
         }
         return v;
       });
     }
 
-    public static currentValue(assigned: Maybe<User> | undefined) {
+    public static currentValue(
+      assigned: IssueFragment_assigned | IssuesWithPropertyFragment_assigned | null,
+    ) {
       return { value: assigned?.id || "", label: assigned?.name || "" };
     }
   }

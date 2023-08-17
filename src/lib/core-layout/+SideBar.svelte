@@ -2,11 +2,10 @@
   import Link from "./+Link.svelte";
   import Logo from "./+Logo.svelte";
   import Account from "$lib/icons/+Account.svelte";
-  import Building from "$lib/icons/+Building.svelte";
-  import Chart from "$lib/icons/+Chart.svelte";
   import Money from "$lib/icons/+Money.svelte";
   import Logout from "./+Logout.svelte";
   import { addModalOpen } from "$lib/state/Add";
+  import People from "$lib/icons/+People.svelte";
 
   class UIController {
     public static openAdd = () => {
@@ -22,12 +21,12 @@
     </div>
     <button class="add" on:click={UIController.openAdd}>ADD +</button>
     <div class="links">
-      <Link label="Overview" href="/lord" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
-        <Chart color={currentColor} />
+      <Link label="Teams" href="/teams" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
+        <People color={currentColor} />
       </Link>
       <Link
         label="Banking"
-        href="/lord/banking"
+        href="/teams/banking"
         color="#9b8cae"
         activeColor="#9e91fc"
         let:currentColor
@@ -36,7 +35,7 @@
       </Link>
       <Link
         label="Account"
-        href="/lord/account"
+        href="/teams/account"
         color="#9b8cae"
         activeColor="#9e91fc"
         let:currentColor

@@ -1,31 +1,36 @@
-import { browser } from "$app/environment";
+import { GraphQLClient } from "graphql-request";
 import { PUBLIC_SERVICE_URL } from "$env/static/public";
+import type { ErrorHandling, GQLRequest } from "./types";
 
-export class GraphQLRequest {
+export class GraphQLRequest<D, V extends Record<string, any> = Record<string, any>> {
+  variables: V;
   query: string;
-  variables: Record<string, any>;
+  errorHandling: ErrorHandling;
   signal = new AbortController();
-  constructor({ query, variables = {} }: { query: string; variables?: Record<string, any> }) {
+  constructor({ query, variables, errorHandling = "first" }: GQLRequest<V>) {
     this.query = query;
     this.variables = variables;
+    this.errorHandling = errorHandling;
   }
 
-  public send(fetchFunc: typeof fetch = fetch, headers: Record<string, any> = {}) {
-    const URL = browser ? "/graphql" : `${PUBLIC_SERVICE_URL}/graphql`;
-    return fetchFunc(URL, {
-      method: "POST",
+  public async send(request: typeof fetch = fetch) {
+    const client = new GraphQLClient(`${PUBLIC_SERVICE_URL}/graphql`, {
       mode: "cors",
+      fetch: request,
+      method: "POST",
+      errorPolicy: "all",
+      credentials: "include",
       signal: this.signal.signal,
-      headers: {
-        "Content-Type": "application/json",
-        credentials: "include",
-        ...headers,
-      },
-      body: JSON.stringify({
-        query: this.query,
-        variables: this.variables,
-      }),
     });
+    try {
+      const response = await client.rawRequest<D>(this.query, this.variables);
+      return response;
+    } catch (error: any) {
+      if (this.errorHandling === "first" && error?.response?.errors?.length) {
+        throw new Error(error.response.errors[0].message);
+      }
+      throw error;
+    }
   }
 
   public abort() {

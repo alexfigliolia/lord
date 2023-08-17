@@ -65,8 +65,8 @@
     slot="content"
     {xData}
     {yData}
-    {onInit}
     {flip}
+    {onInit}
     {dataPoint}
     {pointDate}
     {prevPoint}

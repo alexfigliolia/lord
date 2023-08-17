@@ -19,12 +19,13 @@
         return this.onError();
       }
       this.resetError();
-      const response = await Login.submit();
-      if (response?.errors?.length) {
-        return this.onError(response.errors[0].message);
+      try {
+        await Login.submit();
+        complete = true;
+        void Login.redirect();
+      } catch (GQLError: any) {
+        return this.onError(GQLError.message);
       }
-      complete = true;
-      void Login.redirect();
     };
 
     public static preventDefault = (e: Event) => {

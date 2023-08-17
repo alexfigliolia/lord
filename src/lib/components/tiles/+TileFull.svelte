@@ -6,7 +6,7 @@
 </script>
 
 <div class="tile">
-  <SectionTitle text={title} />
+  <SectionTitle>{title}</SectionTitle>
   <TileContent>
     <slot />
   </TileContent>

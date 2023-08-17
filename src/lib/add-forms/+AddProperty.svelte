@@ -4,13 +4,14 @@
   import FormActionButton from "$lib/components/forms/+FormActionButton.svelte";
   import { createPropertyMutation } from "$lib/graphql/properties.gql";
   import { NotificationState } from "$lib/state/Notifications";
-  import type { Property, CreatePropertyPayload } from "$lib/types/derived";
   import { TaskQueue } from "@figliolia/task-queue";
   import { Validators } from "./Validators";
   import type { ListItem } from "$lib/components/forms/types";
   import { StaticLists } from "./StaticLists";
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
   import { overviewOrganization, overviewProperties } from "$lib/views/overview/Stores";
+  import type { CreateProperty, CreatePropertyVariables } from "$lib/schema/CreateProperty";
+  import type { PropertyByID_property } from "$lib/schema/PropertyByID";
 
   /* Loading States */
   let error = false;
@@ -37,19 +38,19 @@
         error = false;
         return;
       }
-      const result = await this.createProperty();
+      try {
+        const result = await this.createProperty();
+        // @ts-ignore
+        e.target?.reset();
+        this.onSuccess(result.data.createProperty);
+      } catch (err) {
+        error = true;
+      }
       this.Queue.deferTask(() => {
         error = false;
         loading = false;
         complete = false;
       }, 2000);
-      if (result?.errors?.length) {
-        error = true;
-      } else {
-        // @ts-ignore
-        e.target?.reset();
-        this.onSuccess(result.data.createProperty);
-      }
     };
 
     private static validateAll() {
@@ -62,8 +63,8 @@
       );
     }
 
-    private static async createProperty(): Promise<CreatePropertyPayload> {
-      const request = new GraphQLRequest({
+    private static createProperty() {
+      const request = new GraphQLRequest<CreateProperty, CreatePropertyVariables>({
         query: createPropertyMutation,
         variables: {
           name: propertyName,
@@ -71,16 +72,15 @@
           address_1: propertyAddress1,
           address_2: propertyAddress2,
           city: city,
-          state: state.value,
+          state: state.value as string,
           zip_code: zipCode,
           organization_id: $overviewOrganization.id,
         },
       });
-      const response = await request.send();
-      return response.json();
+      return request.send();
     }
 
-    private static onSuccess(property: Property) {
+    private static onSuccess(property: PropertyByID_property) {
       complete = true;
       this.reset();
       overviewProperties.update(v => [...v, property]);

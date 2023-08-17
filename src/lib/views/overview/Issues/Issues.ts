@@ -1,22 +1,22 @@
-import { IssueStatus } from "$lib/types";
+import { IssueStatus } from "$lib/schema/globalTypes";
 
 export class Issues {
   public static statuses = {
-    [IssueStatus.Open]: "red",
-    [IssueStatus.Complete]: "grey",
-    [IssueStatus.Inprogress]: "green",
+    [IssueStatus.open]: "red",
+    [IssueStatus.complete]: "grey",
+    [IssueStatus.inprogress]: "green",
   };
 
   public static statusDisplay = {
-    [IssueStatus.Open]: "Open",
-    [IssueStatus.Inprogress]: "In Progress",
-    [IssueStatus.Complete]: "Complete",
+    [IssueStatus.open]: "Open",
+    [IssueStatus.inprogress]: "In Progress",
+    [IssueStatus.complete]: "Complete",
   };
 
   public static gradients = {
-    [IssueStatus.Open]: "url(#openGrad)",
-    [IssueStatus.Complete]: "url(#completeGrad)",
-    [IssueStatus.Inprogress]: "url(#inProgressGrad)",
+    [IssueStatus.open]: "url(#openGrad)",
+    [IssueStatus.complete]: "url(#completeGrad)",
+    [IssueStatus.inprogress]: "url(#inProgressGrad)",
   };
 
   public static getDisplay(status: string) {

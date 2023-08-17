@@ -4,11 +4,9 @@
   export let value: number;
   export let delay: number = 0;
   export let fill: string = "#000";
-
-  let Path: SVGPathElement;
 </script>
 
-<path {fill} d={path} bind:this={Path} style="animation-delay: {delay}ms;">
+<path {fill} d={path} style="animation-delay: {delay}ms;">
   <title>{title}: {value.toLocaleString()}</title>
 </path>
 

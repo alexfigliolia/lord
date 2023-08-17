@@ -6,10 +6,13 @@
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
   import Line from "$lib/components/data-viz/+Line.svelte";
   import type { GraphEvent } from "$lib/graphing/types";
-  import type { PropertyOverview } from "$lib/types/derived";
+  import { onMount } from "svelte";
+  import { browser } from "$app/environment";
+  import type { PropertiesByOrg_properties } from "$lib/schema/PropertiesByOrg";
 
-  export let property: PropertyOverview;
+  export let property: PropertiesByOrg_properties;
 
+  let pathname: string = "";
   let pathData: string | undefined;
 
   const xData = new Array(12).fill("").map((_, i) => {
@@ -27,9 +30,15 @@
       .x(d => xScale(d[0]))
       .y(d => yScale(d[1]))(graph.datum) as string;
   };
+
+  onMount(() => {
+    if (browser) {
+      ({ pathname } = window.location);
+    }
+  });
 </script>
 
-<a class="property" href={`/properties/${property.id}`}>
+<a class="property" href={`${pathname}/${property.id}`}>
   <TileContent>
     <div class="stats">
       <div class="title">

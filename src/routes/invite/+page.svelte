@@ -9,17 +9,17 @@
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
   import type { ListItem } from "$lib/components/forms/types";
   import { InviteController } from "$lib/authentication/InviteController";
-  import type { Invite } from "$lib/types/derived";
+  import type { FindInvitations_invites } from "$lib/schema/FindInvitations";
 
   const InviteFlow = new InviteController();
 
-  const openInvites = writable<Invite[]>([]);
+  const openInvites = writable<FindInvitations_invites[]>([]);
 
   let loading = false;
   let complete = false;
   let buttonError = false;
 
-  let invite: Invite | null = null;
+  let invite: FindInvitations_invites | null = null;
   let organization: ListItem = { label: "", value: "" };
 
   class UIController {
@@ -37,25 +37,26 @@
         return this.onError();
       }
       error.set(" ");
-      const response = await InviteFlow.findInvites();
-      if (response?.errors?.length) {
-        return this.onError(response.errors[0].message);
-      }
-      const invites = response?.data?.invites || [];
-      if (!invites.length) {
-        return this.onError(
-          "We could not locate any pending invitations sent to this email address",
-        );
-      }
-      if (invites.length === 1) {
-        await InviteFlow.acceptInvite(invites[0]);
-        complete = true;
-        InviteFlow.redirect();
-      } else {
-        openInvites.set(invites);
-        loading = false;
-        this.resetError();
-        this.nextPage();
+      try {
+        const response = await InviteFlow.findInvites();
+        const invites = response?.data?.invites || [];
+        if (!invites.length) {
+          return this.onError(
+            "We could not locate any pending invitations sent to this email address",
+          );
+        }
+        if (invites.length === 1) {
+          await InviteFlow.acceptInvite(invites[0]);
+          complete = true;
+          InviteFlow.redirect();
+        } else {
+          openInvites.set(invites);
+          loading = false;
+          this.resetError();
+          this.nextPage();
+        }
+      } catch (err: any) {
+        this.onError(err.message);
       }
     };
 
@@ -70,7 +71,9 @@
         return this.onError("Selecting an organization is required");
       }
       const response = await InviteFlow.acceptInvite(invite);
+      // @ts-ignore
       if (response?.errors?.length) {
+        // @ts-ignore
         return this.onError(response.errors[0].message);
       }
       complete = true;

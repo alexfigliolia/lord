@@ -3,13 +3,14 @@
   import TileListItem from "$lib/components/tiles/+TileListItem.svelte";
   import Check from "$lib/icons/+Check.svelte";
   import Issue from "./+Issue.svelte";
-  import type { Issue as IIssue, User } from "$lib/types/derived";
   import { addModalOpen, tab } from "$lib/state/Add";
   import { setContext } from "svelte";
   import type { Readable, Writable } from "svelte/store";
+  import type { IssueFragment } from "$lib/schema/IssueFragment";
+  import type { Login_login_user } from "$lib/schema/Login";
 
-  export let users: Readable<Record<number, User>>;
-  export let issues: Writable<IIssue[]>;
+  export let users: Readable<Record<number, Login_login_user>>;
+  export let issues: Writable<IssueFragment[]>;
 
   setContext("users", users);
   setContext("issues", issues);
@@ -32,7 +33,7 @@
 </script>
 
 <div class="container">
-  <SectionTitle text="All Issues" />
+  <SectionTitle>All Issues</SectionTitle>
   {#each $issues as issue, index}
     <Issue {issue} {index} margin={index === $issues.length - 1 ? 0 : 20} />
   {/each}

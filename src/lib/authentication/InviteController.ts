@@ -1,22 +1,26 @@
 import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
 import { acceptInvite, findInvitesByEmail } from "$lib/graphql/invites.gql";
-import type { AuthPayload, FindInvitationsPayload, Invite } from "$lib/types/derived";
 import { SignUpController } from "$lib/authentication/SignUpController";
+import type {
+  FindInvitations,
+  FindInvitationsVariables,
+  FindInvitations_invites,
+} from "$lib/schema/FindInvitations";
+import type { AcceptInvite, AcceptInviteVariables } from "$lib/schema/AcceptInvite";
 
 export class InviteController extends SignUpController {
-  public async findInvites(): Promise<FindInvitationsPayload> {
-    const request = new GraphQLRequest({
+  public async findInvites() {
+    const request = new GraphQLRequest<FindInvitations, FindInvitationsVariables>({
       query: findInvitesByEmail,
       variables: {
         email: this.email,
       },
     });
-    const result = await request.send();
-    return result.json();
+    return request.send();
   }
 
-  public async acceptInvite(invite: Invite): Promise<AuthPayload> {
-    const request = new GraphQLRequest({
+  public async acceptInvite(invite: FindInvitations_invites) {
+    const request = new GraphQLRequest<AcceptInvite, AcceptInviteVariables>({
       query: acceptInvite,
       variables: {
         name: this.username,
@@ -27,8 +31,7 @@ export class InviteController extends SignUpController {
         role: invite.role,
       },
     });
-    const response = await request.send();
-    return response.json();
+    return request.send();
   }
 
   public validateAll() {

@@ -1,30 +1,38 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+  import { browser } from "$app/environment";
   import Gauge from "$lib/components/data-viz/+Gauge.svelte";
   import TileContent from "$lib/components/tiles/+TileContent.svelte";
   import SectionSubTitle from "$lib/components/tiles/+SectionSubTitle.svelte";
-  import type { OrganizationStats } from "$lib/types/derived";
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
   import DownwardGradient from "$lib/components/gradients/+DownwardGradient.svelte";
   import { totalUsers, totalProperties, totalIssues } from "$lib/state/Organization";
   import AnimatedNumber from "$lib/components/data-viz/+AnimatedNumber.svelte";
-  import { onMount } from "svelte";
-  import { browser } from "$app/environment";
   import type { ResizeObserverEvent } from "$lib/components/observers/types";
+  import Right from "$lib/icons/+Right.svelte";
+  import type { OrganizationsByAffiliation_organizationStats } from "$lib/schema/OrganizationsByAffiliation";
 
-  export let organization: OrganizationStats;
+  export let organization: OrganizationsByAffiliation_organizationStats;
 
-  let animate = false;
+  let fillGauges = false;
   let fontSize = "45px";
 
   class UIController {
+    public static dodgeNaNs(value: number, total: number) {
+      if (value === 0 && total === 0) {
+        return 1;
+      }
+      return value / total;
+    }
+
     public static computePercentage(type: "properties" | "issues" | "users") {
       switch (type) {
         case "properties":
-          return Math.round((organization._count.properties / $totalProperties) * 100);
+          return Math.round(this.dodgeNaNs(organization._count.properties, $totalProperties) * 100);
         case "issues":
-          return Math.round((organization._count.issues / $totalIssues) * 100);
+          return Math.round(this.dodgeNaNs(organization._count.issues, $totalIssues) * 100);
         case "users":
-          return Math.round((organization._count.users / $totalUsers) * 100);
+          return Math.round(this.dodgeNaNs(organization._count.users, $totalUsers) * 100);
         default:
           return 0;
       }
@@ -38,22 +46,27 @@
   onMount(() => {
     if (browser) {
       setTimeout(() => {
-        animate = true;
+        fillGauges = true;
       }, 500);
     }
   });
 </script>
 
-<a class="org" href={`/lord/${organization.id}`}>
+<a class="org" href={`/teams/${organization.id}`}>
   <TileContent>
-    <SectionSubTitle text={organization.name} />
+    <div class="title">
+      <SectionSubTitle text={organization.name} />
+      <div class="right">
+        <Right color="#d0d0d0" />
+      </div>
+    </div>
     <div class="gauges">
       <div class="gauge">
         <div class="svg">
           <Gauge
             stroke="url(#propGrad)"
             onResize={UIController.onResize}
-            percentage={animate ? UIController.computePercentage("properties") : 0}
+            percentage={fillGauges ? UIController.computePercentage("properties") : 0}
           >
             <LinearGradient id="propGrad" />
           </Gauge>
@@ -74,7 +87,7 @@
           <Gauge
             stroke="url(#userGrad)"
             style="filter: drop-shadow(0px 3px 1px rgba(0,0,0,0.05))"
-            percentage={animate ? UIController.computePercentage("users") : 0}
+            percentage={fillGauges ? UIController.computePercentage("users") : 0}
           >
             <LinearGradient id="userGrad" color2="rgb(57, 220, 168)" color1="rgb(78, 215, 215)" />
           </Gauge>
@@ -95,7 +108,7 @@
           <Gauge
             stroke="url(#issueGrad)"
             style="filter: drop-shadow(0px 3px 1px rgba(0,0,0,0.05))"
-            percentage={animate ? UIController.computePercentage("issues") : 0}
+            percentage={fillGauges ? UIController.computePercentage("issues") : 0}
           >
             <DownwardGradient id="issueGrad" color2="rgb(255, 167, 73)" color1="rgb(255, 49, 97)" />
           </Gauge>
@@ -125,6 +138,25 @@
     }
     @media #{variables.$mq-1350} {
       width: 32%;
+    }
+    &:hover .title > .right {
+      opacity: 1;
+      transform: translateX(0px);
+    }
+
+    & .title {
+      width: 100%;
+      position: relative;
+      & > .right {
+        position: absolute;
+        top: -9px;
+        right: 0px;
+        height: 40px;
+        width: 40px;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition-duration: 0.3s;
+      }
     }
   }
 

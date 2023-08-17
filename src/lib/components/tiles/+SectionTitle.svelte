@@ -1,12 +1,12 @@
-<script lang="ts">
-  export let text: string = "";
-</script>
-
-<div class="title">{text}</div>
+<div class="title">
+  <slot />
+</div>
 
 <style lang="scss">
   @use "$lib/variables.scss";
   .title {
+    display: flex;
+    justify-content: space-between;
     color: variables.$grey;
     font-size: 1.25em;
     margin: 20px 0 10px 0;

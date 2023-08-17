@@ -36,7 +36,9 @@
       }
       this.resetError();
       const response = await SignUp.submit();
+      // @ts-ignore
       if (response?.errors?.length) {
+        // @ts-ignore
         this.onError(response.errors[0].message);
         return this.previousPage();
       }

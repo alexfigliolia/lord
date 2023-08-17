@@ -1,9 +1,11 @@
+import type { GraphQLClientResponse } from "graphql-request/build/esm/types";
 import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
 import { LoginController, error } from "$lib/authentication/LoginController";
 import { onboardQuery } from "$lib/graphql/authentication.gql";
 import { SignUpValidators } from "./SignUpValidators";
+import type { onBoard, onBoardVariables } from "$lib/schema/onBoard";
 
-export class SignUpController extends LoginController {
+export class SignUpController extends LoginController<GraphQLClientResponse<onBoard>> {
   username = "";
   businessName = "";
   constructor() {
@@ -40,12 +42,12 @@ export class SignUpController extends LoginController {
     }
   }
 
-  public override async submit() {
+  public override submit() {
     const name = this.username;
     const email = this.email.toLocaleLowerCase();
     const password = this.password;
     const organization = this.businessName;
-    const request = new GraphQLRequest({
+    const request = new GraphQLRequest<onBoard, onBoardVariables>({
       query: onboardQuery,
       variables: {
         name,
@@ -54,7 +56,6 @@ export class SignUpController extends LoginController {
         organization,
       },
     });
-    const response = await request.send();
-    return response.json();
+    return request.send();
   }
 }
