@@ -1,16 +1,16 @@
 <script lang="ts">
   import PropertyOverview from "$lib/views/property/+PropertyOverview.svelte";
   import Issues from "$lib/views/overview/Issues/+Issues.svelte";
-  import { issues, property } from "$lib/views/property/Stores";
-  import { overviewUserHash, overviewUsers } from "$lib/views/overview/Stores";
-  import type { Login_login_user } from "$lib/schema/Login";
+  import { units, issues, property } from "$lib/views/property/Stores";
+  import { overviewUserHash } from "$lib/views/overview/Stores";
   import type { PropertyByID_property } from "$lib/schema/PropertyByID";
+  import PropertyAddModal from "$lib/views/property/+PropertyAddModal.svelte";
 
-  export let data: { property: PropertyByID_property; users: Login_login_user[] };
+  export let data: { property: PropertyByID_property };
 
   $: {
     property.set(data.property);
-    overviewUsers.set(data.users);
+    units.set(data.property.units || []);
     issues.set(data.property.issues || []);
   }
 </script>
@@ -24,6 +24,7 @@
   <PropertyOverview name={$property?.name || ""} {issues} />
   <Issues {issues} users={overviewUserHash} />
 </div>
+<PropertyAddModal />
 
 <style lang="scss">
   div {

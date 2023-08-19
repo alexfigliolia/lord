@@ -32,6 +32,7 @@ export interface CreateProperty_createProperty_issues {
 export interface CreateProperty_createProperty_units_leases {
   __typename: "lease";
   id: number;
+  amount: number;
   unit_id: number;
   start_date: string;
   end_date: string;
@@ -43,6 +44,7 @@ export interface CreateProperty_createProperty_units {
   __typename: "unit";
   id: number;
   name: string;
+  description: string;
   leases: CreateProperty_createProperty_units_leases[];
 }
 

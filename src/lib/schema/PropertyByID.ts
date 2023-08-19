@@ -32,6 +32,7 @@ export interface PropertyByID_property_issues {
 export interface PropertyByID_property_units_leases {
   __typename: "lease";
   id: number;
+  amount: number;
   unit_id: number;
   start_date: string;
   end_date: string;
@@ -43,6 +44,7 @@ export interface PropertyByID_property_units {
   __typename: "unit";
   id: number;
   name: string;
+  description: string;
   leases: PropertyByID_property_units_leases[];
 }
 

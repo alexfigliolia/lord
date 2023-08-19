@@ -12,7 +12,10 @@
 
 <div class="tab-content">
   <div class="tabs">
-    <div class="slide" style={`transform: translateX(${activeIndex * 100}%);`} />
+    <div
+      class="slide"
+      style={`width: ${100 / tabs.length}%; transform: translateX(${activeIndex * 100}%);`}
+    />
     {#each tabs as tab, index}
       <button class:active={activeIndex === index} on:click={onTabClick(index)}>{tab}</button>
     {/each}
@@ -33,7 +36,6 @@
       height: 40px;
       position: relative;
       & > .slide {
-        width: 33.33333%;
         height: 7px;
         border-radius: 3.5px;
         background: linear-gradient(to right, variables.$core, variables.$core2);

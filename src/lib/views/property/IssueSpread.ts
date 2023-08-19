@@ -27,7 +27,10 @@ export class IssueSpread {
   public paths(graph: PieGraph, data: PieData[]) {
     let slices = data;
     const activeStatuses = this.activeStatuses();
-    if (activeStatuses.size !== 3) {
+    if (activeStatuses.size === 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      slices = [{ value: 1, label: "complete" }];
+    } else if (activeStatuses.size !== 3) {
       slices = data.filter(d => activeStatuses.has(d.label as IssueStatus));
     }
     return graph.Pie(slices).map(angle => {

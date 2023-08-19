@@ -1,78 +1,48 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { derived, writable } from "svelte/store";
+  import { Calendar } from "@figliolia/svelte-calendar";
   import Check from "$lib/icons/+Check.svelte";
+  import X from "$lib/icons/+X.svelte";
+  import { derived, writable } from "svelte/store";
   import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
-  import DropDownList from "./+DropDownList.svelte";
-  import type { ListItem } from "./types";
+  import { Locale } from "$lib/generics/UX/Locale";
+  import { Validators } from "$lib/add-forms/Validators";
 
   export let name: string;
-  export let value: ListItem;
-  export let items: ListItem[];
+  export let value: string;
   export let placeholder: string = "";
   export let autocomplete: string = name;
-  export let onSelect: (item: ListItem, index: number) => void = () => {};
 
   let open = false;
 
-  const search = writable("");
-  const listItems = writable(items);
-  const displayValue = writable("");
-  const inputValue = derived([search, displayValue], ([s, d]) => {
-    return s.length ? s : d;
-  });
+  const internalValue = writable(value);
+  const valid = derived(internalValue, v => Validators.dateValidator(v));
 
-  export const clear = () => {
-    search.set("");
-    displayValue.set("");
+  const onSelect = (year: number, month: number, day: number) => {
+    value = new Date(year, month, day).toLocaleDateString(Locale.get(), {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
   };
 
   class UIController {
     public static open = () => {
       open = true;
       Accessibility.onVisible();
-      displayValue.set("");
     };
 
     public static close = () => {
       open = false;
       Accessibility.onInvisible();
-      this.onSelectOrClose();
     };
 
-    static updateListItems(nextValue: string) {
-      const caseInsensitive = nextValue.toLowerCase();
-      if (nextValue === "") {
-        listItems.set(items);
-      } else {
-        listItems.set(items.filter(item => item.label.toLowerCase().includes(caseInsensitive)));
+    public static onKeyDown = (e: KeyboardEvent) => {
+      if (e.which === 9 || e.key === "Tab" || e.which === 27 || e.key === "Escape") {
+        return;
       }
-    }
-
-    public static search = (e: Event) => {
-      // @ts-ignore
-      const { value: nextValue } = e.target;
-      search.set(nextValue);
-      displayValue.set("");
-      this.updateListItems(nextValue);
+      e.preventDefault();
     };
-
-    public static select = (nextValue: ListItem, index: number) => {
-      if (value.value === nextValue.value) {
-        value = { value: "", label: "" };
-        this.onSelectOrClose();
-      } else {
-        value = nextValue;
-        this.close();
-      }
-      onSelect(value, index);
-    };
-
-    public static onSelectOrClose() {
-      search.set("");
-      displayValue.set(value.label);
-      this.updateListItems("");
-    }
   }
 
   const Accessibility = new KeyboardAccessibility(UIController.close);
@@ -83,31 +53,35 @@
     };
   });
 
-  $: listItems.set(items);
+  $: value, internalValue.set(value);
 </script>
 
 <div class="input" bind:this={Accessibility.container}>
   <input
     type="text"
     {name}
+    bind:value
     {placeholder}
     {autocomplete}
-    value={$inputValue}
     on:focus={UIController.open}
-    on:input={UIController.search}
+    on:keydown={UIController.onKeyDown}
   />
-  <div class="status" class:success={value.value !== ""} class:visible={value.value !== ""}>
-    {#if value.value !== ""}
+  <div
+    class="status"
+    class:error={$valid === false}
+    class:success={$valid === true}
+    class:visible={$valid !== null}
+  >
+    {#if $valid === true}
       <Check color="#fff" />
     {/if}
+    {#if $valid === false}
+      <X color="#fff" />
+    {/if}
   </div>
-  <div class="dropdown" class:open>
-    <DropDownList
-      {value}
-      items={$listItems}
-      accessibility={Accessibility}
-      onSelect={UIController.select}
-    />
+  <div class="calendar" class:open aria-hidden={!open}>
+    <div class="triangle" />
+    <Calendar {onSelect} buttonBGActive="#9e91fc" buttonLabelColor="rgb(116, 107, 127)" />
   </div>
 </div>
 
@@ -167,20 +141,25 @@
       &.visible {
         opacity: 1;
       }
+      &.error {
+        background-color: rgb(226, 90, 90);
+        box-shadow: 0px 2.5px 5px rgba(226, 90, 90, 0.5);
+      }
       &.success {
         background-color: rgb(66, 195, 115);
         box-shadow: 0px 2.5px 5px rgba(66, 195, 115, 0.5);
       }
     }
-    & > .dropdown {
+    & > .calendar {
       position: absolute;
-      top: calc(100% + 5px);
+      top: calc(100% + 10px);
       left: 0;
-      width: 100%;
-      z-index: 10;
+      z-index: 2;
+      pointer-events: none;
+      background-color: #fff;
+      padding: 10px;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
       border-radius: 5px;
-      box-shadow: 0px 2.5px 10px rgba(#000, 0.35);
-      overflow: hidden;
       visibility: hidden;
       opacity: 0;
       transform: translateY(10px);
@@ -188,8 +167,28 @@
       &.open {
         visibility: visible;
         opacity: 1;
+        pointer-events: auto;
         transform: translateY(0px);
         transition: transform 0.25s, opacity 0.25s, visibility 0s 0s;
+      }
+      & > .triangle {
+        position: absolute;
+        bottom: 100%;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        overflow: hidden;
+        &::after {
+          content: "";
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          background: #fff;
+          transform: rotate(45deg);
+          top: 15px;
+          left: 2.5px;
+          box-shadow: -1px -1px 3px 0px rgba(#000, 0.1);
+        }
       }
     }
   }

@@ -7,6 +7,12 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum ExpenseCategory {
+  hardware = "hardware",
+  labor = "labor",
+  management = "management",
+}
+
 export enum IssueStatus {
   complete = "complete",
   inprogress = "inprogress",

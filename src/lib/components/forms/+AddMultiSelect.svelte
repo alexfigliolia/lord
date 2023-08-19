@@ -5,13 +5,13 @@
   import { KeyboardAccessibility } from "$lib/generics/UX/KeyboardAccessibility";
   import DropDownList from "./+DropDownList.svelte";
   import type { ListItem } from "./types";
+  import MultiSelectList from "./+MultiSelectList.svelte";
 
   export let name: string;
-  export let value: ListItem;
   export let items: ListItem[];
   export let placeholder: string = "";
   export let autocomplete: string = name;
-  export let onSelect: (item: ListItem, index: number) => void = () => {};
+  export let value: Record<string | number, ListItem>;
 
   let open = false;
 
@@ -57,20 +57,24 @@
       this.updateListItems(nextValue);
     };
 
-    public static select = (nextValue: ListItem, index: number) => {
-      if (value.value === nextValue.value) {
-        value = { value: "", label: "" };
+    public static select = (nextValue: ListItem) => {
+      if (nextValue.value in value) {
+        const { [nextValue.value]: deletion, ...rest } = value;
+        value = rest;
         this.onSelectOrClose();
       } else {
-        value = nextValue;
+        value = { ...value, [nextValue.value]: nextValue };
         this.close();
       }
-      onSelect(value, index);
     };
 
     public static onSelectOrClose() {
       search.set("");
-      displayValue.set(value.label);
+      displayValue.set(
+        Object.values(value)
+          .map(v => v.label)
+          .join(", "),
+      );
       this.updateListItems("");
     }
   }
@@ -96,13 +100,17 @@
     on:focus={UIController.open}
     on:input={UIController.search}
   />
-  <div class="status" class:success={value.value !== ""} class:visible={value.value !== ""}>
-    {#if value.value !== ""}
+  <div
+    class="status"
+    class:success={!!Object.keys(value).length}
+    class:visible={!!Object.keys(value).length}
+  >
+    {#if !!Object.keys(value).length}
       <Check color="#fff" />
     {/if}
   </div>
   <div class="dropdown" class:open>
-    <DropDownList
+    <MultiSelectList
       {value}
       items={$listItems}
       accessibility={Accessibility}
@@ -126,7 +134,7 @@
       border-radius: 20px;
       width: 100%;
       margin: 0;
-      padding: 0 5px 0 15px;
+      padding: 0 40px 0 15px;
       box-sizing: border-box;
       outline: none;
       transition-duration: 0.3s;

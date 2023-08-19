@@ -7,6 +7,12 @@
 // GraphQL query operation: PropertiesByOrg
 // ====================================================
 
+export interface PropertiesByOrg_properties_units {
+  __typename: "unit";
+  id: number;
+  name: string;
+}
+
 export interface PropertiesByOrg_properties {
   __typename: "property";
   id: number;
@@ -17,6 +23,8 @@ export interface PropertiesByOrg_properties {
   city: string;
   state: string;
   zip_code: string;
+  images: string[];
+  units: PropertiesByOrg_properties_units[];
 }
 
 export interface PropertiesByOrg {

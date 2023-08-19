@@ -37,6 +37,12 @@ export interface OrganizationByID_organization_issues {
   created_at: string;
 }
 
+export interface OrganizationByID_organization_properties_units {
+  __typename: "unit";
+  id: number;
+  name: string;
+}
+
 export interface OrganizationByID_organization_properties {
   __typename: "property";
   id: number;
@@ -48,6 +54,7 @@ export interface OrganizationByID_organization_properties {
   state: string;
   zip_code: string;
   images: string[];
+  units: OrganizationByID_organization_properties_units[];
 }
 
 export interface OrganizationByID_organization {

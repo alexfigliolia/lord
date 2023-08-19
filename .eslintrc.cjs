@@ -30,6 +30,9 @@ module.exports = {
         parser: "@typescript-eslint/parser",
       },
     },
+    {
+      files: ["**/*.js", "**/*.ts"],
+    },
   ],
   rules: {
     radix: 0,

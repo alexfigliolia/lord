@@ -62,3 +62,12 @@ export const createOrganization = gql`
     }
   }
 `;
+
+export const organizationLessors = gql`
+  ${UserFragment}
+  query OrganizationLessors($id: Int!) {
+    organizationLessors(id: $id) {
+      ...UserFragment
+    }
+  }
+`;

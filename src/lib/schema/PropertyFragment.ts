@@ -7,6 +7,12 @@
 // GraphQL fragment: PropertyFragment
 // ====================================================
 
+export interface PropertyFragment_units {
+  __typename: "unit";
+  id: number;
+  name: string;
+}
+
 export interface PropertyFragment {
   __typename: "property";
   id: number;
@@ -18,4 +24,5 @@ export interface PropertyFragment {
   state: string;
   zip_code: string;
   images: string[];
+  units: PropertyFragment_units[];
 }

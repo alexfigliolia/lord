@@ -1,6 +1,7 @@
 export class Validators {
   static zipRegex = /^[0-9]*$/;
   static stateRegex = /^[a-zA-Z]*$/;
+  static floatRegex = /^[1-9]\d*(\.\d+)?$/;
   static addressRegex = /^[a-zA-Z0-9\s,'-]*$/;
 
   static baseValidator = (value: string) => {
@@ -8,6 +9,20 @@ export class Validators {
       return null;
     }
     return value.length > 2;
+  };
+
+  static dateValidator = (value: string) => {
+    if (!value.length) {
+      return null;
+    }
+    return value.length === 10;
+  };
+
+  static floatValidator = (value: string) => {
+    if (!value.length) {
+      return null;
+    }
+    return this.floatRegex.test(value);
   };
 
   static validateAddress = (value: string) => {
