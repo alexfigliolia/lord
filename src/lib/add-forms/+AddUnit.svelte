@@ -78,9 +78,14 @@
 <h2>Add a Unit to {$property.name}</h2>
 <div class="new">Add all rentable spaces</div>
 <form on:submit={UIController.onSubmit}>
-  <AddInput name="name" placeholder="Name" bind:value={name} validator={Validators.baseValidator} />
   <AddInput
-    name="description"
+    name="unit_name"
+    placeholder="Name"
+    bind:value={name}
+    validator={Validators.baseValidator}
+  />
+  <AddInput
+    name="unit_description"
     placeholder="description"
     bind:value={description}
     validator={Validators.baseValidator}
@@ -107,12 +112,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    h3 {
-      width: 100%;
-      font-size: 1.5em;
-      color: rgb(140, 140, 140);
-      font-weight: 300;
-    }
   }
   .action {
     width: 100%;

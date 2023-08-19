@@ -7,11 +7,11 @@
   import { Validators } from "./Validators";
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
   import type { ListItem } from "$lib/components/forms/types";
-  import { overviewOrganization } from "$lib/views/overview/Stores";
-  import type { ExpenseCategory } from "$lib/schema/globalTypes";
   import type { PropertyByID_property } from "$lib/schema/PropertyByID";
-  import { createExpenseMutation } from "$lib/graphql/expense.gql";
-  import type { CreateExpense, CreateExpenseVariables } from "$lib/schema/CreateExpense";
+  import { units } from "$lib/views/property/Stores";
+  import { createPayment } from "$lib/graphql/payment.gql";
+  import type { CreatePayment, CreatePaymentVariables } from "$lib/schema/CreatePayment";
+  import { currentUser } from "$lib/state/User";
 
   /* Loading States */
   let error = false;
@@ -19,9 +19,9 @@
   let complete = false;
 
   /* Inputs  */
-  let description = "";
-  let category: ListItem = { value: "", label: "" };
   let amount: string = "";
+  let description: string = "";
+  let unit: ListItem = { value: "", label: "" };
 
   export let property: PropertyByID_property;
 
@@ -48,21 +48,21 @@
     };
 
     private static createExpense() {
-      const request = new GraphQLRequest<CreateExpense, CreateExpenseVariables>({
-        query: createExpenseMutation,
+      const request = new GraphQLRequest<CreatePayment, CreatePaymentVariables>({
+        query: createPayment,
         variables: {
           description,
+          user_id: $currentUser.id,
           property_id: property.id,
           amount: parseFloat(amount),
-          organization_id: $overviewOrganization.id,
-          category: this.parseListItem(category) as ExpenseCategory,
+          unit_id: this.parseListItem(unit) as number,
         },
       });
       return request.send();
     }
 
     private static parseListItem({ value }: ListItem) {
-      if (typeof value === "string" && !!value) {
+      if (typeof value === "number") {
         return value;
       }
       return undefined;
@@ -74,43 +74,39 @@
       NotificationState.push({
         type: "success",
         message:
-          "Your Expense has been created! The expense's total will influence all relevant graphs",
+          "Your Payment has been created! The payment's total will influence all relevant graphs",
       });
     }
 
     public static reset() {
-      description = "";
-      category = { value: "", label: "" };
       amount = "";
+      description = "";
+      unit = { value: "", label: "" };
     }
   }
 </script>
 
-<h2>Log an Expense at {property.name}</h2>
+<h2>Log a Payment at {property.name}</h2>
 <form on:submit={UIController.onSubmit}>
   <AddInput
-    name="description"
-    placeholder="Description"
     bind:value={description}
+    placeholder="Description"
+    name="payment_description"
     validator={Validators.baseValidator}
   />
   <AddInput
-    name="amount"
-    placeholder="amount"
     bind:value={amount}
+    placeholder="amount"
+    name="payment_amount"
     validator={Validators.floatValidator}
   />
   <h3>Classification</h3>
   <AddDropDown
-    name="category"
+    name="unit"
     bind:clear={UIController.clearUnit}
-    placeholder="Category"
-    bind:value={category}
-    items={[
-      { label: "Hardware", value: "hardware" },
-      { label: "Labor", value: "labor" },
-      { label: "Management", value: "management" },
-    ]}
+    placeholder="Unit"
+    bind:value={unit}
+    items={$units.map(u => ({ label: u.name, value: u.id }))}
   />
   <div class="action">
     <FormActionButton stateful {error} {loading} {complete} text="Create" />

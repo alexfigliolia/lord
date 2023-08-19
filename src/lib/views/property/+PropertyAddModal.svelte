@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
   import AddExpense from "$lib/add-forms/+AddExpense.svelte";
   import AddLease from "$lib/add-forms/+AddLease.svelte";
+  import AddPayment from "$lib/add-forms/+AddPayment.svelte";
   import AddUnit from "$lib/add-forms/+AddUnit.svelte";
   import AddUnitIssue from "$lib/add-forms/+AddUnitIssue.svelte";
   import Modal from "$lib/components/+Modal.svelte";
@@ -55,7 +56,7 @@
     <Tabs
       activeIndex={tab}
       onClick={UIController.onClickTab}
-      tabs={["Unit", "Lease", "Issue", "Expense"]}
+      tabs={["Unit", "Lease", "Issue", "Expense", "Payment"]}
     >
       {#if tab === 0}
         <div class="tab-content">
@@ -75,6 +76,11 @@
       {#if tab === 3}
         <div class="tab-content">
           <AddExpense property={$property} />
+        </div>
+      {/if}
+      {#if tab === 4}
+        <div class="tab-content">
+          <AddPayment property={$property} />
         </div>
       {/if}
     </Tabs>
