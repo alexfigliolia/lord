@@ -2,6 +2,8 @@ import { gql } from "graphql-request";
 import { UserFragment } from "./user.gql";
 import { PropertyFragment } from "./properties.gql";
 import { IssueFragment } from "./issues.gql";
+import { PaymentFragment } from "./payment.gql";
+import { ExpenseFragment } from "./expense.gql";
 
 export const organizationsByAffiliation = gql`
   query OrganizationsByAffiliation($user_id: Int!) {
@@ -21,6 +23,8 @@ export const organizationByID = gql`
   ${UserFragment}
   ${IssueFragment}
   ${PropertyFragment}
+  ${PaymentFragment}
+  ${ExpenseFragment}
   query OrganizationByID($id: Int!) {
     organization(id: $id) {
       id
@@ -33,6 +37,35 @@ export const organizationByID = gql`
       }
       properties {
         ...PropertyFragment
+        payments {
+          ...PaymentFragment
+        }
+        expenses {
+          ...ExpenseFragment
+        }
+        issues {
+          ...IssueFragment
+        }
+        units {
+          id
+          name
+          description
+          leases {
+            id
+            amount
+            unit_id
+            start_date
+            end_date
+            active
+            created_at
+          }
+        }
+      }
+      payments {
+        ...PaymentFragment
+      }
+      expenses {
+        ...ExpenseFragment
       }
     }
   }

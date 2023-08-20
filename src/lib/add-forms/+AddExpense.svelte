@@ -9,9 +9,14 @@
   import type { ListItem } from "$lib/components/forms/types";
   import { overviewOrganization } from "$lib/views/overview/Stores";
   import type { ExpenseCategory } from "$lib/schema/globalTypes";
-  import type { PropertyByID_property } from "$lib/schema/PropertyByID";
   import { createExpenseMutation } from "$lib/graphql/expense.gql";
-  import type { CreateExpense, CreateExpenseVariables } from "$lib/schema/CreateExpense";
+  import type {
+    CreateExpense,
+    CreateExpenseVariables,
+    CreateExpense_createExpense,
+  } from "$lib/schema/CreateExpense";
+  import type { PropertyByID_propertyUI } from "$lib/schema/PropertyByID";
+  import { expenses } from "$lib/views/property/Stores";
 
   /* Loading States */
   let error = false;
@@ -23,7 +28,7 @@
   let category: ListItem = { value: "", label: "" };
   let amount: string = "";
 
-  export let property: PropertyByID_property;
+  export let property: PropertyByID_propertyUI;
 
   class UIController {
     static clearUnit: () => void;
@@ -33,7 +38,7 @@
       e.preventDefault();
       loading = true;
       try {
-        await this.createExpense();
+        const data = await this.createExpense();
         this.Queue.deferTask(() => {
           error = false;
           loading = false;
@@ -41,7 +46,7 @@
         }, 2000);
         // @ts-ignore
         e.target?.reset();
-        this.onSuccess();
+        this.onSuccess(data.data.createExpense);
       } catch (requestError) {
         error = true;
       }
@@ -68,9 +73,10 @@
       return undefined;
     }
 
-    private static onSuccess() {
+    private static onSuccess(expense: CreateExpense_createExpense) {
       complete = true;
       this.reset();
+      expenses.update(v => [expense, ...v]);
       NotificationState.push({
         type: "success",
         message:

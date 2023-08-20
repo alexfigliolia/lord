@@ -48,9 +48,9 @@
         const { offsetX } = e;
         const relativeMousePosition = offsetX - graph.margin.left;
         const { width } = target.getBoundingClientRect();
-        const unit = width / xData.length;
+        const unit = width / data.length;
         let i = 0;
-        for (i; i < xData.length - 1; i++) {
+        for (i; i < data.length - 1; i++) {
           if (relativeMousePosition >= i * unit && relativeMousePosition < (i + 1) * unit) {
             break;
           }
@@ -81,6 +81,7 @@
   export const onMouseOut = UIController.mouseOut;
   export const onMouseOver = UIController.mouseOver;
   export let { graph, xScale, yScale } = UIController.graph();
+  onInit({ graph, xScale, yScale });
 
   const onResize = (event: CustomEvent<{ height: number; width: number }>) => {
     const { height, width } = event.detail;

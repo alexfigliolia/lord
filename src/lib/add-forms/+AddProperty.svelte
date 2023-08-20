@@ -11,7 +11,7 @@
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
   import { overviewOrganization, overviewProperties } from "$lib/views/overview/Stores";
   import type { CreateProperty, CreatePropertyVariables } from "$lib/schema/CreateProperty";
-  import type { PropertyByID_property } from "$lib/schema/PropertyByID";
+  import type { PropertyByID_propertyUI } from "$lib/schema/PropertyByID";
 
   /* Loading States */
   let error = false;
@@ -80,7 +80,7 @@
       return request.send();
     }
 
-    private static onSuccess(property: PropertyByID_property) {
+    private static onSuccess(property: PropertyByID_propertyUI) {
       complete = true;
       this.reset();
       overviewProperties.update(v => [...v, property]);

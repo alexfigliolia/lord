@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
-  import { select } from "d3";
   import { onMount } from "svelte";
   import { TaskQueue } from "@figliolia/task-queue";
 
@@ -16,8 +14,6 @@
   let Path: SVGPathElement;
   let active = false;
 
-  const Queue = new TaskQueue();
-
   const mouseOver = (e: MouseEvent) => {
     onMouseOver?.(e, data);
   };
@@ -27,6 +23,7 @@
   };
 
   onMount(() => {
+    const Queue = new TaskQueue();
     Queue.deferTask(() => {
       active = true;
     }, 500);

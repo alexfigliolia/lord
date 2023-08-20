@@ -37,10 +37,35 @@ export interface OrganizationByID_organization_issues {
   created_at: string;
 }
 
+export interface OrganizationByID_organization_properties_units_leases {
+  __typename: "lease";
+  id: number;
+  amount: number;
+  unit_id: number;
+  start_date: string;
+  end_date: string;
+  active: boolean;
+  created_at: string;
+}
+
 export interface OrganizationByID_organization_properties_units {
   __typename: "unit";
   id: number;
   name: string;
+  description: string;
+  leases: OrganizationByID_organization_properties_units_leases[];
+}
+
+export interface OrganizationByID_organization_properties_payments {
+  __typename: "payment";
+  amount: number;
+  created_at: string;
+}
+
+export interface OrganizationByID_organization_properties_expenses {
+  __typename: "expense";
+  amount: number;
+  created_at: string;
 }
 
 export interface OrganizationByID_organization_properties {
@@ -55,6 +80,20 @@ export interface OrganizationByID_organization_properties {
   zip_code: string;
   images: string[];
   units: OrganizationByID_organization_properties_units[];
+  payments: OrganizationByID_organization_properties_payments[];
+  expenses: OrganizationByID_organization_properties_expenses[];
+}
+
+export interface OrganizationByID_organization_payments {
+  __typename: "payment";
+  amount: number;
+  created_at: string;
+}
+
+export interface OrganizationByID_organization_expenses {
+  __typename: "expense";
+  amount: number;
+  created_at: string;
 }
 
 export interface OrganizationByID_organization {
@@ -64,6 +103,8 @@ export interface OrganizationByID_organization {
   users: OrganizationByID_organization_users[];
   issues: OrganizationByID_organization_issues[];
   properties: OrganizationByID_organization_properties[];
+  payments: OrganizationByID_organization_payments[];
+  expenses: OrganizationByID_organization_expenses[];
 }
 
 export interface OrganizationByID {

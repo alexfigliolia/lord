@@ -2,10 +2,9 @@
   import TileContent from "$lib/components/tiles/+TileContent.svelte";
   import AdminAddModal from "$lib/core-layout/+AdminAddModal.svelte";
   import Building from "$lib/icons/+Building.svelte";
-  import type { PropertiesByOrg_properties } from "$lib/schema/PropertiesByOrg";
   import { addModalOpen, tab } from "$lib/state/Add";
+  import { overviewProperties } from "$lib/views/overview/Stores";
   import PropertySnapshot from "$lib/views/properties/+PropertySnapshot.svelte";
-  import { properties } from "$lib/views/properties/Stores";
 
   class UIController {
     public static openAdd = () => {
@@ -13,10 +12,6 @@
       tab.set(0);
     };
   }
-
-  export let data: { properties: PropertiesByOrg_properties[] };
-
-  $: properties.set(data.properties);
 </script>
 
 <svelte:head>
@@ -25,11 +20,11 @@
 </svelte:head>
 
 <section id="properties">
-  {#each $properties as property}
+  {#each $overviewProperties as property}
     <PropertySnapshot {property} />
   {/each}
 
-  {#if $properties.length === 0}
+  {#if $overviewProperties.length === 0}
     <div class="none">
       <TileContent>
         <button class="add" on:click={UIController.openAdd}>

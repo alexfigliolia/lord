@@ -1,6 +1,5 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { select } from "d3";
   import { onMount } from "svelte";
   import { TaskQueue } from "@figliolia/task-queue";
 

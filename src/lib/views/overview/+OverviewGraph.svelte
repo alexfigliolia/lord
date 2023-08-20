@@ -9,6 +9,7 @@
   import Area from "$lib/components/data-viz/+Area.svelte";
   import type { GraphEvent } from "$lib/graphing/types";
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
+  import { DateScaling } from "$lib/graphing/DateScaling";
 
   const flip = writable(false);
   const dataPoint = writable(0);
@@ -23,12 +24,7 @@
   let onMouseOut: (e: MouseEvent) => void;
   let onMouseOver: (e: MouseEvent) => void;
 
-  const xData = new Array(12).fill("").map((_, i) => {
-    const date = moment();
-    date.subtract(12 - i, "months");
-    date.hours(0);
-    return date.toDate().getTime();
-  });
+  const xData = DateScaling.last12Months();
 
   const yData = new Array(12).fill(0).map(() => {
     return Math.floor(Math.random() * (20000 - 10000) + 10000);

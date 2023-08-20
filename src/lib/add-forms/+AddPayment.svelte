@@ -7,11 +7,16 @@
   import { Validators } from "./Validators";
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
   import type { ListItem } from "$lib/components/forms/types";
-  import type { PropertyByID_property } from "$lib/schema/PropertyByID";
-  import { units } from "$lib/views/property/Stores";
+  import { payments, units } from "$lib/views/property/Stores";
   import { createPayment } from "$lib/graphql/payment.gql";
-  import type { CreatePayment, CreatePaymentVariables } from "$lib/schema/CreatePayment";
+  import type {
+    CreatePayment,
+    CreatePaymentVariables,
+    CreatePayment_createPayment,
+  } from "$lib/schema/CreatePayment";
   import { currentUser } from "$lib/state/User";
+  import type { PropertyByID_propertyUI } from "$lib/schema/PropertyByID";
+  import { overviewOrganization } from "$lib/views/overview/Stores";
 
   /* Loading States */
   let error = false;
@@ -23,7 +28,7 @@
   let description: string = "";
   let unit: ListItem = { value: "", label: "" };
 
-  export let property: PropertyByID_property;
+  export let property: PropertyByID_propertyUI;
 
   class UIController {
     static clearUnit: () => void;
@@ -33,7 +38,7 @@
       e.preventDefault();
       loading = true;
       try {
-        await this.createExpense();
+        const payment = await this.createPayment();
         this.Queue.deferTask(() => {
           error = false;
           loading = false;
@@ -41,13 +46,13 @@
         }, 2000);
         // @ts-ignore
         e.target?.reset();
-        this.onSuccess();
+        this.onSuccess(payment.data.createPayment);
       } catch (requestError) {
         error = true;
       }
     };
 
-    private static createExpense() {
+    private static createPayment() {
       const request = new GraphQLRequest<CreatePayment, CreatePaymentVariables>({
         query: createPayment,
         variables: {
@@ -55,6 +60,7 @@
           user_id: $currentUser.id,
           property_id: property.id,
           amount: parseFloat(amount),
+          organization_id: $overviewOrganization.id,
           unit_id: this.parseListItem(unit) as number,
         },
       });
@@ -68,9 +74,10 @@
       return undefined;
     }
 
-    private static onSuccess() {
+    private static onSuccess(payment: CreatePayment_createPayment) {
       complete = true;
       this.reset();
+      payments.update(v => [payment, ...v]);
       NotificationState.push({
         type: "success",
         message:

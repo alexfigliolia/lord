@@ -1,5 +1,12 @@
 import { gql } from "graphql-request";
 
+export const ExpenseFragment = gql`
+  fragment ExpenseFragment on expense {
+    amount
+    created_at
+  }
+`;
+
 export const createExpenseMutation = gql`
   mutation CreateExpense(
     $property_id: Int!
@@ -15,7 +22,8 @@ export const createExpenseMutation = gql`
       description: $description
       amount: $amount
     ) {
-      id
+      amount
+      created_at
     }
   }
 `;

@@ -48,6 +48,18 @@ export interface CreateProperty_createProperty_units {
   leases: CreateProperty_createProperty_units_leases[];
 }
 
+export interface CreateProperty_createProperty_payments {
+  __typename: "payment";
+  amount: number;
+  created_at: string;
+}
+
+export interface CreateProperty_createProperty_expenses {
+  __typename: "expense";
+  amount: number;
+  created_at: string;
+}
+
 export interface CreateProperty_createProperty {
   __typename: "property";
   id: number;
@@ -62,6 +74,8 @@ export interface CreateProperty_createProperty {
   images: string[];
   issues: CreateProperty_createProperty_issues[];
   units: CreateProperty_createProperty_units[];
+  payments: CreateProperty_createProperty_payments[];
+  expenses: CreateProperty_createProperty_expenses[];
 }
 
 export interface CreateProperty {

@@ -1,6 +1,8 @@
 import { gql } from "graphql-request";
+import { PaymentFragment } from "./payment.gql";
 
 export const createLease = gql`
+  ${PaymentFragment}
   mutation CreateLease(
     $unit_id: Int!
     $property_id: Int!
@@ -22,14 +24,15 @@ export const createLease = gql`
       amount
       start_date
       end_date
+      active
+      created_at
       users {
         id
         name
       }
       payments {
         id
-        amount
-        created_at
+        ...PaymentFragment
       }
     }
   }

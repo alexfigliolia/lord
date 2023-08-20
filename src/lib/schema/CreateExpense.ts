@@ -11,7 +11,8 @@ import { ExpenseCategory } from "./globalTypes";
 
 export interface CreateExpense_createExpense {
   __typename: "expense";
-  id: number;
+  amount: number;
+  created_at: string;
 }
 
 export interface CreateExpense {

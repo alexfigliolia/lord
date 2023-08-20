@@ -1,6 +1,5 @@
 <script lang="ts">
   import { line } from "d3";
-  import moment from "moment";
   import TileContent from "$lib/components/tiles/+TileContent.svelte";
   import AnimatedNumber from "$lib/components/data-viz/+AnimatedNumber.svelte";
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
@@ -8,21 +7,22 @@
   import type { GraphEvent } from "$lib/graphing/types";
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
-  import type { PropertiesByOrg_properties } from "$lib/schema/PropertiesByOrg";
+  import { DateScaling } from "$lib/graphing/DateScaling";
+  import { DataPointAggregator } from "../property/DataPointAggregator";
+  import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
+  import type { OrganizationByID_organization_properties } from "$lib/schema/OrganizationByID";
 
-  export let property: PropertiesByOrg_properties;
+  export let property: OrganizationByID_organization_properties;
 
   let pathname: string = "";
   let pathData: string | undefined;
 
-  const xData = new Array(12).fill("").map((_, i) => {
-    const date = moment();
-    date.subtract(12 - i, "months");
-    date.hours(0);
-    return date.toDate().getTime();
-  });
-  const yData = new Array(12).fill(0).map(() => {
-    return Math.floor(Math.random() * (20000 - 10000) + 10000);
+  const paymentMap = new DataPointAggregator(property.payments);
+  const xData = DateScaling.last12Months();
+  const yData = xData.map(d => {
+    const month = new Date(d).getMonth();
+    // @ts-ignore
+    return paymentMap.table[month];
   });
 
   const onInit = ({ graph, xScale, yScale }: GraphEvent) => {
@@ -58,14 +58,13 @@
       <div class="content">
         <LineGraph {xData} {yData} {onInit}>
           {#if pathData}
-            <Line path={pathData} strokeWidth={4} stroke="url(#lineGrad)" />
+            <Line
+              path={pathData}
+              strokeWidth={4}
+              stroke={yData.every(d => d === yData[0]) ? "#9284fc" : "url(#lineGrad)"}
+            />
           {/if}
-          <defs>
-            <linearGradient id="lineGrad" x1="0" x2="0" y1="0" y2="1">
-              <stop stop-color="rgb(145, 189, 252)" offset="0" />
-              <stop stop-color="#9284fc" offset="1" />
-            </linearGradient>
-          </defs>
+          <LinearGradient id="lineGrad" color1="rgb(145, 189, 252)" color2="#9284fc" />
         </LineGraph>
       </div>
     </div>

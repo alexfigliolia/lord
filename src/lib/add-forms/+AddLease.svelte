@@ -8,7 +8,11 @@
   import type { ListItem } from "$lib/components/forms/types";
   import AddDropDown from "$lib/components/forms/+AddDropDown.svelte";
   import { createLease } from "$lib/graphql/leases.gql";
-  import type { CreateLease, CreateLeaseVariables } from "$lib/schema/CreateLease";
+  import type {
+    CreateLease,
+    CreateLeaseVariables,
+    CreateLease_createLease,
+  } from "$lib/schema/CreateLease";
   import { units, property } from "$lib/views/property/Stores";
   import type { UserFragment } from "$lib/schema/UserFragment";
   import DateInput from "$lib/components/forms/+DateInput.svelte";
@@ -40,10 +44,10 @@
         return;
       }
       try {
-        await this.createLease();
+        const lease = await this.createLease();
         // @ts-ignore
         e.target?.reset();
-        this.onSuccess();
+        this.onSuccess(lease.data.createLease);
       } catch (err) {
         error = true;
       }
@@ -87,9 +91,19 @@
       return Object.keys(values).map(l => parseInt(l));
     }
 
-    private static onSuccess() {
+    private static onSuccess(lease: CreateLease_createLease) {
       complete = true;
       this.reset();
+      units.update(v => {
+        const copy = v.slice();
+        for (const unit of copy) {
+          if (unit.id === lease.unit_id) {
+            unit.leases = [...unit.leases, lease];
+            break;
+          }
+        }
+        return copy;
+      });
       NotificationState.push({
         type: "success",
         message: `Your new lease has been created! You can track payments on the leases page`,

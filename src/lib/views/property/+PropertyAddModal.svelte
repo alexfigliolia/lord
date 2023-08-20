@@ -14,13 +14,11 @@
     OrganizationLessorsVariables,
   } from "$lib/schema/OrganizationLessors";
   import type { UserFragment } from "$lib/schema/UserFragment";
-  import { addModalOpen } from "$lib/state/Add";
+  import { addModalOpen, tab } from "$lib/state/Add";
   import { property } from "$lib/views/property/Stores";
   import { overviewOrganization } from "../overview/Stores";
 
   let users: UserFragment[] = [];
-
-  let tab = 0;
 
   class UIController {
     static fetched = false;
@@ -30,7 +28,7 @@
     };
 
     static onClickTab = (_: Event, index: number) => {
-      tab = index;
+      tab.set(index);
     };
 
     static async loadUsers() {
@@ -54,31 +52,31 @@
   <div class="content">
     <h1>+ {$property.name}</h1>
     <Tabs
-      activeIndex={tab}
+      activeIndex={$tab}
       onClick={UIController.onClickTab}
       tabs={["Unit", "Lease", "Issue", "Expense", "Payment"]}
     >
-      {#if tab === 0}
+      {#if $tab === 0}
         <div class="tab-content">
           <AddUnit propertyID={$property.id} />
         </div>
       {/if}
-      {#if tab === 1}
+      {#if $tab === 1}
         <div class="tab-content">
           <AddLease lessors={users} />
         </div>
       {/if}
-      {#if tab === 2}
+      {#if $tab === 2}
         <div class="tab-content">
           <AddUnitIssue property={$property} />
         </div>
       {/if}
-      {#if tab === 3}
+      {#if $tab === 3}
         <div class="tab-content">
           <AddExpense property={$property} />
         </div>
       {/if}
-      {#if tab === 4}
+      {#if $tab === 4}
         <div class="tab-content">
           <AddPayment property={$property} />
         </div>

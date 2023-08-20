@@ -1,6 +1,5 @@
 <script lang="ts">
   import { area } from "d3";
-  import moment from "moment";
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
   import type { GraphEvent } from "$lib/graphing/types";
   import Area from "$lib/components/data-viz/+Area.svelte";
@@ -9,11 +8,24 @@
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
   import SubTile from "$lib/components/tiles/+SubTile.svelte";
   import MetricTitle from "$lib/components/data-viz/+MetricTitle.svelte";
+  import type {
+    PropertyByID_propertyUI_expenses,
+    PropertyByID_propertyUI_payments,
+  } from "$lib/schema/PropertyByID";
+  import { DataPointAggregator } from "./DataPointAggregator";
+  import { DateScaling } from "$lib/graphing/DateScaling";
 
-  let incomeLine: string | undefined;
+  export let payments: PropertyByID_propertyUI_payments[];
+  export let expenses: PropertyByID_propertyUI_expenses[];
+
+  let toggled = false;
+  let paymentList: number[] = [];
+  let expenseList: number[] = [];
+  let paymentLine: string | undefined;
   let expenseLine: string | undefined;
   let onMouseOut: (e: MouseEvent) => void;
   let onMouseOver: (e: MouseEvent) => void;
+
   const flip = writable(false);
   const dataPoint = writable(0);
   const pointDate = writable(0);
@@ -21,45 +33,69 @@
   const positionX = writable(0);
   const positionY = writable(0);
   const labelActive = writable(false);
+  let paymentMap = new DataPointAggregator(payments);
+  let expenseMap = new DataPointAggregator(expenses);
 
-  const xData = new Array(12).fill("").map((_, i) => {
-    const date = moment();
-    date.subtract(12 - i, "months");
-    date.hours(0);
-    return date.toDate().getTime();
+  const xData = DateScaling.last12Months();
+  let yData = xData.map(d => {
+    const month = new Date(d).getMonth();
+    // @ts-ignore
+    return Math.max(paymentMap.table[month], expenseMap.table[month]);
   });
 
-  const yData = new Array(12).fill(0).map(() => {
-    return Math.floor(Math.random() * (20000 - 10000) + 10000);
-  });
-
-  const expenses: [number, number][] = xData.map(x => {
-    return [x, Math.floor(Math.random() * (6000 - 2000) + 2000)];
-  });
-
-  const onInit = ({ graph, xScale, yScale }: GraphEvent) => {
+  const onInit = ({ xScale, yScale }: GraphEvent) => {
+    expenseList = [];
+    paymentList = [];
     expenseLine = area()
       .x(d => xScale(d[0]))
       .y0(yScale(0))
-      .y1(d => yScale(d[1]))(expenses) as string;
-    incomeLine = area()
+      .y1(d => yScale(d[1]))(
+      xData.map((d, i) => {
+        const month = new Date(d).getMonth();
+        // @ts-ignore
+        const total = expenseMap.table[month];
+        expenseList[i] = total;
+        return [d, total];
+      }),
+    ) as string;
+    paymentLine = area()
       .x(d => xScale(d[0]))
       .y0(yScale(0))
-      .y1(d => yScale(d[1]))(graph.datum) as string;
+      .y1(d => yScale(d[1]))(
+      xData.map((d, i) => {
+        const month = new Date(d).getMonth();
+        // @ts-ignore
+        const total = paymentMap.table[month];
+        paymentList[i] = total;
+        return [d, total];
+      }),
+    ) as string;
+    toggled = !toggled;
   };
 
-  const netIncome = (monthlyIncome: number[], monthlyExpenses: [number, number][]) => {
-    const revenue = monthlyIncome.reduce((acc, next) => acc + next, 0);
-    const expenses = monthlyExpenses.reduce((acc, next) => acc + next[1], 0);
-    return revenue - expenses;
+  const netIncome = (
+    payments: PropertyByID_propertyUI_payments[],
+    expenses: PropertyByID_propertyUI_expenses[],
+  ) => {
+    const revenue = payments.reduce((acc, next) => acc + next.amount, 0);
+    const expense = expenses.reduce((acc, next) => acc + next.amount, 0);
+    return revenue - expense;
   };
+
+  $: paymentMap = new DataPointAggregator(payments);
+  $: expenseMap = new DataPointAggregator(expenses);
+  $: yData = xData.map(d => {
+    const month = new Date(d).getMonth();
+    // @ts-ignore
+    return Math.max(paymentMap.table[month], expenseMap.table[month]);
+  });
 </script>
 
 <SubTile title="Expense to Income">
   <MetricTitle
     slot="title"
     label="Yearly Net Income"
-    value={`$${Number(netIncome(yData, expenses)).toLocaleString()}`}
+    value={`$${Number(netIncome(payments, expenses)).toLocaleString()}`}
   />
   <LineGraph
     slot="content"
@@ -76,24 +112,26 @@
     bind:onMouseOut
     bind:onMouseOver
   >
-    {#if expenseLine && incomeLine}
-      <Area
-        data={yData}
-        {onMouseOut}
-        {onMouseOver}
-        path={incomeLine}
-        fill="url(#lineGrad)"
-        style="filter: drop-shadow(0px -2.5px 2.5px #9284fc4a);"
-      />
-      <Area
-        {onMouseOut}
-        {onMouseOver}
-        path={expenseLine}
-        fill="rgb(250, 60, 60)"
-        data={expenses.map(d => d[1])}
-      />
+    {#if expenseLine && paymentLine}
+      {#key toggled}
+        <Area
+          {onMouseOut}
+          {onMouseOver}
+          path={paymentLine}
+          data={paymentList}
+          fill="url(#areaGrad)"
+          style="filter: drop-shadow(0px -2.5px 2.5px #9284fc4a);"
+        />
+        <Area
+          {onMouseOut}
+          {onMouseOver}
+          path={expenseLine}
+          data={expenseList}
+          fill="rgb(250, 60, 60)"
+        />
+      {/key}
     {/if}
-    <LinearGradient id="lineGrad" />
+    <LinearGradient id="areaGrad" />
   </LineGraph>
 </SubTile>
 <Label {flip} {dataPoint} {pointDate} {prevPoint} {positionX} {positionY} {labelActive} />

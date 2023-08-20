@@ -5,9 +5,17 @@
   import IssueCompletion from "./+IssueCompletion.svelte";
   import type { Readable } from "svelte/store";
   import type { IssueFragment } from "$lib/schema/IssueFragment";
+  import type {
+    PropertyByID_propertyUI_expenses,
+    PropertyByID_propertyUI_payments,
+    PropertyByID_propertyUI_units,
+  } from "$lib/schema/PropertyByID";
 
   export let name: string;
   export let issues: Readable<IssueFragment[]>;
+  export let units: PropertyByID_propertyUI_units[];
+  export let payments: PropertyByID_propertyUI_payments[];
+  export let expenses: PropertyByID_propertyUI_expenses[];
 </script>
 
 <SectionTitle>
@@ -16,10 +24,10 @@
 </SectionTitle>
 <div class="property-overview">
   <div class="graph">
-    <ExpenseToIncome />
+    <ExpenseToIncome {payments} {expenses} />
   </div>
   <div class="graph">
-    <LinearOccupancy />
+    <LinearOccupancy {units} />
   </div>
   <div class="graph">
     <IssueCompletion {issues} />

@@ -16,7 +16,8 @@
     CreateIssue_createIssue,
   } from "$lib/schema/CreateIssue";
   import type { IssueType } from "$lib/schema/globalTypes";
-  import type { PropertyByID_property } from "$lib/schema/PropertyByID";
+  import { issues } from "$lib/views/property/Stores";
+  import type { PropertyByID_propertyUI } from "$lib/schema/PropertyByID";
 
   /* Loading States */
   let error = false;
@@ -30,7 +31,7 @@
   let unit: ListItem = { value: "", label: "" };
   let assigned: ListItem = { value: "", label: "" };
 
-  export let property: PropertyByID_property;
+  export let property: PropertyByID_propertyUI;
 
   class UIController {
     static clearUnit: () => void;
@@ -92,6 +93,7 @@
       complete = true;
       this.reset();
       overviewIssues.update(v => [issue, ...v]);
+      issues.update(v => [issue, ...v]);
       NotificationState.push({
         type: "success",
         message: "Your Issue has been created!",

@@ -1,18 +1,13 @@
 import type { ServerLoadEvent } from "@sveltejs/kit";
-import { GraphQLRequest } from "$lib/graphql/GraphQLRequest";
-import { queryPropertyByID } from "$lib/graphql/properties.gql";
-import type { PropertyByID, PropertyByIDVariables } from "$lib/schema/PropertyByID";
+import type { OrganizationByID_organization_properties } from "$lib/schema/OrganizationByID";
 
-export const load = async (request: ServerLoadEvent) => {
-  const { property: id } = request.params;
-  const PropertyQuery = new GraphQLRequest<PropertyByID, PropertyByIDVariables>({
-    query: queryPropertyByID,
-    variables: {
-      id: parseInt(id!),
-    },
-  });
-  const property = await PropertyQuery.send(request.fetch);
+export const load = async ({ fetch, params, parent }: ServerLoadEvent) => {
+  const { property: id } = params;
+  const { properties } = await parent();
+  const ID = parseInt(id!);
   return {
-    property: property.data.property,
+    activeProperty: (properties as OrganizationByID_organization_properties[]).find(
+      p => p.id === ID,
+    ),
   };
 };

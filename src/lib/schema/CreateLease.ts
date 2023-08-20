@@ -27,6 +27,8 @@ export interface CreateLease_createLease {
   amount: number;
   start_date: string;
   end_date: string;
+  active: boolean;
+  created_at: string;
   users: CreateLease_createLease_users[];
   payments: CreateLease_createLease_payments[];
 }

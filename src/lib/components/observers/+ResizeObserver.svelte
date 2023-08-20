@@ -50,6 +50,7 @@
   onMount(() => {
     if (browser && UIController.reference) {
       UIController.observe();
+      UIController.dispatcher("resize", UIController.reference.getBoundingClientRect());
     }
     return () => {
       UIController.disconnect();

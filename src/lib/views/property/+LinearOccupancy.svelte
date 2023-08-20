@@ -1,31 +1,40 @@
 <script lang="ts">
   import { line } from "d3";
-  import moment from "moment";
   import LineGraph from "$lib/components/data-viz/+LineGraph.svelte";
   import type { GraphEvent } from "$lib/graphing/types";
   import Line from "$lib/components/data-viz/+Line.svelte";
   import LinearGradient from "$lib/components/gradients/+LinearGradient.svelte";
   import SubTile from "$lib/components/tiles/+SubTile.svelte";
   import MetricTitle from "$lib/components/data-viz/+MetricTitle.svelte";
+  import { DateScaling } from "$lib/graphing/DateScaling";
+  import type { PropertyByID_propertyUI_units } from "$lib/schema/PropertyByID";
+
+  export let units: PropertyByID_propertyUI_units[];
 
   let pathData: string | undefined;
   let percentage = "0%";
 
-  const xData = new Array(12).fill("").map((_, i) => {
-    const date = moment();
-    date.subtract(12 - i, "months");
-    date.hours(0);
-    return date.toDate().getTime();
-  });
-  const yData = new Array(12).fill(0).map(() => {
-    return Math.floor(Math.random() * (100 - 50) + 50);
-  });
+  const xData = DateScaling.last12Months();
 
   const onInit = ({ graph, xScale, yScale }: GraphEvent) => {
     pathData = line()
       .x(d => xScale(d[0]))
       .y(d => yScale(d[1]))(graph.datum) as string;
   };
+
+  $: yData = xData.map(date => {
+    let occupied = 0;
+    units.forEach(unit => {
+      for (const lease of unit.leases) {
+        const { start_date, end_date } = lease;
+        if (date >= parseInt(start_date) && date <= parseInt(end_date)) {
+          occupied++;
+          break;
+        }
+      }
+    });
+    return occupied === 0 ? 0 : (occupied / units.length) * 100;
+  });
 
   $: {
     if (!yData.length) {
@@ -40,7 +49,11 @@
   <MetricTitle slot="title" label="Yearly Occupancy" value={percentage} />
   <LineGraph slot="content" {xData} {yData} {onInit}>
     {#if pathData}
-      <Line path={pathData} stroke="url(#lineGrad)" strokeWidth={5} />
+      <Line
+        path={pathData}
+        strokeWidth={5}
+        stroke={percentage === "100%" || percentage === "0%" ? "#9284fc" : "url(#lineGrad)"}
+      />
     {/if}
     <LinearGradient id="lineGrad" />
   </LineGraph>

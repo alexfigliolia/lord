@@ -34,7 +34,7 @@
         error = false;
         return;
       }
-      const result = await this.createProperty();
+      const result = await this.createOrg();
       this.Queue.deferTask(() => {
         error = false;
         loading = false;
@@ -50,7 +50,7 @@
       }
     };
 
-    private static createProperty() {
+    private static createOrg() {
       const request = new GraphQLRequest<CreateOrganization, CreateOrganizationVariables>({
         query: createOrganization,
         variables: {
