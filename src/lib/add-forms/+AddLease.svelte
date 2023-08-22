@@ -17,6 +17,7 @@
   import type { UserFragment } from "$lib/schema/UserFragment";
   import DateInput from "$lib/components/forms/+DateInput.svelte";
   import AddMultiSelect from "$lib/components/forms/+AddMultiSelect.svelte";
+  import { overviewOrganization } from "$lib/views/overview/Stores";
 
   export let lessors: UserFragment[];
 
@@ -78,6 +79,7 @@
           users: this.toIDList(users),
           end_date: this.toISO(end_date),
           start_date: this.toISO(start_date),
+          organization_id: $overviewOrganization.id,
         },
       });
       return request.send();

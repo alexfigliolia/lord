@@ -24,4 +24,17 @@ export class DateScaling {
       return date.toDate().getTime();
     });
   }
+
+  static unitToScale(time: number) {
+    const oneDay = 1000 * 60 * 60 * 24;
+    const oneYear = oneDay * 365;
+    const years = Math.ceil(time / oneYear);
+    if (years > 3) {
+      return "Years";
+    }
+    if (Math.floor(time / (oneDay * 30)) < 1) {
+      return "Days";
+    }
+    return "Months";
+  }
 }

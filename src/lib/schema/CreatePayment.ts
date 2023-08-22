@@ -9,8 +9,8 @@
 
 export interface CreatePayment_createPayment {
   __typename: "payment";
+  id: number;
   amount: number;
-  created_at: string;
 }
 
 export interface CreatePayment {
@@ -22,6 +22,7 @@ export interface CreatePaymentVariables {
   property_id: number;
   description: string;
   organization_id: number;
+  payment_method_id: number;
   amount: number;
   user_id: number;
 }

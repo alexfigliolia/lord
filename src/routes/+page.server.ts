@@ -6,6 +6,6 @@ export const load = verifyCredentials({
     throw redirect(302, "/login");
   },
   onSuccess: () => {
-    throw redirect(302, "/teams");
+    throw redirect(302, "/home");
   },
 });

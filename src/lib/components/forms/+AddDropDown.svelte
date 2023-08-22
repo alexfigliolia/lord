@@ -17,7 +17,7 @@
 
   const search = writable("");
   const listItems = writable(items);
-  const displayValue = writable("");
+  const displayValue = writable(value.label);
   const inputValue = derived([search, displayValue], ([s, d]) => {
     return s.length ? s : d;
   });

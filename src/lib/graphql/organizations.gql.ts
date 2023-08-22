@@ -25,8 +25,8 @@ export const organizationByID = gql`
   ${PropertyFragment}
   ${PaymentFragment}
   ${ExpenseFragment}
-  query OrganizationByID($id: Int!) {
-    organization(id: $id) {
+  query OrganizationByID($id: Int!, $user_id: Int!) {
+    organization(id: $id, user_id: $user_id) {
       id
       name
       users {
@@ -76,7 +76,6 @@ export const queryUsersByOrgID = gql`
     organizationsUsers(id: $id) {
       id
       name
-      role
       email
     }
   }

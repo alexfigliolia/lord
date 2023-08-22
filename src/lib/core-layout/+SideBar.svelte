@@ -21,25 +21,13 @@
     </div>
     <button class="add" on:click={UIController.openAdd}>ADD +</button>
     <div class="links">
-      <Link label="Teams" href="/teams" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
+      <Link label="Home" href="/home" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
         <People color={currentColor} />
       </Link>
-      <Link
-        label="Banking"
-        href="/teams/banking"
-        color="#9b8cae"
-        activeColor="#9e91fc"
-        let:currentColor
-      >
+      <Link label="Banking" href="/banking" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
         <Money color={currentColor} />
       </Link>
-      <Link
-        label="Account"
-        href="/teams/account"
-        color="#9b8cae"
-        activeColor="#9e91fc"
-        let:currentColor
-      >
+      <Link label="Account" href="/account" color="#9b8cae" activeColor="#9e91fc" let:currentColor>
         <Account stroke={currentColor} />
       </Link>
       <Logout backgroundColor="#9e91fc" textColor="#fff" margin="10px 0" />

@@ -5,7 +5,7 @@ const IS_PRODUCTION = process.env.NODE_ENV !== "development";
 
 export default defineConfig({
   plugins: [sveltekit()],
-  base: "/teams/",
+  base: "/home/",
   build: {
     target: "es2015",
     sourcemap: IS_PRODUCTION,

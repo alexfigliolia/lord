@@ -3,12 +3,13 @@
 
   export let value: string;
   export let label: string;
+  export let style: string = "";
   export let fontSize: string = "25px";
 </script>
 
 <div class="container">
   <div class="value">
-    <AnimatedNumber active {fontSize} {value} style="justify-content: flex-end;" />
+    <AnimatedNumber active {fontSize} {value} style="justify-content: flex-end; {style}" />
   </div>
   <div class="subtext">{label}</div>
 </div>

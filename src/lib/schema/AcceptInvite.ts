@@ -13,7 +13,6 @@ export interface AcceptInvite_acceptInvite {
   __typename: "user";
   id: number;
   name: string;
-  role: UserRole;
   email: string;
 }
 

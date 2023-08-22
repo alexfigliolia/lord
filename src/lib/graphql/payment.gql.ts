@@ -8,12 +8,12 @@ export const PaymentFragment = gql`
 `;
 
 export const createPayment = gql`
-  ${PaymentFragment}
   mutation CreatePayment(
     $unit_id: Int!
     $property_id: Int!
     $description: String!
     $organization_id: Int!
+    $payment_method_id: Int!
     $amount: Float!
     $user_id: Int!
   ) {
@@ -23,9 +23,11 @@ export const createPayment = gql`
       organization_id: $organization_id
       description: $description
       amount: $amount
+      payment_method_id: $payment_method_id
       user_id: $user_id
     ) {
-      ...PaymentFragment
+      id
+      amount
     }
   }
 `;

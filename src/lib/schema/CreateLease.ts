@@ -25,6 +25,7 @@ export interface CreateLease_createLease {
   id: number;
   unit_id: number;
   amount: number;
+  organization_id: number;
   start_date: string;
   end_date: string;
   active: boolean;
@@ -41,6 +42,7 @@ export interface CreateLeaseVariables {
   unit_id: number;
   property_id: number;
   amount: number;
+  organization_id: number;
   start_date: string;
   end_date: string;
   users: number[];

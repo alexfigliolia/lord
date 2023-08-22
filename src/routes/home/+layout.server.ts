@@ -7,6 +7,8 @@ import type {
   OrganizationsByAffiliationVariables,
 } from "$lib/schema/OrganizationsByAffiliation";
 import type { CoreLayoutData } from "$lib/core-layout/types";
+import { ResidencyQuery } from "$lib/graphql/residency.gql";
+import type { Residencies, ResidenciesVariables } from "$lib/schema/Residencies";
 
 export const load = verifyCredentials<CoreLayoutData>({
   onError: () => {
@@ -22,8 +24,18 @@ export const load = verifyCredentials<CoreLayoutData>({
         user_id: user.id,
       },
     });
-    const results = await organization.send(request.fetch);
-    const organizations = results?.data?.organizationStats || [];
-    return { user, organizations };
+    const residency = new GraphQLRequest<Residencies, ResidenciesVariables>({
+      query: ResidencyQuery,
+      variables: {
+        user_id: user.id,
+      },
+    });
+    const [org, res] = await Promise.all([
+      organization.send(request.fetch),
+      residency.send(request.fetch),
+    ]);
+    const organizations = org?.data?.organizationStats || [];
+    const residencies = res?.data?.residencies || [];
+    return { user, organizations, residencies };
   },
 });

@@ -2,7 +2,7 @@
   import Header from "$lib/core-layout/+Header.svelte";
   import MobileMenu from "$lib/core-layout/+MobileMenu.svelte";
   import SideBar from "$lib/core-layout/+SideBar.svelte";
-  import { organizations } from "$lib/state/Organization";
+  import { organizations, residencies } from "$lib/state/Organization";
   import Notifications from "$lib/core-layout/+Notifications.svelte";
   import { currentUser } from "$lib/state/User";
   import type { CoreLayoutData } from "$lib/core-layout/types";
@@ -11,6 +11,7 @@
 
   $: organizations.set(data.organizations);
   $: currentUser.set(data.user);
+  $: residencies.set(data.residencies);
 </script>
 
 <div id="coreApp">

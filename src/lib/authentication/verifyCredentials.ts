@@ -25,6 +25,6 @@ export const verifyCredentials = <T = UserFragment>({
     } catch (error: any) {
       return onError();
     }
-    return onSuccess(result.data.verifyToken.user, params);
+    return onSuccess(result.data.verifyToken, params);
   };
 };

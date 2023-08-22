@@ -52,7 +52,6 @@ export const acceptInvite = gql`
     ) {
       id
       name
-      role
       email
     }
   }

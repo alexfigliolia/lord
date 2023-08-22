@@ -17,12 +17,12 @@
     <Waves />
     <div class="links">
       <div class="l-group">
-        <Link label="Teams" href="/teams" color="#fff" margin="30px 0" {onClick} let:currentColor>
+        <Link label="Teams" href="/home" color="#fff" margin="30px 0" {onClick} let:currentColor>
           <People color={currentColor} />
         </Link>
         <Link
           label="Banking"
-          href="/teams/banking"
+          href="/banking"
           color="#fff"
           margin="30px 0"
           {onClick}
@@ -32,7 +32,7 @@
         </Link>
         <Link
           label="Account"
-          href="/teams/account"
+          href="/account"
           color="#fff"
           margin="30px 0"
           {onClick}

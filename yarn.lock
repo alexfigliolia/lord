@@ -945,6 +945,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.1.tgz#aa22750962f3bf0e79d753d3cc067f010c95f194"
   integrity sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==
 
+"@types/flickity@^2.2.8":
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/@types/flickity/-/flickity-2.2.8.tgz#64e3d1729fc36bffb3a3202cc8866499d03f598b"
+  integrity sha512-T2G/BgRJbQAZFxSPkQtwyO+x6rZ8sws/UIH62qakYlrPKC2PNdcFWrZiMgvw9PcBonm6kV/aut7d35AC718TJg==
+
 "@types/geojson@*":
   version "7946.0.10"
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.10.tgz#6dfbf5ea17142f7f9a043809f1cd4c448cb68249"
@@ -2697,6 +2702,11 @@ esutils@^2.0.2, esutils@^2.0.3:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
+ev-emitter@^2.0.0, ev-emitter@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/ev-emitter/-/ev-emitter-2.1.2.tgz#91737a2deae9fa95453e7e86cfae976f8c3ced38"
+  integrity sha512-jQ5Ql18hdCQ4qS+RCrbLfz1n+Pags27q5TwMKvZyhp5hh2UULUYZUy1keqj6k6SYsdqIYjnmz7xyyEY0V67B8Q==
+
 execa@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
@@ -2816,6 +2826,11 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
+fizzy-ui-utils@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/fizzy-ui-utils/-/fizzy-ui-utils-3.0.0.tgz#cc5e876eea263d3d92828a3144745dbd7b972fc8"
+  integrity sha512-uJj38QFQiJ/KCio5tiZhwAjIbTXSIgzBCKdKVbaYfLS053F6z23Nb0o1ZoO9gnxOQWN7BCc35jsvrCtAq3gY9g==
+
 flat-cache@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-3.0.4.tgz#61b0338302b2fe9f957dcc32fc2a87f1c3048b11"
@@ -2828,6 +2843,17 @@ flatted@^3.1.0:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.7.tgz#609f39207cb614b89d0765b477cb2d437fbf9787"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
+
+flickity@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/flickity/-/flickity-3.0.0.tgz#568d14d17acece85e08eddc2589c968a458c8861"
+  integrity sha512-Xw4znhglA2LVSmka0yKmzb4+fLwXm13TuKmdG1HbUoZZL95J1ZMr4hAA3w69s+Z6q/c6CyBDM25JVwMqgF3rOg==
+  dependencies:
+    ev-emitter "^2.1.2"
+    fizzy-ui-utils "^3.0.0"
+    get-size "^3.0.0"
+    imagesloaded "^5.0.0"
+    unidragger "^3.0.0"
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -2925,6 +2951,11 @@ get-package-type@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/get-package-type/-/get-package-type-0.1.0.tgz#8de2d803cff44df3bc6c456e6668b36c3926e11a"
   integrity sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==
+
+get-size@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/get-size/-/get-size-3.0.0.tgz#00e39a8042a3de237b2fcf288eaf55d3f472417c"
+  integrity sha512-Y8aiXLq4leR7807UY0yuKEwif5s3kbVp1nTv+i4jBeoUzByTLKkLWu/HorS6/pB+7gsB0o7OTogC8AoOOeT0Hw==
 
 get-stream@^6.0.0:
   version "6.0.1"
@@ -3220,6 +3251,13 @@ ignore@^5.2.0, ignore@^5.2.4:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
   integrity sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==
+
+imagesloaded@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/imagesloaded/-/imagesloaded-5.0.0.tgz#e614e5de482769dd7d571ca62d947d0d00183847"
+  integrity sha512-/0JGSubc1MTCoDKVmonLHgbifBWHdyLkun+R/151E1c5n79hiSxcd7cB7mPXFgojYu8xnRZv7GYxzKoxW8BetQ==
+  dependencies:
+    ev-emitter "^2.1.2"
 
 immutable@^4.0.0:
   version "4.3.1"
@@ -5225,6 +5263,13 @@ undici@~5.22.0:
   integrity sha512-Ji2IJhFXZY0x/0tVBXeQwgPlLWw13GVzpsWPQ3rV50IFMMof2I55PZZxtm4P6iNq+L5znYN9nSTAq0ZyE6lSJw==
   dependencies:
     busboy "^1.6.0"
+
+unidragger@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/unidragger/-/unidragger-3.0.1.tgz#72b2e63f2571ca6e95a884b139dfec764e08c7f3"
+  integrity sha512-RngbGSwBFmqGBWjkaH+yB677uzR95blSQyxq6hYbrQCejH3Mx1nm8DVOuh3M9k2fQyTstWUG5qlgCnNqV/9jVw==
+  dependencies:
+    ev-emitter "^2.0.0"
 
 universalify@^0.1.0:
   version "0.1.2"

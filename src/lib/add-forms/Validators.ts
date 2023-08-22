@@ -46,4 +46,9 @@ export class Validators {
     }
     return value.length === 5 && this.zipRegex.test(value);
   };
+
+  static numberValidator = (value: any) => {
+    // @ts-ignore
+    return parseFloat(value) == value;
+  };
 }

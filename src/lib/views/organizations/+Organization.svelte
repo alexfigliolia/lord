@@ -52,7 +52,7 @@
   });
 </script>
 
-<a class="org" href={`/teams/${organization.id}`}>
+<a class="org" href={`home/teams/${organization.id}`}>
   <TileContent>
     <div class="title">
       <SectionSubTitle text={organization.name} />

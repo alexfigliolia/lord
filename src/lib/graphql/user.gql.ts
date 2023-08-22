@@ -4,7 +4,6 @@ export const UserFragment = gql`
   fragment UserFragment on user {
     id
     name
-    role
     email
   }
 `;

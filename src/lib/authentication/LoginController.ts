@@ -67,7 +67,7 @@ export class LoginController<T extends Record<string, any> = Login> {
 
   public redirect() {
     this.Queue.deferTask(() => {
-      void goto("/teams");
+      void goto("/home");
     }, 1000);
   }
 }
